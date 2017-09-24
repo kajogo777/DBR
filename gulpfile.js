@@ -160,3 +160,11 @@ gulp.task('docs', [], function() {
     .pipe($.ngdocs.process())
     .pipe(gulp.dest('./docs'));
 });
+
+gulp.task('serveprod', function() {
+  connect.server({
+    root: [your_project_path],
+    port: process.env.PORT || 8000, // localhost:8000
+    livereload: false
+  });
+});
