@@ -54,3 +54,31 @@ app.post('/login', function (req, res) {
         }
     });
 });
+
+app.post('/get_user', function (req, res) {
+
+    User.findOne({ '_id': req.body.id}, function (err, user) {
+        if (err) {
+            res.status(400);
+        } else {
+            if (user) {
+                    res.send(user);
+            } 
+        }
+    });
+});
+
+var Level = require("./Models/Level");
+app.post('/next_level', function (req, res) {
+     console.log(req.body);
+    Level.findOne({ "number": req.body.level}, function (err, level) {
+        if (err) {
+            res.status(400);
+        } else {
+            console.log(level);
+            if (level) {
+                    res.send(level);
+            } 
+        }
+    });
+});

@@ -9,19 +9,56 @@
 				<i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
 			</span>
 		</a>
-		
+
 		<div class="fr">
-		<h2>D.B.R<small> Daily Bible Reading</small></h2>
+			<h2>D.B.R<small> Daily Bible Reading</small></h2>
 		</div>
 		<div class="jumbotron">
 			<div class="container">
 				<h1>Welcome {{user.name}}!</h1>
-				I don't want to bloat this Versatile Theme Free Edition AngularJS Admin theme with a lot of plugins. To install plugins we have bower. Let's keep it real clean!<br /><br />
-				<p>
-					<a ui-sref="login" class="btn btn-primary btn-lg btn-white">Logout</a>
-				</p>
-				
+				<div class="row">
+					<div class="col-md-2 pull-left">
+						<h1 style="text-align:center">
+							<small>Level</small><br> {{user.level}}
+							
+						</h1>
+					</div>
+
+					<div class="col-md-8" ng-if="next_level!=undefined">
+							<div class="progress progress-striped active" style="height:50px;margin-top: 100px;">
+									<div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" aria-valuenow="{{user.score}}" aria-valuemin="0" aria-valuemax="{{next_level.needed_score}}" style="width: {{(user.score/next_level.needed_score)*100}}%">{{next_level.needed_score-user.score}} points left</div>
+							</div>
+							
+							
+							<style>
+								.progress-bar{
+									background-color:#1a8ebc!important;
+									font-size: large;
+									padding-top: 13px;
+								}
+							</style>
+					</div>
+
+					<div class="col-md-2 pull-right">
+						<h1 style="text-align:center">
+							<small>Level</small><br> {{user.level+1}}
+						</h1>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="row text-center" style="padding-top:20px">
+						<h2>
+							<a ui-sref="login" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Start Today's Reading? <span class="glyphicon glyphicon-book"></span></a>
+						</h2>
+				</div>
+				<div class="row text-center" style="padding-top:20px">
+					<p>
+						<a ui-sref="login" class="btn btn-primary btn-lg btn-white">Logout</a>
+					</p>
+				</div>
+
+
 			</div>
 		</div>
-	</snap-content>	
+	</snap-content>
 </div>
