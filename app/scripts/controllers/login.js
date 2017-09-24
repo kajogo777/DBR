@@ -10,9 +10,12 @@
 angular.module('yapp')
   .controller('LoginCtrl', function($scope, $location,$http) {
 
-    $scope.submit = function() {
-      $http.post("http://dbr.herokuapp.com/login",{"username":$scope.username,"password":$scope.password});
-      $location.path('/dashboard');
+    $scope.submit = function(username,password) {
+      $http.post("http://dbr.herokuapp.com/login",{"username":username,"password":password}).success(function(data){
+        console.log(data);
+        $location.path('/dashboard');
+      });
+      
 
       return false;
     }

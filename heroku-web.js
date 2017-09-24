@@ -21,3 +21,13 @@ app.use(bodyParser.json());
 
 mongoose.connect(DB_URI);
 console.log("connecting to global db..");
+
+
+app.post('/login', function (req, res) {
+    console.log(req.body);
+    res.send("success");
+    // Money.findOne({}, {}, { sort: { '_id': -1 } }, function (err, money) {
+    //   res.send(money);
+    // });
+  });
+  
