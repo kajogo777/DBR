@@ -4,8 +4,8 @@ var app = express();
 var morgan = require('morgan');
 var logger = morgan('combined');
 var fs = require('fs');
-var accessLogStream = fs.createWriteStream(__dirname + '/access.log', {flags: 'a'})
-app.use(morgan({combinedstream: accessLogStream}));
+var accessLogStream = fs.createWriteStream(__dirname + '/access.log', { flags: 'a' })
+app.use(morgan({ combinedstream: accessLogStream }));
 app.use(gzippo.staticGzip("" + __dirname + "/dist"));
 app.listen(process.env.PORT || 5000);
 console.log("app started");
@@ -26,8 +26,20 @@ console.log("connecting to global db..");
 app.post('/login', function (req, res) {
     console.log(req.body);
     res.send("success");
-    // Money.findOne({}, {}, { sort: { '_id': -1 } }, function (err, money) {
-    //   res.send(money);
-    // });
-  });
-  
+    User.findOne({ 'username': req.body.username.toLowerCase() }, function (err, user) {
+        if (err) {
+            res.status(400);
+        } else {
+            if (user) {
+                if (user.password.toUpperCase() == user.password.toUpperCase()) {
+                    res.send(user);
+                } else {
+                    res.send("Wrong password!");
+                }
+            } else {
+                res.send("Wrong username!");
+            }
+
+        }
+    });
+});
