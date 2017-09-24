@@ -167,3 +167,7 @@ gulp.task('serveprod', function() {
     livereload: false
   });
 });
+
+gulp.task('heroku:production',['build'], function(){
+  console.log('herokuduction');
+});

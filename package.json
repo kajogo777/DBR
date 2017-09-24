@@ -4,8 +4,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "gulp test",
-    "start": "gulp serveprod"
+    "test": "gulp test"
   },
   "devDependencies": {
     "@angular/cli": "^1.4.3",
