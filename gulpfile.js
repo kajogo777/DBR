@@ -163,7 +163,7 @@ gulp.task('docs', [], function() {
 
 gulp.task('serveprod', function() {
   connect.server({
-    root: "https://dbr.herokuapp.com/",
+    root: "/",
     port: process.env.PORT || 8000, // localhost:8000
     livereload: false
   });
