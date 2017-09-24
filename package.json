@@ -5,7 +5,7 @@
   },
   "scripts": {
     "test": "gulp test",
-    "postinstall": "gulp serveprod"
+    "start": "gulp serveprod"
   },
   "devDependencies": {
     "@angular/cli": "^1.4.3",
