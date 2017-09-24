@@ -4,8 +4,7 @@
     "node": "6.9.4"
   },
   "scripts": {
-    "test": "gulp test",
-    "postinstall": "node.exe node_modules/bower/bin/bower install"
+    "test": "gulp test"
   },
   "devDependencies": {
     "@angular/cli": "^1.4.3",
