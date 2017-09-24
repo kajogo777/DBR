@@ -5,7 +5,7 @@
   },
   "scripts": {
     "test": "gulp test",
-    "preinstall": "bower install"
+    "postinstall": "bower install"
   },
   "devDependencies": {
     "@angular/cli": "^1.4.3",
