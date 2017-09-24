@@ -168,6 +168,6 @@ gulp.task('serveprod', function() {
   });
 });
 
-gulp.task('heroku: task',['build'], function(){
+gulp.task('heroku:',['build'], function(){
   console.log('herokuduction');
 });
