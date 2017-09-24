@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 mongoose.connect(DB_URI);
 console.log("connecting to global db..");
 
-
+var User = require("./Models/User");
 app.post('/login', function (req, res) {
     console.log(req.body);
     res.send("success");
