@@ -8,3 +8,4 @@ var accessLogStream = fs.createWriteStream(__dirname + '/access.log', {flags: 'a
 app.use(morgan({combinedstream: accessLogStream}));
 app.use(gzippo.staticGzip("" + __dirname + "/dist"));
 app.listen(process.env.PORT || 5000);
+console.log("app started");
