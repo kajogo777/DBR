@@ -88,7 +88,7 @@ gulp.task('connect', ['styles'], function() {
     .use(serveIndex('app'));
 
   require('http').createServer(app)
-    .listen(8000)
+    .listen(process.env.PORT || 8000)
     .on('listening', function() {
       console.log('Started connect web server on http://localhost:8000');
     });
@@ -163,7 +163,7 @@ gulp.task('docs', [], function() {
 
 gulp.task('serveprod', function() {
   connect.server({
-    root: [your_project_path],
+    root: "https://dbr.herokuapp.com/",
     port: process.env.PORT || 8000, // localhost:8000
     livereload: false
   });
