@@ -36,12 +36,12 @@ gulp.task('html', ['styles'], function() {
 
   return gulp.src('app/**/*.html')
     .pipe(assets)
-    .pipe($.if('*.js', $.ngAnnotate()))
-    .pipe($.if('*.js', $.uglify()))
-    .pipe($.if('*.css', cssChannel()))
+    .pipe($.if('.*\.js', $.ngAnnotate()))
+    .pipe($.if('.*\.js', $.uglify()))
+    .pipe($.if('.*\.css', cssChannel()))
     .pipe(assets.restore())
     .pipe($.useref())
-    .pipe($.if('*.html', $.htmlmin({collapseWhitespace: true})))
+    .pipe($.if('.*\.html', $.htmlmin({collapseWhitespace: true})))
     .pipe(gulp.dest('dist'));
 });
 
