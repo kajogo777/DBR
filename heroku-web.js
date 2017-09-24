@@ -22,22 +22,33 @@ app.use(bodyParser.json());
 mongoose.connect(DB_URI);
 console.log("connecting to global db..");
 
+app.options('/*', function (req, res) {
+    res.sendStatus(200);
+  });
+
+
 var User = require("./Models/User");
 app.post('/login', function (req, res) {
-    console.log(req.body);
-    res.send("success");
+    // console.log(req.body);
+    var input_pass=  req.body.password;
+    if(!req.body.username){
+        res.status(201).send("Username required!");
+    }
+    if(!req.body.password){
+        res.status(201).send("Password required!");
+    }
     User.findOne({ 'username': req.body.username.toLowerCase() }, function (err, user) {
         if (err) {
             res.status(400);
         } else {
             if (user) {
-                if (user.password.toUpperCase() == user.password.toUpperCase()) {
+                if (input_pass && user.password.toUpperCase() == input_pass.toUpperCase()) {
                     res.send(user);
                 } else {
-                    res.send("Wrong password!");
+                    res.status(201).send("Wrong password!");
                 }
             } else {
-                res.send("Wrong username!");
+                res.status(201).send("Wrong username!");
             }
 
         }

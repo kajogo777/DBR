@@ -14,7 +14,8 @@ var states = [
         { name: 'dashboard', state: { url: '/dashboard', parent: 'base', templateUrl: 'views/dashboard.html', controller: 'DashboardCtrl', data: {text: "Dashboard", visible: false } } },
         { name: 'overview', state: { url: '/overview', parent: 'dashboard', templateUrl: 'views/dashboard/overview.html', data: {text: "Overview", visible: true } } },
         { name: 'reports', state: { url: '/reports', parent: 'dashboard', templateUrl: 'views/dashboard/reports.html', data: {text: "Reports", visible: true } } },
-        { name: 'logout', state: { url: '/login', data: {text: "Logout", visible: true }} }
+        { name: 'logout', state: { url: '/login', data: {text: "Logout", visible: true }} },
+        { name: 'home', state: { url: '/home',templateUrl: 'views/home.html', controller: 'HomeCtrl', parent: 'dashboard'}}
     ];
    
 angular.module('yapp', [
@@ -23,7 +24,7 @@ angular.module('yapp', [
                 'ngAnimate'
             ])
         .config(function($stateProvider, $urlRouterProvider) {
-            $urlRouterProvider.when('/dashboard', '/dashboard/overview');
+            $urlRouterProvider.when('/dashboard', '/dashboard/home');
             $urlRouterProvider.otherwise('/login');
             
             angular.forEach(states, function (state) {
