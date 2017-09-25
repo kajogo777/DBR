@@ -44,6 +44,9 @@ angular.module('yapp')
               toastr.success(data);
             }else if(status==203){
               toastr.error(data);
+            }else if(status==204){
+              toastr.success(data);
+              toastr.success("Congrats ... You leveled up !!");
             }else{
               console.log(data);
             }

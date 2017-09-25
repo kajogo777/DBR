@@ -5,7 +5,8 @@ var Schema = mongoose.Schema({
     username:{type:String},
     password:{type:String},
     level:{type:Number ,default:"1"},
-    score:{type:Number, default: "0"},
+    total_score:{type:Number, default: "0"},
+    level_score:{type:Number, default: "0"},
     answered_questions:[
       {
         question_id:{type:String},
