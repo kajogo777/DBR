@@ -118,13 +118,14 @@ app.post('/check_answer', function (req, res) {
    User.findOne({"_id":req.body.user_id},function(err,user){
        if(err){
            res.send(err);
+           return;
        }else
        if(user){
            //checking if question is answered before
            for(var i=0;i< user.answered_questions.length;i++){
                 if(user.answered_questions[i].question_id == req.body.question_id){
-                    console.log("Already answered this answer before !");
-                    res.send("Already answered this answer before !");
+                    console.log("Already answered this question before !");
+                    res.status(201).send("Already answered this question before !");
                     return;
                 }
            }
@@ -146,7 +147,8 @@ app.post('/check_answer', function (req, res) {
                                   }
                                 var question_score = reading.questions[j].score;
                                 User.updateOne({"_id":req.body.user_id},{"score":parseInt(user.score)+parseInt(reading.questions[j].score), $push: { "answered_questions": question }},function(err){
-                                    res.status(201).send("+"+question_score+" points");
+                                    res.status(202).send("+"+question_score+" points");
+                                    return;
                                 })
                            }else{
                                //pushing that the answer was wrong
@@ -156,7 +158,8 @@ app.post('/check_answer', function (req, res) {
                                 date:Date.now()
                               }
                             User.updateOne({"_id":req.body.user_id},{ $push: { "answered_questions": question }},function(err){
-                               res.send("Wrong Answer");
+                               res.status(203).send("Wrong Answer");
+                               return;
                             })
                            }
                        }

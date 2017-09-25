@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('readingCtrl', function($scope, $location,$http,$window,$state,$sce,$document) {
+  .controller('readingCtrl', function($scope, $location,$http,$window,$state,$sce,$document,toastr) {
     $scope.user=JSON.parse($window.localStorage.getItem("user"));
     $scope.reading=undefined;
     $scope.date=Date.now();
@@ -38,9 +38,15 @@ angular.module('yapp')
         $scope.check_answer = function(input_answer,question_id,choice_id,question_index){
           $http.post($window.localStorage.getItem("base_url")+"/check_answer",{"user_id":$scope.user._id,"question_id":question_id,"choice":input_answer,"reading_id":$scope.reading._id}).success(function(data,status){
             console.log(data);
-            if(status==200){
-              // $scope.reading=data;
-            };
+            if(status==201){
+              toastr.warning(data);
+            }else if(status==202){
+              toastr.success(data);
+            }else if(status==203){
+              toastr.error(data);
+            }else{
+              console.log(data);
+            }
           });
           // console.log(input_answer+" "+question_id+" "+choice_id);
           //checking answer

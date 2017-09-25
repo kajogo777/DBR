@@ -22,6 +22,7 @@ var states = [
 angular.module('yapp', [
                 'ui.router',
                 'snap',
+                'toastr',
                 'ngAnimate'
             ])
         .config(function($stateProvider, $urlRouterProvider) {
