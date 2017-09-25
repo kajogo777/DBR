@@ -2,7 +2,7 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title>Versatile Metro-UI Angular Theme</title>
+    <title>Daily Bible Reading</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -23,6 +23,7 @@
 
     <!-- Add your site or application content here -->
     <div class="">
+
       <div ui-view ></div>
     </div>
 
@@ -43,7 +44,7 @@
     <script src="../bower_components/json3/lib/json3.js"></script>
     <![endif]-->
     <!-- endbuild -->
-
+      
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="../bower_components/angular/angular.js"></script>
@@ -54,12 +55,15 @@
     <script src="../bower_components/angular-snap/angular-snap.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
+    <script src="https://unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css" />
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/dashboard.js"></script>
     <script src="scripts/controllers/home.js"></script>
+    <script src="scripts/controllers/reading.js"></script>
     <!-- endbuild -->
   </body>
 </html>

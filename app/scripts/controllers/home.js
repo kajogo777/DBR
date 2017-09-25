@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('HomeCtrl', function($scope, $location,$http,$window,$state) {
+  .controller('HomeCtrl', function($scope,$http,$window,$state) {
     $scope.user=JSON.parse($window.localStorage.getItem("user"));
     $scope.next_level=undefined;
     $scope.$state = $state;
@@ -20,7 +20,7 @@ angular.module('yapp')
             }
         });
 
-        $http.post("https://dbr.herokuapp.com/get_user",{"id":$scope.user._id}).success(function(data,status){
+        $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).success(function(data,status){
           console.log(data);
           if(status==200){
             $window.localStorage.setItem("user",JSON.stringify(data));
@@ -28,11 +28,11 @@ angular.module('yapp')
           }
         });
 
-        $http.post("https://dbr.herokuapp.com/next_level",{"level":$scope.user.level+1}).success(function(data,status){
+        $http.post($window.localStorage.getItem("base_url")+"/next_level",{"level":$scope.user.level+1}).success(function(data,status){
           console.log(data);
           if(status==200){
             $scope.next_level=data;
           }
-          
         });  
+
   });

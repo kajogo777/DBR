@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@angular/cli": "^1.4.3",
+    "angular-toastr": "^2.1.1",
     "apache-server-configs": "^2.11.0",
     "bower": "~1.7.1",
     "browser-sync": "~2.9.11",

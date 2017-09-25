@@ -82,3 +82,32 @@ app.post('/next_level', function (req, res) {
         }
     });
 });
+
+var Reading = require("./Models/reading");
+app.post('/get_today_reading', function (req, res) {
+     
+    var startDate = new Date(); // this is the starting date that looks like ISODate("2014-10-03T04:00:00.188Z")
+    
+    startDate.setSeconds(0);
+    startDate.setHours(0);
+    startDate.setMinutes(0);
+    
+    var dateMidnight = new Date(startDate);
+    dateMidnight.setHours(23);
+    dateMidnight.setMinutes(59);
+    dateMidnight.setSeconds(59);
+
+    Reading.findOne({ "date": {
+        $gt:startDate,
+        $lt:dateMidnight
+        }}, function (err, reading) {
+        if (err) {
+            res.status(400);
+        } else {
+            console.log(reading);
+            if (reading) {
+                    res.send(reading);
+            } 
+        }
+    });
+});

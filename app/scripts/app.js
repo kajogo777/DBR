@@ -15,13 +15,15 @@ var states = [
         { name: 'overview', state: { url: '/overview', parent: 'dashboard', templateUrl: 'views/dashboard/overview.html', data: {text: "Overview", visible: true } } },
         { name: 'reports', state: { url: '/reports', parent: 'dashboard', templateUrl: 'views/dashboard/reports.html', data: {text: "Reports", visible: true } } },
         { name: 'logout', state: { url: '/login', data: {text: "Logout", visible: true }} },
-        { name: 'home', state: { url: '/home',templateUrl: 'views/home.html', controller: 'HomeCtrl', parent: 'dashboard'}}
+        { name: 'home', state: { url: '/home',templateUrl: 'views/home.html', controller: 'HomeCtrl', parent: 'dashboard'}},
+        { name: 'reading', state: { url: '/reading',templateUrl: 'views/reading.html', controller: 'readingCtrl', parent: 'dashboard'}}
     ];
    
 angular.module('yapp', [
                 'ui.router',
                 'snap',
-                'ngAnimate'
+                'ngAnimate',
+                'toastr'
             ])
         .config(function($stateProvider, $urlRouterProvider) {
             $urlRouterProvider.when('/dashboard', '/dashboard/home');
