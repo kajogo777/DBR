@@ -7,7 +7,7 @@
  * # MainCtrl
  * Controller of yapp
  */
-angular.module('yapp',['ngAnimate','toastr'])
+angular.module('yapp')
   .controller('readingCtrl', function($scope, $location,$http,$window,$state,$sce,$document) {
     $scope.user=JSON.parse($window.localStorage.getItem("user"));
     $scope.reading=undefined;
