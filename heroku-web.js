@@ -13,6 +13,7 @@ console.log("app started");
 var mongoose = require('mongoose');
 var DB_URI = "mongodb://admin:admin@ds147964.mlab.com:47964/dbr";
 var bodyParser = require('body-parser');
+app.use(express.static('../public'))
 // var Router = express.Router();
 var path = require('path');
 app.use(require('serve-static')(path.resolve('public')));
