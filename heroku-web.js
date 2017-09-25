@@ -83,7 +83,7 @@ app.post('/next_level', function (req, res) {
     });
 });
 
-var Reading = require("./Models/reading");
+var Reading = require("./Models/Reading");
 app.post('/get_today_reading', function (req, res) {
 
     var startDate = new Date(); // this is the starting date that looks like ISODate("2014-10-03T04:00:00.188Z")
