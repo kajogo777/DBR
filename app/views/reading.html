@@ -1,3 +1,5 @@
+<script src="https://unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css" />
 <div>
 	<div ng-include="'menu.html'"></div>
 	<snap-dragger></snap-dragger>
@@ -29,16 +31,16 @@
 				</div>
 
 				<h1>Questions</h1>
-				<div class="row" ng-repeat="question in reading.questions">
+				<div class="row" ng-repeat="question in reading.questions track by $index" ng-init="$questionIndex = $index">
 						<div class="panel panel-default" style="text-align: -webkit-right;margin-top: 60px;" ng-if="reading!=undefined">
 							<div class="panel-heading">
 							  <h2 class="panel-title" style="font-size: 54px;display: -webkit-inline-box;">{{question.question}}</h2>					
 							</div>
 						  </div>
 						
-						  <div class=row  ng-repeat="choice in question.choices" style="margin-right: 0px;margin-left: 0px;">
-								<p class="pull-right" style="width: 100%;display:grid;">
-										<a ui-sref="login" style="font-size:31px;" class="btn btn-primary btn-lg btn-white">{{choice}}</a>
+						  <div class=row  ng-repeat="choice in question.choices track by $index" style="margin-right: 0px;margin-left: 0px;">
+								<p class="pull-right" style="width: 100%;display:grid;" id="{{$questionIndex}}_{{$index}}">
+										<a ng-click="check_answer(choice,question.id,$index,$questionIndex)" style="font-size:31px;" class="btn btn-primary btn-lg btn-white">{{choice}}</a>
 								</p> 
 						  </div>
 						

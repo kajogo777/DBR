@@ -11,7 +11,8 @@ var Schema = mongoose.Schema({
         answer: {type:String},
         choices: [],
         type: {type:String},
-        score: {type:String}
+        score: {type:String},
+        id:{type:String}
       }
     ]
 })

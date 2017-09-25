@@ -22,8 +22,7 @@ var states = [
 angular.module('yapp', [
                 'ui.router',
                 'snap',
-                'ngAnimate',
-                'toastr'
+                'ngAnimate'
             ])
         .config(function($stateProvider, $urlRouterProvider) {
             $urlRouterProvider.when('/dashboard', '/dashboard/home');

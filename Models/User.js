@@ -5,7 +5,14 @@ var Schema = mongoose.Schema({
     username:{type:String},
     password:{type:String},
     level:{type:Number ,default:"1"},
-    score:{type:String, default: "0"}
+    score:{type:Number, default: "0"},
+    answered_questions:[
+      {
+        question_id:{type:String},
+        right_answer: {type:Boolean},
+        date:{type:Date}
+      }
+    ]
 })
 
   var User = mongoose.model("user", Schema);

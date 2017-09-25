@@ -111,3 +111,58 @@ app.post('/get_today_reading', function (req, res) {
         }
     });
 });
+
+
+app.post('/check_answer', function (req, res) {
+    console.log(req.body);
+   User.findOne({"_id":req.body.user_id},function(err,user){
+       if(err){
+           res.send(err);
+       }else
+       if(user){
+           //checking if question is answered before
+           for(var i=0;i< user.answered_questions.length;i++){
+                if(user.answered_questions[i].question_id == req.body.question_id){
+                    console.log("Already answered this answer before !");
+                    res.send("Already answered this answer before !");
+                    return;
+                }
+           }
+           //if not check for answer and add it in the answered quesions
+           Reading.findOne({"_id":req.body.reading_id},function(err,reading){
+               if(err){
+                   console.log("error");
+               }else{
+                   for(var j=0;j<reading.questions.length;j++){
+                       console.log(req.body.question_id);
+                       console.log(reading.questions[j].score);
+                       if(req.body.question_id==reading.questions[j].id){
+                           console.log(reading.questions[j].id);
+                           if(reading.questions[j].answer==req.body.choice){
+                                var question={
+                                    question_id: req.body.question_id,
+                                    right_answer: true,
+                                    date:Date.now()
+                                  }
+                                var question_score = reading.questions[j].score;
+                                User.updateOne({"_id":req.body.user_id},{"score":parseInt(user.score)+parseInt(reading.questions[j].score), $push: { "answered_questions": question }},function(err){
+                                    res.status(201).send("+"+question_score+" points");
+                                })
+                           }else{
+                               //pushing that the answer was wrong
+                            var question={
+                                question_id: req.body.question_id,
+                                right_answer: false,
+                                date:Date.now()
+                              }
+                            User.updateOne({"_id":req.body.user_id},{ $push: { "answered_questions": question }},function(err){
+                               res.send("Wrong Answer");
+                            })
+                           }
+                       }
+                   }
+               }
+           })
+       }
+   })
+});
