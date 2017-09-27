@@ -120,34 +120,41 @@ app.post('/get_today_reading', function (req, res) {
 
 app.post('/get_today_reading', function (req, res) {
     var Today = new Date(Date.now());
-    var user = get_user_date(req.body.user_id);
-
-    //checking for last reading
-    var readings_num = user.reading_dates.length;
-    if (readings_num != 0) { // if not first time to read
-        var last_reading = new Date(user.reading_dates[readings_num - 1]);
-        // if next day increment readings_num and push new date
-        if (last_reading.getDate() != Today.getDate() && last_reading.getMonth() != Today.getMonth() && last_reading.getFullYear() != Today.getFullYear()) {
-            readings_num++;
-            User.updateOne({ 'id': user._id }, { $push: { "reading_dates": Today } });
-        }
-    }else{ // if first time to read
-        readings_num++;
-        User.updateOne({ 'id': user._id }, { $push: { "reading_dates": 1 } });
-    }
-
-    Reading.findOne({
-        "number": readings_num
-    }, function (err, reading) {
-        if (err) {
-            return res.status(400);
-        } else {
-            console.log(reading);
-            if (reading) {
-                return res.send(reading);
+   // console.log(req.body.user_id);
+    User.findOne({ '_id': req.body.user_id }, function (err, user) {
+        if (err)
+            console.log(err);
+        else {
+            console.log(user);
+            //checking for last reading
+            var readings_num = user.reading_dates.length;
+            if (readings_num != 0) { // if not first time to read
+                var last_reading = new Date(user.reading_dates[readings_num - 1]);
+                // if next day increment readings_num and push new date
+                if (last_reading.getDate() != Today.getDate() && last_reading.getMonth() != Today.getMonth() && last_reading.getFullYear() != Today.getFullYear()) {
+                    readings_num++;
+                    User.updateOne({ '_id': user._id }, { $push: { "reading_dates": Today } });
+                }
+            } else { // if first time to read
+                console.log("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+                readings_num++;
+                User.updateOne({ '_id': user._id }, { $push: { "reading_dates": Today } },(err,u)=>{console.log(u)});
             }
+
+            Reading.findOne({
+                "number": readings_num
+            }, function (err, reading) {
+                if (err) {
+                    return res.status(400);
+                } else {
+                    console.log(reading);
+                    if (reading) {
+                        return res.send(reading);
+                    }
+                }
+            });
         }
-    });
+    })
 });
 
 
@@ -240,6 +247,6 @@ function get_user_date(id) {
         if (err)
             console.log(err);
         else
-            return err;
+            return user;
     })
 }
