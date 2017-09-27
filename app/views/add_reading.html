@@ -34,7 +34,7 @@
 					<div class="form-group">
 					  <label class="col-md-4 control-label" for="number">Reading Number</label>  
 					  <div class="col-md-4">
-					  <input id="number" name="number" type="text" placeholder="Reading Number" class="form-control input-md" required="">
+					  <input id="number" name="number" ng-model="reading.number" type="number" placeholder="Reading Number" class="form-control input-md" required="">
 					  <span class="help-block">Last reading was number</span>  
 					  </div>
 					</div>
@@ -43,7 +43,7 @@
 					<div class="form-group">
 					  <label class="col-md-4 control-label" for="shahed">الشاهد</label>  
 					  <div class="col-md-4">
-					  <input id="shahed" name="shahed" type="text" placeholder="El Shahed" class="form-control input-md arabic" required="">
+					  <input id="shahed" name="shahed" ng-model="reading.shahed" type="text" placeholder="El Shahed" class="form-control input-md arabic" required="">
 						
 					  </div>
 					</div>
@@ -52,7 +52,7 @@
 					<div class="form-group">
 					  <label class="col-md-4 control-label" for="content">Content</label>
 					  <div class="col-md-4">                     
-						<textarea class="form-control arabic" id="content" name="content" style="height:200px!important;width:500px!important;"></textarea>
+						<textarea class="form-control arabic" id="content" name="content" ng-model="reading.content" style="width:500px!important;" rows="10"></textarea>
 					  </div>
 					</div>
 					
@@ -60,25 +60,24 @@
 					<div class="form-group">
 					  <label class="col-md-4 control-label" for="sound">Sound Link</label>  
 					  <div class="col-md-4">
-					  <input id="sound" name="sound" type="text" placeholder="Sound Link" class="form-control input-md">
+					  <input id="sound" name="sound" ng-model="reading.sound" type="text" placeholder="Sound Link" class="form-control input-md">
 						
 					  </div>
 					</div>
 					
 					<!-- Text input-->
 					<div class="form-group">
-					  <label class="col-md-4 control-label" for="question">Question</label>  
+					  <label class="col-md-4 control-label" for="question">Questions</label>  
 					  <div class="col-md-5">
-					  <input id="question" name="question" type="text" placeholder="Question" class="form-control input-md arabic" required="">
-						
+						<textarea class="form-control arabic" id="question" name="question" ng-model="reading.questions" rows="4" placeholder="each quesion in a separate line"></textarea>
 					  </div>
 					</div>
 					
 					<!-- Text input-->
 					<div class="form-group">
-					  <label class="col-md-4 control-label" for="answer">Answer</label>  
+					  <label class="col-md-4 control-label" for="answer">Answers</label>  
 					  <div class="col-md-4">
-					  <input id="answer" name="answer" type="text" placeholder="Answer" class="form-control input-md arabic">
+						<textarea class="form-control arabic" id="answer" name="answer" ng-model="reading.answers" rows="4" placeholder="each answer in a separate line"></textarea>
 						
 					  </div>
 					</div>
@@ -87,16 +86,15 @@
 					<div class="form-group">
 					  <label class="col-md-4 control-label" for="choices">choices</label>
 					  <div class="col-md-4">                     
-						<textarea class="form-control arabic" id="choices" name="choices">Choices(including right answer) each choice in a separate line</textarea>
+						<textarea class="form-control arabic" id="choices" name="choices" ng-model="reading.choices" rows="5" placeholder="Choices(including right answer), each choice in a separate line and between each question add an empty line"></textarea>
 					  </div>
 					</div>
 					
 					<!-- Text input-->
 					<div class="form-group">
-					  <label class="col-md-4 control-label" for="score">Score</label>  
+					  <label class="col-md-4 control-label" for="score">Scores</label>  
 					  <div class="col-md-4">
-					  <input id="score" name="score" type="text" placeholder="Score" class="form-control input-md">
-						
+						<textarea class="form-control arabic"  id="score" name="score" ng-model="reading.scores" rows="4" placeholder="each answer in a separate line"></textarea>
 					  </div>
 					</div>
 					
@@ -104,7 +102,7 @@
 					<div class="form-group">
 					  <label class="col-md-4 control-label" for="submit">Add Reading?</label>
 					  <div class="col-md-4">
-						<button id="submit" name="submit" class="btn btn-success">Submit</button>
+						<button id="submit" name="submit" ng-click="add_reading(reading)" class="btn btn-success">Submit</button>
 					  </div>
 					</div>
 					

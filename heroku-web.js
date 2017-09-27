@@ -252,3 +252,16 @@ function get_user_date(id) {
             return user;
     })
 }
+
+
+app.post('/add_reading', function (req, res) {
+    console.log(req.body);
+    var reading= new Reading(req.body.reading);
+    reading.save(function(err,reading){
+        if(err)
+         res.send(err);
+        else {
+          res.send("reading added successfully");
+        }
+      })
+});
