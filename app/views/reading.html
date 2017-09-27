@@ -40,8 +40,8 @@
 						  </div>
 						
 						  <div class=row  ng-repeat="choice in question.choices track by $index" style="margin-right: 0px;margin-left: 0px;">
-								<p class="pull-right" style="width: 100%;display:grid;" id="{{$questionIndex}}_{{$index}}">
-										<a ng-click="check_answer(choice,question.id,$index,$questionIndex)" style="font-size:31px;" class="btn btn-primary btn-lg btn-white">{{choice}}</a>
+								<p class="pull-right" style="width: 100%;" id="{{$questionIndex}}_{{$index}}">
+										<a ng-click="check_answer(choice,question.id,$index,$questionIndex)" style="font-size:31px;width: 100%;" class="btn btn-primary btn-lg btn-white">{{choice}}</a>
 								</p> 
 						  </div>
 						
