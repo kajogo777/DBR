@@ -54,9 +54,14 @@
 							<a ui-sref="reading" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Start Today's Reading? <span class="glyphicon glyphicon-book"></span></a>
 						</h2>
 				</div>
+				<div class="row text-center" style="padding-top:20px" ng-if="user.admin != undefined && user.admin == 'true'">
+					<p>
+						<a ui-sref="add_reading" class="btn btn-primary btn-lg btn-white">Add Reading</a>
+					</p>
+				</div>
 				<div class="row text-center" style="padding-top:20px">
 					<p>
-						<a ui-sref="login" class="btn btn-primary btn-lg btn-white">Logout</a>
+						<a ng-click="logout()" class="btn btn-primary btn-lg btn-white">Logout</a>
 					</p>
 				</div>
 

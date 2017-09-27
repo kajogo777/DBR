@@ -1,0 +1,125 @@
+<div>
+	<div ng-include="'menu.html'"></div>
+	<!-- <snap-dragger></snap-dragger> -->
+	<snap-content snap-opt-tap-to-close="false">
+
+		<!-- <a href="" snap-toggle="left" ng-click="menuOpen = !menuOpen">
+			<span class="menutoggle">
+				<i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+				<i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+			</span>
+		</a> -->
+
+		<div class="fr">
+			<h2>D.B.R<small> Daily Bible Reading</small></h2>
+		</div>
+		<div class="jumbotron">
+			<div class="container">
+				<h1>Add a Reading</h1>
+				<style>
+				.arabic{
+					text-align: right;
+				}
+				.form-control{
+					font-size: large;
+				}
+				</style>
+				<form class="form-horizontal">
+					<fieldset>
+					
+					<!-- Form Name -->
+					<legend></legend>
+					
+					<!-- Text input-->
+					<div class="form-group">
+					  <label class="col-md-4 control-label" for="number">Reading Number</label>  
+					  <div class="col-md-4">
+					  <input id="number" name="number" type="text" placeholder="Reading Number" class="form-control input-md" required="">
+					  <span class="help-block">Last reading was number</span>  
+					  </div>
+					</div>
+					
+					<!-- Text input-->
+					<div class="form-group">
+					  <label class="col-md-4 control-label" for="shahed">الشاهد</label>  
+					  <div class="col-md-4">
+					  <input id="shahed" name="shahed" type="text" placeholder="El Shahed" class="form-control input-md arabic" required="">
+						
+					  </div>
+					</div>
+					
+					<!-- Textarea -->
+					<div class="form-group">
+					  <label class="col-md-4 control-label" for="content">Content</label>
+					  <div class="col-md-4">                     
+						<textarea class="form-control arabic" id="content" name="content" style="height:200px!important;width:500px!important;"></textarea>
+					  </div>
+					</div>
+					
+					<!-- Text input-->
+					<div class="form-group">
+					  <label class="col-md-4 control-label" for="sound">Sound Link</label>  
+					  <div class="col-md-4">
+					  <input id="sound" name="sound" type="text" placeholder="Sound Link" class="form-control input-md">
+						
+					  </div>
+					</div>
+					
+					<!-- Text input-->
+					<div class="form-group">
+					  <label class="col-md-4 control-label" for="question">Question</label>  
+					  <div class="col-md-5">
+					  <input id="question" name="question" type="text" placeholder="Question" class="form-control input-md arabic" required="">
+						
+					  </div>
+					</div>
+					
+					<!-- Text input-->
+					<div class="form-group">
+					  <label class="col-md-4 control-label" for="answer">Answer</label>  
+					  <div class="col-md-4">
+					  <input id="answer" name="answer" type="text" placeholder="Answer" class="form-control input-md arabic">
+						
+					  </div>
+					</div>
+					
+					<!-- Textarea -->
+					<div class="form-group">
+					  <label class="col-md-4 control-label" for="choices">choices</label>
+					  <div class="col-md-4">                     
+						<textarea class="form-control arabic" id="choices" name="choices">Choices(including right answer) each choice in a separate line</textarea>
+					  </div>
+					</div>
+					
+					<!-- Text input-->
+					<div class="form-group">
+					  <label class="col-md-4 control-label" for="score">Score</label>  
+					  <div class="col-md-4">
+					  <input id="score" name="score" type="text" placeholder="Score" class="form-control input-md">
+						
+					  </div>
+					</div>
+					
+					<!-- Button -->
+					<div class="form-group">
+					  <label class="col-md-4 control-label" for="submit">Add Reading?</label>
+					  <div class="col-md-4">
+						<button id="submit" name="submit" class="btn btn-success">Submit</button>
+					  </div>
+					</div>
+					
+					</fieldset>
+					</form>
+					
+
+				<div class="row text-center" style="padding-top:20px">
+					<h2>
+						<a ui-sref="home" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Home <span class="glyphicon glyphicon-home"></span></a>
+					</h2>
+				</div>
+
+
+			</div>
+		</div>
+	</snap-content>
+</div>
