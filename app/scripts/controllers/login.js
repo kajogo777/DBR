@@ -9,8 +9,14 @@
  */
 angular.module('yapp')
   .controller('LoginCtrl', function($scope, $location,$http,$window) {
-    //$window.localStorage.setItem("base_url","https://dbr.herokuapp.com");
-    $window.localStorage.setItem("base_url","http://localhost:5000");
+    //setting base address
+    if($location.absUrl().includes("localhost")){
+      $window.localStorage.setItem("base_url","http://localhost:5000");
+    }else{
+      $window.localStorage.setItem("base_url","https://dbr.herokuapp.com");
+    }
+    
+    
     $scope.login_failed=undefined;
     $scope.submit = function(username,password) {
       $http.post($window.localStorage.getItem("base_url")+"/login",{"username":username,"password":password}).success(function(data,status){
