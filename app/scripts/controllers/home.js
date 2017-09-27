@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('HomeCtrl', function($scope,$http,$window,$state) {
+  .controller('HomeCtrl', function($scope,$http,$window,$state,$location) {
     $scope.user=JSON.parse($window.localStorage.getItem("user"));
     $scope.next_level=undefined;
     $scope.$state = $state;
@@ -34,5 +34,10 @@ angular.module('yapp')
             $scope.next_level=data;
           }
         });  
+
+        $scope.logout= function(){
+          $window.localStorage.removeItem("user","");
+          $location.path('/login');
+        }
 
   });
