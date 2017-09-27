@@ -40,4 +40,5 @@ angular.module('yapp')
           $location.path('/login');
         }
 
+
   });
