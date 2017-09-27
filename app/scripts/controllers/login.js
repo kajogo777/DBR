@@ -16,6 +16,9 @@ angular.module('yapp')
       $window.localStorage.setItem("base_url","https://dbr.herokuapp.com");
     }
     
+    if(localStorage.getItem("user")!= undefined){
+      $location.path('/dashboard');
+    }
     
     $scope.login_failed=undefined;
     $scope.submit = function(username,password) {
