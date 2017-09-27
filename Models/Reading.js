@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema({
+    number:{type:String},
     data: {type:Date},
     shahed:{type:String},
     content:{type:String},

@@ -7,6 +7,7 @@ var Schema = mongoose.Schema({
     level:{type:Number ,default:"1"},
     total_score:{type:Number, default: "0"},
     level_score:{type:Number, default: "0"},
+    reading_dates:[{type:Date}],
     answered_questions:[
       {
         question_id:{type:String},

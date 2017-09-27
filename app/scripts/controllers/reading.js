@@ -22,7 +22,7 @@ angular.module('yapp')
       }
     });
 
-    $http.post($window.localStorage.getItem("base_url") + "/get_today_reading").success(function (data, status) {
+    $http.post($window.localStorage.getItem("base_url") + "/get_today_reading",{user_id:$scope.user._id}).success(function (data, status) {
       console.log(data);
       if (status == 200) {
         if (data.sound && data.sound != "")

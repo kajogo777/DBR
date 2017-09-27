@@ -24,7 +24,7 @@ mongoose.connect(DB_URI);
 console.log("connecting to global db..");
 
 app.options('/*', function (req, res) {
-   return res.sendStatus(200);
+    return res.sendStatus(200);
 });
 
 
@@ -33,23 +33,23 @@ app.post('/login', function (req, res) {
     // console.log(req.body);
     var input_pass = req.body.password;
     if (!req.body.username) {
-       return res.status(201).send("Username required!");
+        return res.status(201).send("Username required!");
     }
     if (!req.body.password) {
-       return res.status(201).send("Password required!");
+        return res.status(201).send("Password required!");
     }
     User.findOne({ 'username': req.body.username.toLowerCase() }, function (err, user) {
         if (err) {
-           return res.status(400);
+            return res.status(400);
         } else {
             if (user) {
                 if (input_pass && user.password.toUpperCase() == input_pass.toUpperCase()) {
-                   return res.send(user);
+                    return res.send(user);
                 } else {
                     return res.status(201).send("Wrong password!");
                 }
             } else {
-               return res.status(201).send("Wrong username!");
+                return res.status(201).send("Wrong username!");
             }
 
         }
@@ -60,7 +60,7 @@ app.post('/get_user', function (req, res) {
 
     User.findOne({ '_id': req.body.id }, function (err, user) {
         if (err) {
-           return res.status(400);
+            return res.status(400);
         } else {
             if (user) {
                 return res.send(user);
@@ -74,7 +74,7 @@ app.post('/next_level', function (req, res) {
     console.log(req.body);
     Level.findOne({ "number": req.body.level }, function (err, level) {
         if (err) {
-           return res.status(400);
+            return res.status(400);
         } else {
             console.log(level);
             if (level) {
@@ -85,6 +85,8 @@ app.post('/next_level', function (req, res) {
 });
 
 var Reading = require("./Models/Reading");
+//getting date by today's date ... 
+/*
 app.post('/get_today_reading', function (req, res) {
 
     var startDate = new Date(); // this is the starting date that looks like ISODate("2014-10-03T04:00:00.188Z")
@@ -114,6 +116,39 @@ app.post('/get_today_reading', function (req, res) {
         }
     });
 });
+*/
+
+app.post('/get_today_reading', function (req, res) {
+    var Today = new Date(Date.now());
+    var user = get_user_date(req.body.user_id);
+
+    //checking for last reading
+    var readings_num = user.reading_dates.length;
+    if (readings_num != 0) { // if not first time to read
+        var last_reading = new Date(user.reading_dates[readings_num - 1]);
+        // if next day increment readings_num and push new date
+        if (last_reading.getDate() != Today.getDate() && last_reading.getMonth() != Today.getMonth() && last_reading.getFullYear() != Today.getFullYear()) {
+            readings_num++;
+            User.updateOne({ 'id': user._id }, { $push: { "reading_dates": Today } });
+        }
+    }else{ // if first time to read
+        readings_num++;
+        User.updateOne({ 'id': user._id }, { $push: { "reading_dates": 1 } });
+    }
+
+    Reading.findOne({
+        "number": readings_num
+    }, function (err, reading) {
+        if (err) {
+            return res.status(400);
+        } else {
+            console.log(reading);
+            if (reading) {
+                return res.send(reading);
+            }
+        }
+    });
+});
 
 
 app.post('/check_answer', function (req, res) {
@@ -128,8 +163,8 @@ app.post('/check_answer', function (req, res) {
                 for (var i = 0; i < user.answered_questions.length; i++) {
                     if (user.answered_questions[i].question_id == req.body.question_id) {
                         console.log("Already answered this question before !");
-                         return res.status(201).send("Already answered this question before !");
-                       
+                        return res.status(201).send("Already answered this question before !");
+
                     }
                 }
                 //if not check for answer and add it in the answered quesions
@@ -149,9 +184,9 @@ app.post('/check_answer', function (req, res) {
                                         date: Date.now()
                                     }
                                     var question_score = reading.questions[j].score;
-                                    
+
                                     //checking level
-                                    Level.findOne({ 'number': parseInt(user.level)+1 }, function (err, level) {
+                                    Level.findOne({ 'number': parseInt(user.level) + 1 }, function (err, level) {
                                         var new_level = user.level;
                                         var new_level_score = parseInt(user.level_score) + parseInt(question_score);
                                         var level_changed = false;
@@ -171,9 +206,9 @@ app.post('/check_answer', function (req, res) {
                                             $push: { "answered_questions": question }
                                         }, function (err, user_updated) {
                                             if (level_changed) {
-                                                   return res.status(204).send("+" + question_score + " points");
+                                                return res.status(204).send("+" + question_score + " points");
                                             } else {
-                                                   return res.status(202).send("+" + question_score + " points");
+                                                return res.status(202).send("+" + question_score + " points");
                                             }
 
                                         })
@@ -188,7 +223,7 @@ app.post('/check_answer', function (req, res) {
                                     }
                                     User.updateOne({ "_id": req.body.user_id }, { $push: { "answered_questions": question } }, function (err) {
                                         return res.status(203).send("Wrong Answer");
-                                       
+
                                     })
                                 }
                                 break;
@@ -199,3 +234,12 @@ app.post('/check_answer', function (req, res) {
             }
     })
 });
+
+function get_user_date(id) {
+    User.findOne({ 'id': id }, function (err, user) {
+        if (err)
+            console.log(err);
+        else
+            return err;
+    })
+}
