@@ -187,15 +187,16 @@ app.post('/check_answer', function (req, res) {
                             // console.log(req.body.question_id);
                             // console.log(reading.questions[j].score);
                             if (req.body.question_id == reading.questions[j].id) {
-                                console.log('reading.questions[j].id: ', reading.questions[j].id);
-                                console.log('req.body.question_id: ', req.body.question_id);
-                                console.log('req.body.choice: ', req.body.choice);
-                                console.log('reading.questions[j].answer: ', reading.questions[j].answer);
                                 if (reading.questions[j].answer == req.body.choice) {
                                     
                                     var question = {
                                         question_id: req.body.question_id,
-                                        right_answer: true,
+                                        is_right_answer: true,
+                                        user_answer: req.body.choice,
+                                        right_answer:reading.questions[j].answer,
+                                        question:reading.questions[j].question,
+                                        choices: reading.questions[j].choices,
+                                        score: reading.questions[j].score,
                                         date: Date.now()
                                     }
                                     var question_score = reading.questions[j].score;
@@ -233,7 +234,12 @@ app.post('/check_answer', function (req, res) {
                                     //pushing that the answer was wrong
                                     var question = {
                                         question_id: req.body.question_id,
-                                        right_answer: false,
+                                        is_right_answer: false,
+                                        user_answer: req.body.choice,
+                                        right_answer:reading.questions[j].answer,
+                                        question:reading.questions[j].question,
+                                        choices: reading.questions[j].choices,
+                                        score: reading.questions[j].score,
                                         date: Date.now()
                                     }
                                     User.updateOne({ "_id": req.body.user_id }, { $push: { "answered_questions": question } }, function (err) {
