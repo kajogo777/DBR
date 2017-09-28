@@ -63,7 +63,6 @@ angular.module('yapp')
       selected_element.style.backgroundColor = "red";
       //coloring the right answer
       for (var i = 0; i < $scope.reading.questions[question_index].choices.length; i++) {
-        console.log($scope.reading.questions[question_index].choices[i]);
         if ($scope.reading.questions[question_index].choices[i] == $scope.reading.questions[question_index].answer) {
           var right_element = $document[0].getElementById(question_index + "_" + i);
           right_element.style.backgroundColor = "green";

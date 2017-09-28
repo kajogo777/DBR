@@ -122,25 +122,26 @@ app.post('/get_today_reading', function (req, res) {
 
 app.post('/get_today_reading', function (req, res) {
     var Today = new Date(Date.now());
-   // console.log(req.body.user_id);
+    // console.log(req.body.user_id);
     User.findOne({ '_id': req.body.user_id }, function (err, user) {
         if (err)
             console.log(err);
         else {
-            console.log(user);
+            // console.log(user);
             //checking for last reading
             var readings_num = user.reading_dates.length;
             if (readings_num != 0) { // if not first time to read
                 var last_reading = new Date(user.reading_dates[readings_num - 1]);
+
                 // if next day increment readings_num and push new date
-                if (last_reading.getDate() != Today.getDate() && last_reading.getMonth() != Today.getMonth() && last_reading.getFullYear() != Today.getFullYear()) {
+                if (last_reading.toDateString() != Today.toDateString()) {
+
                     readings_num++;
-                    User.updateOne({ '_id': user._id }, { $push: { "reading_dates": Today } });
+                    User.updateOne({ '_id': user._id }, { $push: { "reading_dates": Today } }, (err, u) => { });
                 }
             } else { // if first time to read
-                console.log("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
                 readings_num++;
-                User.updateOne({ '_id': user._id }, { $push: { "reading_dates": Today } },(err,u)=>{console.log(u)});
+                User.updateOne({ '_id': user._id }, { $push: { "reading_dates": Today } }, (err, u) => { console.log(u) });
             }
 
             Reading.findOne({
@@ -176,8 +177,9 @@ app.post('/check_answer', function (req, res) {
 
                     }
                 }
-                //if not check for answer and add it in the answered quesions
+                //if not.. check for answer and add it in the answered quesions
                 Reading.findOne({ "_id": req.body.reading_id }, function (err, reading) {
+                    console.log('reading: ', reading);
                     if (err) {
                         console.log("error");
                     } else {
@@ -185,8 +187,12 @@ app.post('/check_answer', function (req, res) {
                             // console.log(req.body.question_id);
                             // console.log(reading.questions[j].score);
                             if (req.body.question_id == reading.questions[j].id) {
-                                console.log(reading.questions[j].id);
+                                console.log('reading.questions[j].id: ', reading.questions[j].id);
+                                console.log('req.body.question_id: ', req.body.question_id);
+                                console.log('req.body.choice: ', req.body.choice);
+                                console.log('reading.questions[j].answer: ', reading.questions[j].answer);
                                 if (reading.questions[j].answer == req.body.choice) {
+                                    
                                     var question = {
                                         question_id: req.body.question_id,
                                         right_answer: true,
@@ -256,31 +262,31 @@ function get_user_date(id) {
 
 app.post('/add_reading', function (req, res) {
     console.log(req.body);
-    var reading= new Reading(req.body.reading);
-    reading.save(function(err,reading){
-        if(err)
-         res.send(err);
+    var reading = new Reading(req.body.reading);
+    reading.save(function (err, reading) {
+        if (err)
+            res.send(err);
         else {
-          res.send("reading added successfully");
+            res.send("reading added successfully");
         }
-      })
+    })
 });
 
 app.post('/get_top_5_in_class', function (req, res) {
-    User.find({"class": req.body.class}).sort({"total_score": -1}).limit(5).exec(function(err,users){
-        if(err){
+    User.find({ "class": req.body.class }).sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
+        if (err) {
             res.send(err);
-        }else{
+        } else {
             res.send(users);
         }
     })
 });
 
 app.post('/get_top_5', function (req, res) {
-    User.find().sort({"total_score": -1}).limit(5).exec(function(err,users){
-        if(err){
+    User.find().sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
+        if (err) {
             res.send(err);
-        }else{
+        } else {
             res.send(users);
         }
     })

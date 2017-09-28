@@ -14,8 +14,8 @@ angular.module('yapp')
       $scope.add_reading = function(reading){
         // reading.content= reading.content.split("\n").join("<br />");
         var input_questions =reading.questions.split("\n"); 
-        var input_answers =reading.questions.split("\n");
-        var input_scores =reading.answers.split("\n");
+        var input_answers =reading.answers.split("\n");
+        var input_scores =reading.scores.split("\n");
         var input_choices =reading.choices.split("\n\n");
 
         var questions = [];
