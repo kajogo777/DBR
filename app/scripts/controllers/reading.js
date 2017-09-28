@@ -22,7 +22,7 @@ angular.module('yapp')
       }
     });
 
-    $http.post($window.localStorage.getItem("base_url") + "/get_today_reading",{user_id:$scope.user._id}).success(function (data, status) {
+    $http.post($window.localStorage.getItem("base_url") + "/get_today_reading", { user_id: $scope.user._id }).success(function (data, status) {
       console.log(data);
       if (status == 200) {
         if (data.sound && data.sound != "")
@@ -39,6 +39,11 @@ angular.module('yapp')
     };
 
     $scope.check_answer = function (input_answer, question_id, choice_id, question_index) {
+      //disabling answers
+      for (var i = 0; i < $scope.reading.questions[question_index].choices.length; i++) {
+        var right_element = $document[0].getElementById("atag_"+question_index + "_" + i);
+        right_element.className += " disabled";
+      }
       $http.post($window.localStorage.getItem("base_url") + "/check_answer", { "user_id": $scope.user._id, "question_id": question_id, "choice": input_answer, "reading_id": $scope.reading._id }).success(function (data, status) {
         console.log(data);
         if (status == 201) {
@@ -69,7 +74,6 @@ angular.module('yapp')
           break;
         }
       }
-
 
     };
 
