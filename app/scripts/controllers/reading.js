@@ -27,6 +27,15 @@ angular.module('yapp')
       if (status == 200) {
         if (data.sound && data.sound != "")
           data.sound = $scope.getAudioUrl(data.sound);
+        // for(var question in data.questions){
+        //   question.disabled= "";
+        //   for(var user_ans_question in $scope.user.answered_questions){
+        //     if(question.id==user_answered_question.question_id){
+        //       question.disabled= "disabled";
+        //       break;
+        //     }
+        //   }
+        // }
         $scope.reading = data;
       };
       // var audioElement = angular.element( document.querySelector( '#audio' ) );
