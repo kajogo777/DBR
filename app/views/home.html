@@ -67,6 +67,11 @@
 						<a ui-sref="add_reading" class="btn btn-primary btn-lg btn-white">Add Reading</a>
 					</p>
 				</div>
+				<div class="row text-center" style="padding-top:20px" ng-if="user.admin != undefined && user.admin == 'true'">
+					<p>
+						<a ui-sref="add_kids" class="btn btn-primary btn-lg btn-white">Add Kids</a>
+					</p>
+				</div>
 				<div class="row text-center" style="padding-top:20px">
 					<p>
 						<a ng-click="logout()" class="btn btn-primary btn-lg btn-white">Logout</a>

@@ -17,13 +17,17 @@ var states = [
         { name: 'logout', state: { url: '/login', data: {text: "Logout", visible: true }} },
         { name: 'home', state: { url: '/home',templateUrl: 'views/home.html', controller: 'HomeCtrl', parent: 'dashboard'}},
         { name: 'reading', state: { url: '/reading',templateUrl: 'views/reading.html', controller: 'readingCtrl', parent: 'dashboard'}},
-        { name: 'add_reading', state: { url: '/add_reading',templateUrl: 'views/add_reading.html', controller: 'AddReadingCtrl', parent: 'dashboard'}}
+        { name: 'add_reading', state: { url: '/add_reading',templateUrl: 'views/add_reading.html', controller: 'AddReadingCtrl', parent: 'dashboard'}},
+        { name: 'add_kids', state: { url: '/add_kids',templateUrl: 'views/add_kids.html', controller: 'AddKidsCtrl', parent: 'dashboard'}}
     ];
    
 angular.module('yapp', [
                 'ui.router',
                 'toastr',
-                'ngAnimate'
+                'ngAria',
+                'ngAnimate',
+                'ngMessages',
+                'ngMaterial'
             ])
         .config(function($stateProvider, $urlRouterProvider) {
             $urlRouterProvider.when('/dashboard', '/dashboard/home');
