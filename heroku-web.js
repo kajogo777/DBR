@@ -120,6 +120,7 @@ app.post('/get_today_reading', function (req, res) {
 });
 */
 
+
 app.post('/get_today_reading', function (req, res) {
     var Today = new Date(Date.now());
     // console.log(req.body.user_id);
@@ -297,3 +298,36 @@ app.post('/get_top_5', function (req, res) {
         }
     })
 });
+
+app.post('/add_users',function(req,res){
+    var users_to_be_inserted=[];
+    for(var i =0;i< 50;i++){
+        if(req.body.users[i].name=="")
+            break;
+        else{
+            var birthdate = new Date(req.body.users[i].birthdate);
+            var year = birthdate.getFullYear();
+            var month= birthdate.getMonth()+1;
+            var day = birthdate.getDate();
+            req.body.users[i].password=""+day+month+ year
+            users_to_be_inserted.push(req.body.users[i]);
+        }
+    }
+    User.collection.insert(users_to_be_inserted, function(err, docs){
+        if(err){
+            res.send(err);
+        }else{
+            res.send( docs.length+' kids were successfully stored.');
+        }
+    });
+})
+
+app.post('/get_class_users',function(req,res){
+    User.find({"class":req.body.class,"admin":{$ne:"true"}},function(err,users){
+        if(err){
+            res.send(err);
+        }else{
+            res.send(users);
+        }
+    })
+})

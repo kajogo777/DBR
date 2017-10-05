@@ -4,9 +4,11 @@ var Schema = mongoose.Schema({
     name:{type:String},
     username:{type:String},
     password:{type:String},
+    class:{type:String},
     level:{type:Number ,default:"1"},
     total_score:{type:Number, default: "0"},
     level_score:{type:Number, default: "0"},
+    admin:{type:String},
     reading_dates:[],
     answered_questions:[
       {

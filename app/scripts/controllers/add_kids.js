@@ -24,13 +24,13 @@ angular.module('yapp')
   	);
       var kids = [];
   	
-      
+      var user=JSON.parse($window.localStorage.getItem("user"));
       for (var i = 1; i <= 50; i++) {
       	kids.push({
-      		id: i, 
       		name: "",
-      		usernam:"",
-      		birthday:""
+      		username:"",
+					birthdate:"",
+					class:user.class
       	});
       }
 
@@ -39,8 +39,8 @@ angular.module('yapp')
       	var users = $scope.kids;
       	console.log(users[0]);
 
-
-        $http.post($window.localStorage.getItem("base_url")+"/add_users",{"users":kids}).success(function(data,status){
+				
+        $http.post($window.localStorage.getItem("base_url")+"/add_users",{"users":kids }).success(function(data,status){
           if(status==200){
             toastr.success(data);
           }else{
@@ -48,6 +48,13 @@ angular.module('yapp')
           }
         }); 
         console.log(reading);
+			}
+			
+			$scope.get_class_users = function(reading){
+      	
+        $http.post($window.localStorage.getItem("base_url")+"/get_class_users",{"class":user.class }).success(function(data,status){
+					console.log(data);
+        }); 
       }
       return false;
     });
