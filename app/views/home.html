@@ -119,19 +119,30 @@
 					
 				</div>
 
-				<div class="row text-center" style="padding-top:20px" ng-if="user.admin != undefined && user.admin == 'true'">
-					<p>
-						<a ui-sref="add_reading" class="btn btn-primary btn-lg btn-white">Add Reading</a>
-					</p>
+				<!-- bottom buttons -->
+				<center>
+				<div class="row text-center" style="padding-top:20px;display: -webkit-inline-box;">
+						<div class="text-center pd"  ng-if="user.admin != undefined && user.admin == 'true'">
+								<p>
+									<a ui-sref="add_reading" class="btn btn-primary btn-lg btn-white ">Add Reading</a>
+								</p>
+							</div>
+							<div class="text-center pd" >
+								<a ui-sref="view_kids" class="btn btn-primary btn-lg btn-white">My boys</a>
+							</div>
+							<div class="text-center pd"  ng-if="user.admin != undefined && user.admin == 'true'">
+								<p>
+									<a ui-sref="add_kids" class="btn btn-primary btn-lg btn-white ">Add Kids</a>
+								</p>
+							</div>
 				</div>
-				<div class="row text-center" style="padding-top:20px">
-					<a ui-sref="view_kids" class="btn btn-primary btn-lg btn-white">My boys</a>
-				</div>
-				<div class="row text-center" style="padding-top:20px" ng-if="user.admin != undefined && user.admin == 'true'">
-					<p>
-						<a ui-sref="add_kids" class="btn btn-primary btn-lg btn-white">Add Kids</a>
-					</p>
-				</div>
+				<style>
+					.pd{
+						padding-left: 10px!important;
+					}
+				</style>
+			</center>
+				
 				<div class="row text-center" style="padding-top:20px">
 					<p>
 						<a ng-click="logout()" class="btn btn-primary btn-lg btn-white">Logout</a>
