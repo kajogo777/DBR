@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('AddKidsCtrl', function($scope, $location,$http,$window,toastr) {
+  .controller('AddKidsCtrl', function($scope, $location,$http,$window) {
   	var myDate = new Date();
 
   	$scope.minDate = new Date(

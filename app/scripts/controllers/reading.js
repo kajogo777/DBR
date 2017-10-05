@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('readingCtrl', function ($scope, $location, $http, $window, $state, $sce, $document, toastr) {
+  .controller('readingCtrl', function ($scope, $location, $http, $window, $state, $sce, $document) {
     $scope.user = JSON.parse($window.localStorage.getItem("user"));
     $scope.reading = undefined;
     $scope.date = Date.now();
