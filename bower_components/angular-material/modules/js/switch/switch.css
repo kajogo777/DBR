@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5
+ * v1.1.0
  */
 .md-inline-form md-switch {
   margin-top: 18px;
@@ -55,15 +55,8 @@ md-switch {
     margin-right: 8px;
     float: left; }
     [dir=rtl] md-switch .md-container {
-      margin-right: 0px;
+      margin-right: auto;
       margin-left: 8px; }
-  md-switch.md-inverted .md-container {
-    margin-right: initial;
-    margin-left: 8px; }
-    [dir=rtl] md-switch.md-inverted .md-container {
-      margin-right: 8px; }
-    [dir=rtl] md-switch.md-inverted .md-container {
-      margin-left: initial; }
   md-switch:not([disabled]) .md-dragging,
   md-switch:not([disabled]).md-dragging .md-container {
     cursor: -webkit-grabbing;

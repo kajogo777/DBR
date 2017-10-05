@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5
+ * v1.1.0
  */
 goog.provide('ngmaterial.components.colors');
 goog.require('ngmaterial.core');
@@ -13,10 +13,8 @@ goog.require('ngmaterial.core');
    *  Use a RegExp to check if the `md-colors="<expression>"` is static string
    *  or one that should be observed and dynamically interpolated.
    */
-  MdColorsDirective['$inject'] = ["$mdColors", "$mdUtil", "$log", "$parse"];
-  MdColorsService['$inject'] = ["$mdTheming", "$mdUtil", "$log"];
   var STATIC_COLOR_EXPRESSION = /^{((\s|,)*?["'a-zA-Z-]+?\s*?:\s*?('|")[a-zA-Z0-9-.]*('|"))+\s*}$/;
-  var colorPalettes = null;
+  var colorPalettes = undefined;
 
   /**
    * @ngdoc module
@@ -36,7 +34,7 @@ goog.require('ngmaterial.core');
    * @module material.components.colors
    *
    * @description
-   * With only defining themes, one couldn't get non AngularJS Material elements colored with Material colors,
+   * With only defining themes, one couldn't get non ngMaterial elements colored with Material colors,
    * `$mdColors` service is used by the md-color directive to convert the 1..n color expressions to RGBA values and will apply
    * those values to element as CSS property values.
    *
@@ -160,7 +158,7 @@ goog.require('ngmaterial.core');
 
         rgbColors[key] = parseColor(color);
         if (hasBackground && !hasColorProperty) {
-          rgbColors.color = parseColor(color, true);
+          rgbColors['color'] = parseColor(color, true);
         }
       });
 
@@ -241,6 +239,7 @@ goog.require('ngmaterial.core');
       return parts[1] || themeColors[parts[0] in themeColors ? parts[0] : 'primary'].hues['default'];
     }
   }
+  MdColorsService.$inject = ["$mdTheming", "$mdUtil", "$log"];
 
   /**
    * @ngdoc directive
@@ -265,7 +264,7 @@ goog.require('ngmaterial.core');
    * @usage
    * <hljs lang="html">
    *   <div md-colors="{background: 'myTheme-accent-900-0.43'}">
-   *     <div md-colors="{color: 'red-A100', 'border-color': 'primary-600'}">
+   *     <div md-colors="{color: 'red-A100', border-color: 'primary-600'}">
    *       <span>Color demo</span>
    *     </div>
    *   </div>
@@ -341,7 +340,7 @@ goog.require('ngmaterial.core');
             if (!angular.equals(colors, lastColors)) {
               var keys = Object.keys(lastColors);
 
-              if (lastColors.background && !keys.color) {
+              if (lastColors.background && !keys['color']) {
                 keys.push('color');
               }
 
@@ -403,6 +402,7 @@ goog.require('ngmaterial.core');
     };
 
   }
+  MdColorsDirective.$inject = ["$mdColors", "$mdUtil", "$log", "$parse"];
 
 
 })();

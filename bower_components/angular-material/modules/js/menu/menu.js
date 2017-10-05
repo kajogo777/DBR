@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5
+ * v1.1.0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -19,7 +19,6 @@ angular.module('material.components.menu', [
 
 
 
-MenuController['$inject'] = ["$mdMenu", "$attrs", "$element", "$scope", "$mdUtil", "$timeout", "$rootScope", "$q", "$log"];
 angular
     .module('material.components.menu')
     .controller('mdMenuCtrl', MenuController);
@@ -27,7 +26,7 @@ angular
 /**
  * ngInject
  */
-function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $rootScope, $q, $log) {
+function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $rootScope, $q) {
 
   var prefixer = $mdUtil.prefixer();
   var menuContainer;
@@ -161,6 +160,9 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     });
   };
 
+  // Expose a open function to the child scope for html to use
+  $scope.$mdOpenMenu = this.open;
+
   this.onIsOpenChanged = function(isOpen) {
     if (isOpen) {
       menuContainer.attr('aria-hidden', 'false');
@@ -179,7 +181,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     var focusTarget = menuContainer[0]
       .querySelector(prefixer.buildSelector(['md-menu-focus-target', 'md-autofocus']));
 
-    if (!focusTarget) focusTarget = menuContainer[0].querySelector('.md-button:not([disabled])');
+    if (!focusTarget) focusTarget = menuContainer[0].querySelector('.md-button');
     focusTarget.focus();
   };
 
@@ -251,19 +253,8 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
       throw Error('Invalid offsets specified. Please follow format <x, y> or <n>');
     }
   };
-
-  // Functionality that is exposed in the view.
-  $scope.$mdMenu = {
-    open: this.open,
-    close: this.close
-  };
-
-  // Deprecated APIs
-  $scope.$mdOpenMenu = angular.bind(this, function() {
-    $log.warn('mdMenu: The $mdOpenMenu method is deprecated. Please use `$mdMenu.open`.');
-    return this.open.apply(this, arguments);
-  });
 }
+MenuController.$inject = ["$mdMenu", "$attrs", "$element", "$scope", "$mdUtil", "$timeout", "$rootScope", "$q"];
 
 /**
  * @ngdoc directive
@@ -277,10 +268,9 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  *
  * Every `md-menu` must specify exactly two child elements. The first element is what is
  * left in the DOM and is used to open the menu. This element is called the trigger element.
- * The trigger element's scope has access to `$mdMenu.open($event)`
+ * The trigger element's scope has access to `$mdOpenMenu($event)`
  * which it may call to open the menu. By passing $event as argument, the
- * corresponding event is stopped from propagating up the DOM-tree. Similarly, `$mdMenu.close()`
- * can be used to close the menu.
+ * corresponding event is stopped from propagating up the DOM-tree.
  *
  * The second element is the `md-menu-content` element which represents the
  * contents of the menu when it is open. Typically this will contain `md-menu-item`s,
@@ -289,7 +279,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  * <hljs lang="html">
  * <md-menu>
  *  <!-- Trigger element is a md-button with an icon -->
- *  <md-button ng-click="$mdMenu.open($event)" class="md-icon-button" aria-label="Open sample menu">
+ *  <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Open sample menu">
  *    <md-icon md-svg-icon="call:phone"></md-icon>
  *  </md-button>
  *  <md-menu-content>
@@ -302,7 +292,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  *
  * The width of the menu when it is open may be specified by specifying a `width`
  * attribute on the `md-menu-content` element.
- * See the [Material Design Spec](https://material.google.com/components/menus.html#menus-simple-menus)
+ * See the [Material Design Spec](http://www.google.com/design/spec/components/menus.html#menus-specs)
  * for more information.
  *
  *
@@ -331,7 +321,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  *
  * <hljs lang="html">
  * <md-menu>
- *  <md-button ng-click="$mdMenu.open($event)" class="md-icon-button" aria-label="Open some menu">
+ *  <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Open some menu">
  *    <md-icon md-menu-origin md-svg-icon="call:phone"></md-icon>
  *  </md-button>
  *  <md-menu-content>
@@ -364,16 +354,16 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  * This offset is provided in the format of `x y` or `n` where `n` will be used
  * in both the `x` and `y` axis.
  *
- * For example, to move a menu by `2px` down from the top, we can use:
+ * For example, to move a menu by `2px` from the top, we can use:
  * <hljs lang="html">
- * <md-menu md-offset="0 2">
+ * <md-menu md-offset="2 0">
  *   <!-- menu-content -->
  * </md-menu>
  * </hljs>
  *
  * ### Auto Focus
  * By default, when a menu opens, `md-menu` focuses the first button in the menu content.
- *
+ * 
  * But sometimes you would like to focus another specific menu item instead of the first.<br/>
  * This can be done by applying the `md-autofocus` directive on the given element.
  *
@@ -389,26 +379,24 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  * ### Preventing close
  *
  * Sometimes you would like to be able to click on a menu item without having the menu
- * close. To do this, AngularJS Material exposes the `md-prevent-menu-close` attribute which
+ * close. To do this, ngMaterial exposes the `md-prevent-menu-close` attribute which
  * can be added to a button inside a menu to stop the menu from automatically closing.
- * You can then close the menu either by using `$mdMenu.close()` in the template,
- * or programatically by injecting `$mdMenu` and calling `$mdMenu.hide()`.
+ * You can then close the menu programatically by injecting `$mdMenu` and calling 
+ * `$mdMenu.hide()`.
  *
  * <hljs lang="html">
- * <md-menu-content ng-mouseleave="$mdMenu.close()">
- *   <md-menu-item>
- *     <md-button ng-click="doSomething()" aria-label="Do something" md-prevent-menu-close="md-prevent-menu-close">
- *       <md-icon md-menu-align-target md-svg-icon="call:phone"></md-icon>
- *       Do Something
- *     </md-button>
- *   </md-menu-item>
- * </md-menu-content>
+ * <md-menu-item>
+ *   <md-button ng-click="doSomething()" aria-label="Do something" md-prevent-menu-close="md-prevent-menu-close">
+ *     <md-icon md-menu-align-target md-svg-icon="call:phone"></md-icon>
+ *     Do Something
+ *   </md-button>
+ * </md-menu-item>
  * </hljs>
  *
  * @usage
  * <hljs lang="html">
  * <md-menu>
- *  <md-button ng-click="$mdMenu.open($event)" class="md-icon-button">
+ *  <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button">
  *    <md-icon md-svg-icon="call:phone"></md-icon>
  *  </md-button>
  *  <md-menu-content>
@@ -419,13 +407,12 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
  *
  * @param {string} md-position-mode The position mode in the form of
  *           `x`, `y`. Default value is `target`,`target`. Right now the `x` axis
- *           also supports `target-right`.
+ *           also suppports `target-right`.
  * @param {string} md-offset An offset to apply to the dropdown after positioning
  *           `x`, `y`. Default value is `0`,`0`.
  *
  */
 
-MenuDirective['$inject'] = ["$mdUtil"];
 angular
     .module('material.components.menu')
     .directive('mdMenu', MenuDirective);
@@ -445,33 +432,26 @@ function MenuDirective($mdUtil) {
 
   function compile(templateElement) {
     templateElement.addClass('md-menu');
-
-    var triggerEl = templateElement.children()[0];
-    var contentEl = templateElement.children()[1];
-
+    var triggerElement = templateElement.children()[0];
     var prefixer = $mdUtil.prefixer();
 
-    if (!prefixer.hasAttribute(triggerEl, 'ng-click')) {
-      triggerEl = triggerEl
-          .querySelector(prefixer.buildSelector(['ng-click', 'ng-mouseenter'])) || triggerEl;
+    if (!prefixer.hasAttribute(triggerElement, 'ng-click')) {
+      triggerElement = triggerElement
+          .querySelector(prefixer.buildSelector(['ng-click', 'ng-mouseenter'])) || triggerElement;
+    }
+    if (triggerElement && (
+      triggerElement.nodeName == 'MD-BUTTON' ||
+      triggerElement.nodeName == 'BUTTON'
+    ) && !triggerElement.hasAttribute('type')) {
+      triggerElement.setAttribute('type', 'button');
     }
 
-    var isButtonTrigger = triggerEl.nodeName === 'MD-BUTTON' || triggerEl.nodeName === 'BUTTON';
-
-    if (triggerEl && isButtonTrigger && !triggerEl.hasAttribute('type')) {
-      triggerEl.setAttribute('type', 'button');
-    }
-
-    if (!triggerEl) {
-      throw Error(INVALID_PREFIX + 'Expected the menu to have a trigger element.');
-    }
-
-    if (!contentEl || contentEl.nodeName !== 'MD-MENU-CONTENT') {
-      throw Error(INVALID_PREFIX + 'Expected the menu to contain a `md-menu-content` element.');
+    if (templateElement.children().length != 2) {
+      throw Error(INVALID_PREFIX + 'Expected two children elements.');
     }
 
     // Default element for ARIA attributes has the ngClick or ngMouseenter expression
-    triggerEl && triggerEl.setAttribute('aria-haspopup', 'true');
+    triggerElement && triggerElement.setAttribute('aria-haspopup', 'true');
 
     var nestedMenus = templateElement[0].querySelectorAll('md-menu');
     var nestingDepth = parseInt(templateElement[0].getAttribute('md-nest-level'), 10) || 0;
@@ -489,7 +469,7 @@ function MenuDirective($mdUtil) {
 
   function link(scope, element, attr, ctrls) {
     var mdMenuCtrl = ctrls[0];
-    var isInMenuBar = !!ctrls[1];
+    var isInMenuBar = ctrls[1] != undefined;
     // Move everything into a md-menu-container and pass it to the controller
     var menuContainer = angular.element( '<div class="_md md-open-menu-container md-whiteframe-z2"></div>');
     var menuContents = element.children()[1];
@@ -511,9 +491,9 @@ function MenuDirective($mdUtil) {
 
   }
 }
+MenuDirective.$inject = ["$mdUtil"];
 
-
-MenuProvider['$inject'] = ["$$interimElementProvider"];angular
+angular
   .module('material.components.menu')
   .provider('$mdMenu', MenuProvider);
 
@@ -528,9 +508,9 @@ MenuProvider['$inject'] = ["$$interimElementProvider"];angular
  */
 
 function MenuProvider($$interimElementProvider) {
-  menuDefaultOptions['$inject'] = ["$mdUtil", "$mdTheming", "$mdConstant", "$document", "$window", "$q", "$$rAF", "$animateCss", "$animate", "$log"];
   var MENU_EDGE_MARGIN = 8;
 
+  menuDefaultOptions.$inject = ["$mdUtil", "$mdTheming", "$mdConstant", "$document", "$window", "$q", "$$rAF", "$animateCss", "$animate"];
   return $$interimElementProvider('$mdMenu')
     .setDefaults({
       methods: ['target'],
@@ -538,9 +518,7 @@ function MenuProvider($$interimElementProvider) {
     });
 
   /* ngInject */
-  function menuDefaultOptions($mdUtil, $mdTheming, $mdConstant, $document, $window, $q, $$rAF,
-                              $animateCss, $animate, $log) {
-
+  function menuDefaultOptions($mdUtil, $mdTheming, $mdConstant, $document, $window, $q, $$rAF, $animateCss, $animate) {
     var prefixer = $mdUtil.prefixer();
     var animator = $mdUtil.dom.animator;
 
@@ -552,7 +530,7 @@ function MenuProvider($$interimElementProvider) {
       disableParentScroll: true,
       skipCompile: true,
       preserveScope: true,
-      multiple: true,
+      skipHide: true,
       themable: true
     };
 
@@ -592,13 +570,9 @@ function MenuProvider($$interimElementProvider) {
      * and backdrop
      */
     function onRemove(scope, element, opts) {
-      opts.cleanupInteraction();
-      opts.cleanupBackdrop();
+      opts.cleanupInteraction && opts.cleanupInteraction();
       opts.cleanupResizing();
       opts.hideBackdrop();
-
-      // Before the menu is closing remove the clickable class.
-      element.removeClass('md-clickable');
 
       // For navigation $destroy events, do a quick, non-animated removal,
       // but for normal closes (from clicks, etc) animate the removal
@@ -631,17 +605,9 @@ function MenuProvider($$interimElementProvider) {
     function onShow(scope, element, opts) {
       sanitizeAndConfigure(opts);
 
-      if (opts.menuContentEl[0]) {
-        // Inherit the theme from the target element.
-        $mdTheming.inherit(opts.menuContentEl, opts.target);
-      } else {
-        $log.warn(
-          '$mdMenu: Menu elements should always contain a `md-menu-content` element,' +
-          'otherwise interactivity features will not work properly.',
-          element
-        );
-      }
-      
+      // Wire up theming on our menu element
+      $mdTheming.inherit(opts.menuContentEl, opts.target);
+
       // Register various listeners to move menu on resize/orientation change
       opts.cleanupResizing = startRepositioningOnResize();
       opts.hideBackdrop = showBackdrop(scope, element, opts);
@@ -651,11 +617,6 @@ function MenuProvider($$interimElementProvider) {
         .then(function(response) {
           opts.alreadyOpen = true;
           opts.cleanupInteraction = activateInteraction();
-          opts.cleanupBackdrop = setupBackdrop();
-
-          // Since the menu finished its animation, mark the menu as clickable.
-          element.addClass('md-clickable');
-
           return response;
         });
 
@@ -725,44 +686,18 @@ function MenuProvider($$interimElementProvider) {
           $window.removeEventListener('resize', repositionMenu);
           $window.removeEventListener('orientationchange', repositionMenu);
 
-        };
-      }
-
-      /**
-       * Sets up the backdrop and listens for click elements.
-       * Once the backdrop will be clicked, the menu will automatically close.
-       * @returns {!Function} Function to remove the backdrop.
-       */
-      function setupBackdrop() {
-        if (!opts.backdrop) return angular.noop;
-
-        opts.backdrop.on('click', onBackdropClick);
-
-        return function() {
-          opts.backdrop.off('click', onBackdropClick);
         }
       }
 
       /**
-       * Function to be called whenever the backdrop is clicked.
-       * @param {!MouseEvent} event
-       */
-      function onBackdropClick(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        scope.$apply(function() {
-          opts.mdMenuCtrl.close(true, { closeAll: true });
-        });
-      }
-
-      /**
-       * Activate interaction on the menu. Resolves the focus target and closes the menu on
-       * escape or option click.
-       * @returns {!Function} Function to deactivate the interaction listeners.
+       * Activate interaction on the menu. Wire up keyboard listerns for
+       * clicks, keypresses, backdrop closing, etc.
        */
       function activateInteraction() {
-        if (!opts.menuContentEl[0]) return angular.noop;
+        element.addClass('md-clickable');
+
+        // close on backdrop click
+        if (opts.backdrop) opts.backdrop.on('click', onBackdropClick);
 
         // Wire up keyboard listeners.
         // - Close on escape,
@@ -771,28 +706,21 @@ function MenuProvider($$interimElementProvider) {
         opts.menuContentEl.on('keydown', onMenuKeyDown);
         opts.menuContentEl[0].addEventListener('click', captureClickListener, true);
 
-        // kick off initial focus in the menu on the first enabled element
+        // kick off initial focus in the menu on the first element
         var focusTarget = opts.menuContentEl[0]
           .querySelector(prefixer.buildSelector(['md-menu-focus-target', 'md-autofocus']));
 
         if ( !focusTarget ) {
-          var childrenLen = opts.menuContentEl[0].children.length;
-          for(var childIndex = 0; childIndex < childrenLen; childIndex++) {
-            var child = opts.menuContentEl[0].children[childIndex];
-            focusTarget = child.querySelector('.md-button:not([disabled])');
-            if (focusTarget) {
-              break;
-            }
-            if (child.firstElementChild && !child.firstElementChild.disabled) {
-              focusTarget = child.firstElementChild;
-              break;
-            }
-          }
+          var firstChild = opts.menuContentEl[0].firstElementChild;
+
+          focusTarget = firstChild && (firstChild.querySelector('.md-button:not([disabled])') || firstChild.firstElementChild);
         }
 
         focusTarget && focusTarget.focus();
 
         return function cleanupInteraction() {
+          element.removeClass('md-clickable');
+          if (opts.backdrop) opts.backdrop.off('click', onBackdropClick);
           opts.menuContentEl.off('keydown', onMenuKeyDown);
           opts.menuContentEl[0].removeEventListener('click', captureClickListener, true);
         };
@@ -867,7 +795,7 @@ function MenuProvider($$interimElementProvider) {
               }
               break;
             }
-          } while (target = target.parentNode);
+          } while (target = target.parentNode)
 
           function close() {
             scope.$apply(function() {
@@ -1092,5 +1020,6 @@ function MenuProvider($$interimElementProvider) {
     return el;
   }
 }
+MenuProvider.$inject = ["$$interimElementProvider"];
 
 })(window, window.angular);

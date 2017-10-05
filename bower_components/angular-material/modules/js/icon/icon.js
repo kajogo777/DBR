@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5
+ * v1.1.0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -30,7 +30,7 @@ angular
  * The `md-icon` directive makes it easier to use vector-based icons in your app (as opposed to
  * raster-based icons types like PNG). The directive supports both icon fonts and SVG icons.
  *
- * Icons should be considered view-only elements that should not be used directly as buttons; instead nest a `<md-icon>`
+ * Icons should be consider view-only elements that should not be used directly as buttons; instead nest a `<md-icon>`
  * inside a `md-button` to add hover and click features.
  *
  * ### Icon fonts
@@ -57,7 +57,7 @@ angular
  * like `"social:cake"`.
  *
  * When using SVGs, both external SVGs (via URLs) or sets of SVGs [from icon sets] can be
- * easily loaded and used. When using font-icons, developers must follow three (3) simple steps:
+ * easily loaded and used.When use font-icons, developers must following three (3) simple steps:
  *
  * <ol>
  * <li>Load the font library. e.g.<br/>
@@ -65,18 +65,13 @@ angular
  *    rel="stylesheet">`
  * </li>
  * <li>
- *   Use either (a) font-icon class names or (b) a fontset and a font ligature to render the font glyph by
- *   using its textual name _or_ numerical character reference. Note that `material-icons` is the default fontset when
- *   none is specified.
+ *   Use either (a) font-icon class names or (b) font ligatures to render the font glyph by using
+ *   its textual name
  * </li>
- * <li> Use any of the following templates: <br/>
- *   <ul>
- *     <li>`<md-icon md-font-icon="classname"></md-icon>`</li>
- *     <li>`<md-icon md-font-set="font library classname or alias">textual_name</md-icon>`</li>
- *     <li>`<md-icon> numerical_character_reference </md-icon>`</li>
- *     <li>`<md-icon ng_bind="'textual_name'"></md-icon>`</li>
- *     <li>`<md-icon ng-bind="scopeVariable"></md-icon>`</li>
- *   </ul>
+ * <li>
+ *   Use `<md-icon md-font-icon="classname" />` or <br/>
+ *   use `<md-icon md-font-set="font library classname or alias"> textual_name </md-icon>` or <br/>
+ *   use `<md-icon md-font-set="font library classname or alias"> numerical_character_reference </md-icon>`
  * </li>
  * </ol>
  *
@@ -91,21 +86,8 @@ angular
  * Material Design Icons:
  *
  * <ul>
- * <li>https://design.google.com/icons/</li>
- * <li>https://design.google.com/icons/#ic_accessibility</li>
- * </ul>
- *
- * ### Localization
- *
- * Because an `md-icon` element's text content is not intended to translated, it is recommended to declare the text
- * content for an `md-icon` element in its start tag. Instead of using the HTML text content, consider using `ng-bind`
- * with a scope variable or literal string.
- *
- * Examples:
- *
- * <ul>
- *   <li>`<md-icon ng-bind="myIconVariable"></md-icon>`</li>
- *   <li>`<md-icon ng-bind="'menu'"></md-icon>`
+ * <li>http://www.google.com/design/icons/</li>
+ * <li>https://www.google.com/design/icons/#ic_accessibility</li>
  * </ul>
  *
  * <h2 id="material_design_icons">Material Design Icons</h2>
@@ -120,7 +102,7 @@ angular
  *
  * <span class="image_caption">
  *  Click on the image above to link to the
- *  <a href="https://design.google.com/icons/#ic_accessibility" target="_blank">Material Design Icon-Selector</a>.
+ *  <a href="https://www.google.com/design/icons/#ic_accessibility" target="_blank">Material Design Icon-Selector</a>.
  * </span>
  *
  * @param {string} md-font-icon String name of CSS icon associated with the font-face will be used
@@ -235,29 +217,20 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
     // If using a font-icon, then the textual name of the icon itself
     // provides the aria-label.
 
+    var label = attr.alt || attr.mdFontIcon || attr.mdSvgIcon || element.text();
     var attrName = attr.$normalize(attr.$attr.mdSvgIcon || attr.$attr.mdSvgSrc || '');
 
-    /* Provide a default accessibility role of img */
-    if (!attr.role) {
-      $mdAria.expect(element, 'role', 'img');
-      /* manually update attr variable */
-      attr.role = 'img';
-    }
+    if ( !attr['aria-label'] ) {
 
-    /* Don't process ARIA if already valid */
-    if ( attr.role === "img" && !attr.ariaHidden && !$mdAria.hasAriaLabel(element) ) {
-      var iconName;
-      if (attr.alt) {
-        /* Use alt text by default if available */
-        $mdAria.expect(element, 'aria-label', attr.alt);
-      } else if ($mdAria.parentHasAriaLabel(element, 2)) {
-        /* Parent has ARIA so we will assume it will describe the image */
-        $mdAria.expect(element, 'aria-hidden', 'true');
-      } else if (iconName = (attr.mdFontIcon || attr.mdSvgIcon || element.text())) {
-        /* Use icon name as aria-label */
-        $mdAria.expect(element, 'aria-label', iconName);
-      } else {
-        /* No label found */
+      if (label !== '' && !parentsHaveText() ) {
+
+        $mdAria.expect(element, 'aria-label', label);
+        $mdAria.expect(element, 'role', 'img');
+
+      } else if ( !element.text() ) {
+        // If not a font-icon with ligature, then
+        // hide from the accessibility layer.
+
         $mdAria.expect(element, 'aria-hidden', 'true');
       }
     }
@@ -273,7 +246,19 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
             element.append(svg);
           });
         }
+
       });
+    }
+
+    function parentsHaveText() {
+      var parent = element.parent();
+      if (parent.attr('aria-label') || parent.text()) {
+        return true;
+      }
+      else if(parent.parent().attr('aria-label') || parent.parent().text()) {
+        return true;
+      }
+      return false;
     }
 
     function prepareForFontIcon() {
@@ -308,8 +293,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
   }
 }
 
-  
-MdIconService['$inject'] = ["config", "$templateRequest", "$q", "$log", "$mdUtil", "$sce"];angular
+  angular
     .module('material.components.icon')
     .constant('$$mdSvgRegistry', {
         'mdTabsArrow':   'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwb2x5Z29uIHBvaW50cz0iMTUuNCw3LjQgMTQsNiA4LDEyIDE0LDE4IDE1LjQsMTYuNiAxMC44LDEyICIvPjwvZz48L3N2Zz4=',
@@ -317,8 +301,7 @@ MdIconService['$inject'] = ["config", "$templateRequest", "$q", "$log", "$mdUtil
         'mdCancel':      'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwYXRoIGQ9Ik0xMiAyYy01LjUzIDAtMTAgNC40Ny0xMCAxMHM0LjQ3IDEwIDEwIDEwIDEwLTQuNDcgMTAtMTAtNC40Ny0xMC0xMC0xMHptNSAxMy41OWwtMS40MSAxLjQxLTMuNTktMy41OS0zLjU5IDMuNTktMS40MS0xLjQxIDMuNTktMy41OS0zLjU5LTMuNTkgMS40MS0xLjQxIDMuNTkgMy41OSAzLjU5LTMuNTkgMS40MSAxLjQxLTMuNTkgMy41OSAzLjU5IDMuNTl6Ii8+PC9nPjwvc3ZnPg==',
         'mdMenu':        'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik0zLDZIMjFWOEgzVjZNMywxMUgyMVYxM0gzVjExTTMsMTZIMjFWMThIM1YxNloiIC8+PC9zdmc+',
         'mdToggleArrow': 'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNDggNDgiPjxwYXRoIGQ9Ik0yNCAxNmwtMTIgMTIgMi44MyAyLjgzIDkuMTctOS4xNyA5LjE3IDkuMTcgMi44My0yLjgzeiIvPjxwYXRoIGQ9Ik0wIDBoNDh2NDhoLTQ4eiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==',
-        'mdCalendar':    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgM2gtMVYxaC0ydjJIOFYxSDZ2Mkg1Yy0xLjExIDAtMS45OS45LTEuOTkgMkwzIDE5YzAgMS4xLjg5IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6bTAgMTZINVY4aDE0djExek03IDEwaDV2NUg3eiIvPjwvc3ZnPg==',
-        'mdChecked':     'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwYXRoIGQ9Ik05IDE2LjE3TDQuODMgMTJsLTEuNDIgMS40MUw5IDE5IDIxIDdsLTEuNDEtMS40MXoiLz48L2c+PC9zdmc+'
+        'mdCalendar':    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgM2gtMVYxaC0ydjJIOFYxSDZ2Mkg1Yy0xLjExIDAtMS45OS45LTEuOTkgMkwzIDE5YzAgMS4xLjg5IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6bTAgMTZINVY4aDE0djExek03IDEwaDV2NUg3eiIvPjwvc3ZnPg=='
     })
     .provider('$mdIcon', MdIconProvider);
 
@@ -412,7 +395,7 @@ MdIconService['$inject'] = ["config", "$templateRequest", "$q", "$log", "$mdUtil
  *
  * </hljs>
  *
- * > <b>Note:</b> The loaded SVG data is subsequently cached internally for future requests.
+ * NOTE: the loaded SVG data is subsequently cached internally for future requests.
  *
  */
 
@@ -513,7 +496,7 @@ MdIconService['$inject'] = ["config", "$templateRequest", "$q", "$log", "$mdUtil
  * @name $mdIconProvider#defaultFontSet
  *
  * @description
- * When using Font-Icons, AngularJS Material assumes the the Material Design icons will be used and automatically
+ * When using Font-Icons, Angular Material assumes the the Material Design icons will be used and automatically
  * configures the default font-set == 'material-icons'. Note that the font-set references the font-icon library
  * class style that should be applied to the `<md-icon>`.
  *
@@ -706,8 +689,8 @@ function ConfigurationItem(url, viewBoxSize) {
   * };
  * </hljs>
  *
- * > <b>Note:</b> The `<md-icon>` directive internally uses the `$mdIcon` service to query, loaded,
- *   and instantiate SVG DOM elements.
+ * NOTE: The `<md-icon />  ` directive internally uses the `$mdIcon` service to query, loaded, and instantiate
+ * SVG DOM elements.
  */
 
 /* ngInject */
@@ -928,5 +911,6 @@ function MdIconService(config, $templateRequest, $q, $log, $mdUtil, $sce) {
   }
 
 }
+MdIconService.$inject = ["config", "$templateRequest", "$q", "$log", "$mdUtil", "$sce"];
 
 })(window, window.angular);

@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5
+ * v1.1.0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14,7 +14,6 @@
  * @description
  * Card components.
  */
-mdCardDirective['$inject'] = ["$mdTheming"];
 angular.module('material.components.card', [
     'material.core'
   ])
@@ -56,8 +55,8 @@ angular.module('material.components.card', [
  *    - `md-media-sm` - Class for small image
  *    - `md-media-md` - Class for medium image
  *    - `md-media-lg` - Class for large image
- *    - `md-media-xl` - Class for extra large image
  * * `<md-card-content>` - Card content
+ *  - `md-media-xl` - Class for extra large image
  * * `<md-card-actions>` - Card actions
  *  - `<md-card-icon-actions>` - Icon actions
  *
@@ -139,5 +138,6 @@ function mdCardDirective($mdTheming) {
     }
   };
 }
+mdCardDirective.$inject = ["$mdTheming"];
 
 })(window, window.angular);

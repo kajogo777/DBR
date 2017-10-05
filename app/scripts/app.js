@@ -23,7 +23,6 @@ var states = [
    
 angular.module('yapp', [
                 'ui.router',
-                
                 'ngAria',
                 'ngAnimate',
                 'ngMessages',

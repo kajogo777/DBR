@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5
+ * v1.1.0
  */
 goog.provide('ngmaterial.components.navBar');
 goog.require('ngmaterial.core');
@@ -12,10 +12,6 @@ goog.require('ngmaterial.core');
  */
 
 
-MdNavBarController['$inject'] = ["$element", "$scope", "$timeout", "$mdConstant"];
-MdNavItem['$inject'] = ["$mdAria", "$$rAF"];
-MdNavItemController['$inject'] = ["$element"];
-MdNavBar['$inject'] = ["$mdAria", "$mdTheming"];
 angular.module('material.components.navBar', ['material.core'])
     .controller('MdNavBarController', MdNavBarController)
     .directive('mdNavBar', MdNavBar)
@@ -47,29 +43,20 @@ angular.module('material.components.navBar', ['material.core'])
  * https://www.w3.org/TR/wai-aria-practices/#Site_Navigator_Tabbed_Style
  *
  * @param {string=} mdSelectedNavItem The name of the current tab; this must
- *     match the name attribute of `<md-nav-item>`
- * @param {boolean=} mdNoInkBar If set to true, the ink bar will be hidden.
+ * match the name attribute of `<md-nav-item>`
  * @param {string=} navBarAriaLabel An aria-label for the nav-bar
  *
  * @usage
  * <hljs lang="html">
  *  <md-nav-bar md-selected-nav-item="currentNavItem">
- *    <md-nav-item md-nav-click="goto('page1')" name="page1">
- *      Page One
- *    </md-nav-item>
- *    <md-nav-item md-nav-href="#page2" name="page3">Page Two</md-nav-item>
- *    <md-nav-item md-nav-sref="page3" name="page2">Page Three</md-nav-item>
- *    <md-nav-item
- *      md-nav-sref="app.page4"
- *      sref-opts="{reload: true, notify: true}"
- *      name="page4">
- *      Page Four
- *    </md-nav-item>
+ *    <md-nav-item md-nav-click="goto('page1')" name="page1">Page One</md-nav-item>
+ *    <md-nav-item md-nav-sref="app.page2" name="page2">Page Two</md-nav-item>
+ *    <md-nav-item md-nav-href="#page3" name="page3">Page Three</md-nav-item>
  *  </md-nav-bar>
  *</hljs>
  * <hljs lang="js">
  * (function() {
- *   'use strict';
+ *   ‘use strict’;
  *
  *    $rootScope.$on('$routeChangeSuccess', function(event, current) {
  *      $scope.currentLink = getCurrentLinkFromRoute(current);
@@ -92,21 +79,17 @@ angular.module('material.components.navBar', ['material.core'])
  * `<md-nav-item>` describes a page navigation link within the `<md-nav-bar>`
  * component. It renders an md-button as the actual link.
  *
- * Exactly one of the mdNavClick, mdNavHref, mdNavSref attributes are required
- * to be specified.
+ * Exactly one of the mdNavClick, mdNavHref, mdNavSref attributes are required to be
+ * specified.
  *
  * @param {Function=} mdNavClick Function which will be called when the
- *     link is clicked to change the page. Renders as an `ng-click`.
+ * link is clicked to change the page. Renders as an `ng-click`.
  * @param {string=} mdNavHref url to transition to when this link is clicked.
- *     Renders as an `ng-href`.
+ * Renders as an `ng-href`.
  * @param {string=} mdNavSref Ui-router state to transition to when this link is
- *     clicked. Renders as a `ui-sref`.
- * @param {!Object=} srefOpts Ui-router options that are passed to the
- *     `$state.go()` function. See the [Ui-router documentation for details]
- *     (https://ui-router.github.io/docs/latest/interfaces/transition.transitionoptions.html).
+ * clicked. Renders as a `ui-sref`.
  * @param {string=} name The name of this link. Used by the nav bar to know
- *     which link is currently selected.
- * @param {string=} aria-label Adds alternative text for accessibility
+ * which link is currently selected.
  *
  * @usage
  * See `<md-nav-bar>` for usage.
@@ -117,7 +100,7 @@ angular.module('material.components.navBar', ['material.core'])
  *                                IMPLEMENTATION                             *
  *****************************************************************************/
 
-function MdNavBar($mdAria, $mdTheming) {
+function MdNavBar($mdAria) {
   return {
     restrict: 'E',
     transclude: true,
@@ -126,7 +109,6 @@ function MdNavBar($mdAria, $mdTheming) {
     bindToController: true,
     scope: {
       'mdSelectedNavItem': '=?',
-      'mdNoInkBar': '=?',
       'navBarAriaLabel': '@?',
     },
     template:
@@ -135,20 +117,21 @@ function MdNavBar($mdAria, $mdTheming) {
           '<ul class="_md-nav-bar-list" ng-transclude role="listbox"' +
             'tabindex="0"' +
             'ng-focus="ctrl.onFocus()"' +
+            'ng-blur="ctrl.onBlur()"' +
             'ng-keydown="ctrl.onKeydown($event)"' +
             'aria-label="{{ctrl.navBarAriaLabel}}">' +
           '</ul>' +
         '</nav>' +
-        '<md-nav-ink-bar ng-hide="ctrl.mdNoInkBar"></md-nav-ink-bar>' +
+        '<md-nav-ink-bar></md-nav-ink-bar>' +
       '</div>',
     link: function(scope, element, attrs, ctrl) {
-      $mdTheming(element);
       if (!ctrl.navBarAriaLabel) {
         $mdAria.expectAsync(element, 'aria-label', angular.noop);
       }
     },
   };
 }
+MdNavBar.$inject = ["$mdAria"];
 
 /**
  * Controller for the nav-bar component.
@@ -202,6 +185,7 @@ function MdNavBarController($element, $scope, $timeout, $mdConstant) {
     }
   });
 }
+MdNavBarController.$inject = ["$element", "$scope", "$timeout", "$mdConstant"];
 
 
 
@@ -210,7 +194,7 @@ function MdNavBarController($element, $scope, $timeout, $mdConstant) {
  * @private
  */
 MdNavBarController.prototype._initTabs = function() {
-  this._inkbar = angular.element(this._navBarEl.querySelector('md-nav-ink-bar'));
+  this._inkbar = angular.element(this._navBarEl.getElementsByTagName('md-nav-ink-bar')[0]);
 
   var self = this;
   this._$timeout(function() {
@@ -235,11 +219,6 @@ MdNavBarController.prototype._initTabs = function() {
 MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
   var self = this;
   var tabs = this._getTabs();
-
-  // this._getTabs can return null if nav-bar has not yet been initialized
-  if(!tabs)
-    return;
-
   var oldIndex = -1;
   var newIndex = -1;
   var newTab = this._getTabByName(newValue);
@@ -270,7 +249,7 @@ MdNavBarController.prototype._updateInkBarStyles = function(tab, newIndex, oldIn
 
   this._inkbar.css({display: newIndex < 0 ? 'none' : ''});
 
-  if (tab) {
+  if(tab){
     var tabEl = tab.getButtonEl();
     var left = tabEl.offsetLeft;
 
@@ -284,12 +263,11 @@ MdNavBarController.prototype._updateInkBarStyles = function(tab, newIndex, oldIn
  * @private
  */
 MdNavBarController.prototype._getTabs = function() {
-  var controllers = Array.prototype.slice.call(
-    this._navBarEl.querySelectorAll('.md-nav-item'))
-    .map(function(el) {
-      return angular.element(el).controller('mdNavItem')
-    });
-  return controllers.indexOf(undefined) ? controllers : null;
+  var linkArray = Array.prototype.slice.call(
+      this._navBarEl.querySelectorAll('.md-nav-item'));
+  return linkArray.map(function(el) {
+    return angular.element(el).controller('mdNavItem')
+  });
 };
 
 /**
@@ -311,7 +289,7 @@ MdNavBarController.prototype._getTabByName = function(name) {
  */
 MdNavBarController.prototype._getSelectedTab = function() {
   return this._findTab(function(tab) {
-    return tab.isSelected();
+    return tab.isSelected()
   });
 };
 
@@ -321,7 +299,7 @@ MdNavBarController.prototype._getSelectedTab = function() {
  */
 MdNavBarController.prototype.getFocusedTab = function() {
   return this._findTab(function(tab) {
-    return tab.hasFocus();
+    return tab.hasFocus()
   });
 };
 
@@ -347,6 +325,16 @@ MdNavBarController.prototype.onFocus = function() {
   var tab = this._getSelectedTab();
   if (tab) {
     tab.setFocused(true);
+  }
+};
+
+/**
+ * Clear tab focus when focus leaves the nav bar.
+ */
+MdNavBarController.prototype.onBlur = function() {
+  var tab = this.getFocusedTab();
+  if (tab) {
+    tab.setFocused(false);
   }
 };
 
@@ -400,7 +388,7 @@ MdNavBarController.prototype.onKeydown = function(e) {
 /**
  * ngInject
  */
-function MdNavItem($mdAria, $$rAF) {
+function MdNavItem($$rAF) {
   return {
     restrict: 'E',
     require: ['mdNavItem', '^mdNavBar'],
@@ -409,83 +397,56 @@ function MdNavItem($mdAria, $$rAF) {
     controllerAs: 'ctrl',
     replace: true,
     transclude: true,
-    template: function(tElement, tAttrs) {
-      var hasNavClick = tAttrs.mdNavClick;
-      var hasNavHref = tAttrs.mdNavHref;
-      var hasNavSref = tAttrs.mdNavSref;
-      var hasSrefOpts = tAttrs.srefOpts;
-      var navigationAttribute;
-      var navigationOptions;
-      var buttonTemplate;
-
-      // Cannot specify more than one nav attribute
-      if ((hasNavClick ? 1:0) + (hasNavHref ? 1:0) + (hasNavSref ? 1:0) > 1) {
-        throw Error(
-          'Must not specify more than one of the md-nav-click, md-nav-href, ' +
-          'or md-nav-sref attributes per nav-item directive.'
-        );
-      }
-
-      if (hasNavClick) {
-        navigationAttribute = 'ng-click="ctrl.mdNavClick()"';
-      } else if (hasNavHref) {
-        navigationAttribute = 'ng-href="{{ctrl.mdNavHref}}"';
-      } else if (hasNavSref) {
-        navigationAttribute = 'ui-sref="{{ctrl.mdNavSref}}"';
-      }
-
-      navigationOptions = hasSrefOpts ? 'ui-sref-opts="{{ctrl.srefOpts}}" ' : '';
-
-      if (navigationAttribute) {
-        buttonTemplate = '' +
-          '<md-button class="_md-nav-button md-accent" ' +
-            'ng-class="ctrl.getNgClassMap()" ' +
-            'ng-blur="ctrl.setFocused(false)" ' +
-            'tabindex="-1" ' +
-            navigationOptions +
-            navigationAttribute + '>' +
-            '<span ng-transclude class="_md-nav-button-text"></span>' +
-          '</md-button>';
-      }
-
-      return '' +
-        '<li class="md-nav-item" ' +
-          'role="option" ' +
-          'aria-selected="{{ctrl.isSelected()}}">' +
-          (buttonTemplate || '') +
-        '</li>';
-    },
+    template:
+      '<li class="md-nav-item" role="option" aria-selected="{{ctrl.isSelected()}}">' +
+        '<md-button ng-if="ctrl.mdNavSref" class="_md-nav-button md-accent"' +
+          'ng-class="ctrl.getNgClassMap()"' +
+          'tabindex="-1"' +
+          'ui-sref="{{ctrl.mdNavSref}}">' +
+          '<span ng-transclude class="_md-nav-button-text"></span>' +
+        '</md-button>' +
+        '<md-button ng-if="ctrl.mdNavHref" class="_md-nav-button md-accent"' +
+          'ng-class="ctrl.getNgClassMap()"' +
+          'tabindex="-1"' +
+          'ng-href="{{ctrl.mdNavHref}}">' +
+          '<span ng-transclude class="_md-nav-button-text"></span>' +
+        '</md-button>' +
+        '<md-button ng-if="ctrl.mdNavClick" class="_md-nav-button md-accent"' +
+          'ng-class="ctrl.getNgClassMap()"' +
+          'tabindex="-1"' +
+          'ng-click="ctrl.mdNavClick()">' +
+          '<span ng-transclude class="_md-nav-button-text"></span>' +
+        '</md-button>' +
+      '</li>',
     scope: {
       'mdNavClick': '&?',
       'mdNavHref': '@?',
       'mdNavSref': '@?',
-      'srefOpts': '=?',
       'name': '@',
     },
     link: function(scope, element, attrs, controllers) {
-      // When accessing the element's contents synchronously, they
-      // may not be defined yet because of transclusion. There is a higher
-      // chance that it will be accessible if we wait one frame.
-      $$rAF(function() {
-        var mdNavItem = controllers[0];
-        var mdNavBar = controllers[1];
-        var navButton = angular.element(element[0].querySelector('._md-nav-button'));
+      var mdNavItem = controllers[0];
+      var mdNavBar = controllers[1];
 
+      // When accessing the element's contents synchronously, they
+      // may not be defined yet because of transclusion. There is a higher chance
+      // that it will be accessible if we wait one frame.
+      $$rAF(function() {
         if (!mdNavItem.name) {
-          mdNavItem.name = angular.element(element[0]
-              .querySelector('._md-nav-button-text')).text().trim();
+          mdNavItem.name = angular.element(element[0].querySelector('._md-nav-button-text'))
+            .text().trim();
         }
 
+        var navButton = angular.element(element[0].querySelector('._md-nav-button'));
         navButton.on('click', function() {
           mdNavBar.mdSelectedNavItem = mdNavItem.name;
           scope.$apply();
         });
-
-        $mdAria.expectWithText(element, 'aria-label');
       });
     }
   };
 }
+MdNavItem.$inject = ["$$rAF"];
 
 /**
  * Controller for the nav-item component.
@@ -500,17 +461,10 @@ function MdNavItemController($element) {
   this._$element = $element;
 
   // Data-bound variables
-
   /** @const {?Function} */
   this.mdNavClick;
-
   /** @const {?string} */
   this.mdNavHref;
-
-  /** @const {?string} */
-  this.mdNavSref;
-  /** @const {?Object} */
-  this.srefOpts;
   /** @const {?string} */
   this.name;
 
@@ -520,7 +474,19 @@ function MdNavItemController($element) {
 
   /** @private {boolean} */
   this._focused = false;
+
+  var hasNavClick = !!($element.attr('md-nav-click'));
+  var hasNavHref = !!($element.attr('md-nav-href'));
+  var hasNavSref = !!($element.attr('md-nav-sref'));
+
+  // Cannot specify more than one nav attribute
+  if ((hasNavClick ? 1:0) + (hasNavHref ? 1:0) + (hasNavSref ? 1:0) > 1) {
+    throw Error(
+        'Must specify exactly one of md-nav-click, md-nav-href, ' +
+        'md-nav-sref for nav-item directive');
+  }
 }
+MdNavItemController.$inject = ["$element"];
 
 /**
  * Returns a map of class names and values for use by ng-class.
@@ -572,10 +538,6 @@ MdNavItemController.prototype.isSelected = function() {
  */
 MdNavItemController.prototype.setFocused = function(isFocused) {
   this._focused = isFocused;
-
-  if (isFocused) {
-    this.getButtonEl().focus();
-  }
 };
 
 /**

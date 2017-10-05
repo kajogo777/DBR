@@ -1,8 +1,8 @@
 /*!
- * AngularJS Material Design
+ * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.5
+ * v1.1.0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14,9 +14,6 @@
  * @description
  * A Sidenav QP component.
  */
-SidenavService['$inject'] = ["$mdComponentRegistry", "$mdUtil", "$q", "$log"];
-SidenavDirective['$inject'] = ["$mdMedia", "$mdUtil", "$mdConstant", "$mdTheming", "$mdInteraction", "$animate", "$compile", "$parse", "$log", "$q", "$document", "$window", "$$rAF"];
-SidenavController['$inject'] = ["$scope", "$attrs", "$mdComponentRegistry", "$q", "$interpolate"];
 angular
   .module('material.components.sidenav', [
     'material.core',
@@ -154,6 +151,7 @@ function SidenavService($mdComponentRegistry, $mdUtil, $q, $log) {
       return $mdComponentRegistry.when(handle).catch($log.error);
     }
 }
+SidenavService.$inject = ["$mdComponentRegistry", "$mdUtil", "$q", "$log"];
 /**
  * @ngdoc directive
  * @name mdSidenavFocus
@@ -244,8 +242,6 @@ function SidenavFocusDirective() {
  * @param {expression=} md-is-locked-open When this expression evaluates to true,
  * the sidenav 'locks open': it falls into the content's flow instead
  * of appearing over it. This overrides the `md-is-open` attribute.
- * @param {string=} md-disable-scroll-target Selector, pointing to an element, whose scrolling will
- * be disabled when the sidenav is opened. By default this is the sidenav's direct parent.
  *
 * The $mdMedia() service is exposed to the is-locked-open attribute, which
  * can be given a media query or one of the `sm`, `gt-sm`, `md`, `gt-md`, `lg` or `gt-lg` presets.
@@ -255,8 +251,7 @@ function SidenavFocusDirective() {
  *   - `<md-sidenav md-is-locked-open="$mdMedia('min-width: 1000px')"></md-sidenav>`
  *   - `<md-sidenav md-is-locked-open="$mdMedia('sm')"></md-sidenav>` (locks open on small screens)
  */
-function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInteraction, $animate,
-                          $compile, $parse, $log, $q, $document, $window, $$rAF) {
+function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, $compile, $parse, $log, $q, $document) {
   return {
     restrict: 'E',
     scope: {
@@ -264,7 +259,8 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
     },
     controller: '$mdSidenavController',
     compile: function(element) {
-      element.addClass('md-closed').attr('tabIndex', '-1');
+      element.addClass('md-closed');
+      element.attr('tabIndex', '-1');
       return postLink;
     }
   };
@@ -275,13 +271,10 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
   function postLink(scope, element, attr, sidenavCtrl) {
     var lastParentOverFlow;
     var backdrop;
-    var disableScrollTarget = null;
-    var triggeringInteractionType;
     var triggeringElement = null;
     var previousContainerStyles;
     var promise = $q.when(true);
     var isLockedOpenParsed = $parse(attr.mdIsLockedOpen);
-    var ngWindow = angular.element($window);
     var isLocked = function() {
       return isLockedOpenParsed(scope.$parent, {
         $media: function(arg) {
@@ -292,23 +285,8 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
       });
     };
 
-    if (attr.mdDisableScrollTarget) {
-      disableScrollTarget = $document[0].querySelector(attr.mdDisableScrollTarget);
-
-      if (disableScrollTarget) {
-        disableScrollTarget = angular.element(disableScrollTarget);
-      } else {
-        $log.warn($mdUtil.supplant('mdSidenav: couldn\'t find element matching ' +
-          'selector "{selector}". Falling back to parent.', { selector: attr.mdDisableScrollTarget }));
-      }
-    }
-
-    if (!disableScrollTarget) {
-      disableScrollTarget = element.parent();
-    }
-
     // Only create the backdrop if the backdrop isn't disabled.
-    if (!attr.hasOwnProperty('mdDisableBackdrop')) {
+    if (!angular.isDefined(attr.mdDisableBackdrop)) {
       backdrop = $mdUtil.createBackdrop(scope, "md-sidenav-backdrop md-opaque ng-enter");
     }
 
@@ -368,7 +346,6 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
       if ( isOpen ) {
         // Capture upon opening..
         triggeringElement = $document[0].activeElement;
-        triggeringInteractionType = $mdInteraction.getLastInteractionType();
       }
 
       disableParentScroll(isOpen);
@@ -380,12 +357,6 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
       ]).then(function() {
         // Perform focus when animations are ALL done...
         if (scope.isOpen) {
-          $$rAF(function() {
-            // Notifies child components that the sidenav was opened. Should wait
-            // a frame in order to allow for the element height to be computed.
-            ngWindow.triggerHandler('resize');
-          });
-
           focusEl && focusEl.focus();
         }
 
@@ -432,7 +403,7 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
           backdrop[0].style.height = null;
 
           previousContainerStyles = null;
-        };
+        }
       }
     }
 
@@ -440,12 +411,17 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
      * Prevent parent scrolling (when the SideNav is open)
      */
     function disableParentScroll(disabled) {
+      var parent = element.parent();
       if ( disabled && !lastParentOverFlow ) {
-        lastParentOverFlow = disableScrollTarget.css('overflow');
-        disableScrollTarget.css('overflow', 'hidden');
+
+        lastParentOverFlow = parent.css('overflow');
+        parent.css('overflow', 'hidden');
+
       } else if (angular.isDefined(lastParentOverFlow)) {
-        disableScrollTarget.css('overflow', lastParentOverFlow);
+
+        parent.css('overflow', lastParentOverFlow);
         lastParentOverFlow = undefined;
+
       }
     }
 
@@ -472,9 +448,9 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
             // When the current `updateIsOpen()` animation finishes
             promise.then(function(result) {
 
-              if ( !scope.isOpen && triggeringElement && triggeringInteractionType === 'keyboard') {
+              if ( !scope.isOpen ) {
                 // reset focus to originating element (if available) upon close
-                triggeringElement.focus();
+                triggeringElement && triggeringElement.focus();
                 triggeringElement = null;
               }
 
@@ -509,14 +485,16 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $mdInterac
 
   }
 }
+SidenavDirective.$inject = ["$mdMedia", "$mdUtil", "$mdConstant", "$mdTheming", "$animate", "$compile", "$parse", "$log", "$q", "$document"];
 
 /*
  * @private
  * @ngdoc controller
  * @name SidenavController
  * @module material.components.sidenav
+ *
  */
-function SidenavController($scope, $attrs, $mdComponentRegistry, $q, $interpolate) {
+function SidenavController($scope, $element, $attrs, $mdComponentRegistry, $q) {
 
   var self = this;
 
@@ -538,23 +516,8 @@ function SidenavController($scope, $attrs, $mdComponentRegistry, $q, $interpolat
   self.toggle = function() { return self.$toggleOpen( !$scope.isOpen );  };
   self.$toggleOpen = function(value) { return $q.when($scope.isOpen = value); };
 
-  // Evaluate the component id.
-  var rawId = $attrs.mdComponentId;
-  var hasDataBinding = rawId && rawId.indexOf($interpolate.startSymbol()) > -1;
-  var componentId = hasDataBinding ? $interpolate(rawId)($scope.$parent) : rawId;
-
-  // Register the component.
-  self.destroy = $mdComponentRegistry.register(self, componentId);
-
-  // Watch and update the component, if the id has changed.
-  if (hasDataBinding) {
-    $attrs.$observe('mdComponentId', function(id) {
-      if (id && id !== self.$$mdHandle) {
-        self.destroy(); // `destroy` only deregisters the old component id so we can add the new one.
-        self.destroy = $mdComponentRegistry.register(self, id);
-      }
-    });
-  }
+  self.destroy = $mdComponentRegistry.register(self, $attrs.mdComponentId);
 }
+SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegistry", "$q"];
 
 })(window, window.angular);
