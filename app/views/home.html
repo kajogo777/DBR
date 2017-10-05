@@ -127,7 +127,7 @@
 									<a ui-sref="add_reading" class="btn btn-primary btn-lg btn-white ">Add Reading</a>
 								</p>
 							</div>
-							<div class="text-center pd" >
+							<div class="text-center pd"  ng-if="user.admin != undefined && user.admin == 'true'" >
 								<a ui-sref="view_kids" class="btn btn-primary btn-lg btn-white">My boys</a>
 							</div>
 							<div class="text-center pd"  ng-if="user.admin != undefined && user.admin == 'true'">
