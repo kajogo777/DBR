@@ -33,7 +33,20 @@ angular.module('yapp')
           if(response.status==200){
             $scope.next_level=response.data;
           }
-        });  
+        });
+        $http.post($window.localStorage.getItem("base_url")+"/get_top_5").then(function(response){
+          if(response.status==200){
+            $scope.topKids=response.data;
+            console.log($scope.topKids);
+          }
+        });
+        $http.post($window.localStorage.getItem("base_url")+"/get_top_5_in_class",{"class":$scope.user.class}
+          ).then(function(response){
+          if(response.status==200){
+            $scope.topKidsInClass=response.data;
+            console.log($scope.topKids);
+          }
+        });    
 
         $scope.logout= function(){
           $window.localStorage.removeItem("user","");

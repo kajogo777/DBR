@@ -1,0 +1,61 @@
+<div>
+	<div ng-include="'menu.html'"></div>
+	<!-- <snap-dragger></snap-dragger> -->
+	<snap-content snap-opt-tap-to-close="false">
+
+		<!-- <a href="" snap-toggle="left" ng-click="menuOpen = !menuOpen">
+			<span class="menutoggle">
+				<i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+				<i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+			</span>
+		</a> -->
+
+		<div class="fr">
+			<h2>D.B.R<small> Daily Bible Reading</small></h2>
+		</div>
+		<div class="jumbotron">
+			<div class="row text-center" style="padding-top:20px">
+					
+				</div>
+			<div class="container">
+				<table class="table">
+				    <thead>
+				      <tr>
+				        <th>Name</th>
+				        <th>Username</th>
+				        <th>Score</th>
+				      	<th>Level</th>
+				      	<th>Modify</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr ng-repeat="kid in myKids">
+				        <th>{{kid.name}}</th>
+				        <th>{{kid.username}}</th>
+				        <th>{{kid.total_score}}</th>
+				      	<th>{{kid.level_score}}</th>
+				      	<th><button ng-click="edit_user(kid)" class="btn btn-xs btn-success">edit</button> | <button ng-click="delete_user(kid)" class="btn btn-xs btn-danger">delete</button></th>
+				      </tr>
+				      
+				    </tbody>
+				</table>
+<h2>
+						<a ui-sref="home" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Home <span class="glyphicon glyphicon-home"></span></a>
+					</h2>
+
+			</div>
+
+		</div>
+
+	</snap-content>
+</div>
+
+<style>
+	.submit-btn{
+		font-size: 54px;
+    margin-left: auto;
+    margin-right: auto;
+    display: -webkit-box;
+    margin-top: 20px;
+	}
+</style>

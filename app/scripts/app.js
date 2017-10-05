@@ -18,7 +18,8 @@ var states = [
         { name: 'home', state: { url: '/home',templateUrl: 'views/home.html', controller: 'HomeCtrl', parent: 'dashboard'}},
         { name: 'reading', state: { url: '/reading',templateUrl: 'views/reading.html', controller: 'readingCtrl', parent: 'dashboard'}},
         { name: 'add_reading', state: { url: '/add_reading',templateUrl: 'views/add_reading.html', controller: 'AddReadingCtrl', parent: 'dashboard'}},
-        { name: 'add_kids', state: { url: '/add_kids',templateUrl: 'views/add_kids.html', controller: 'AddKidsCtrl', parent: 'dashboard'}}
+        { name: 'add_kids', state: { url: '/add_kids',templateUrl: 'views/add_kids.html', controller: 'AddKidsCtrl', parent: 'dashboard'}},
+        { name: 'view_kids', state: { url: '/view_kids',templateUrl: 'views/view_kids.html', controller: 'ViewKidsCtrl', parent: 'dashboard'}}
     ];
    
 angular.module('yapp', [
