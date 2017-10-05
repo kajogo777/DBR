@@ -10,6 +10,21 @@
 angular.module('yapp')
   .controller('readingCtrl', function ($scope, $location, $http, $window, $state, $sce, $document) {
     $scope.user = JSON.parse($window.localStorage.getItem("user"));
+
+    $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).then(function(response){
+      console.log(response.data);
+      if(response.status==200){
+        $window.localStorage.setItem("user",JSON.stringify(response.data));
+        $scope.user=response.data;
+        $scope.answered_questions_ids= [];
+        for(var i=0;i<$scope.user.answered_questions.length;i++){
+          $scope.answered_questions_ids.push($scope.user.answered_questions[i].question_id);
+        }
+        console.log('answered_questions_ids: ', $scope.answered_questions_ids);
+
+      }
+    });
+
     $scope.reading = undefined;
     $scope.date = Date.now();
     $scope.$state = $state;
@@ -80,6 +95,15 @@ angular.module('yapp')
 
     };
 
+
+    $scope.get_answered_question = function(question_id){
+      for(var i=0;i<$scope.user.answered_questions.length;i++){
+        if($scope.user.answered_questions[i].question_id==question_id){
+            return $scope.user.answered_questions[i];
+        }
+      }
+      
+    }
 
     // toastr.success('Hello world!', 'Toastr fun!');
 

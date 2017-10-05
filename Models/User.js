@@ -13,6 +13,7 @@ var Schema = mongoose.Schema({
     answered_questions:[
       {
         question_id:{type:String},
+        reading_id:{type:String},
         is_right_answer: {type:Boolean},
         user_answer:{type:String},
         right_answer:{type:String},

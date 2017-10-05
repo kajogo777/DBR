@@ -192,6 +192,7 @@ app.post('/check_answer', function (req, res) {
                                     
                                     var question = {
                                         question_id: req.body.question_id,
+                                        reading_id: req.body.reading_id,
                                         is_right_answer: true,
                                         user_answer: req.body.choice,
                                         right_answer:reading.questions[j].answer,
@@ -235,6 +236,7 @@ app.post('/check_answer', function (req, res) {
                                     //pushing that the answer was wrong
                                     var question = {
                                         question_id: req.body.question_id,
+                                        reading_id: req.body.reading_id,
                                         is_right_answer: false,
                                         user_answer: req.body.choice,
                                         right_answer:reading.questions[j].answer,
