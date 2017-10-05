@@ -317,7 +317,7 @@ app.post('/add_users',function(req,res){
         if(err){
             res.send(err);
         }else{
-            res.send( docs.length+' kids were successfully stored.');
+            res.send(users_to_be_inserted.length+ ' kids were successfully stored.');
         }
     });
 })

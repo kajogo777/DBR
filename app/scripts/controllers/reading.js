@@ -14,20 +14,14 @@ angular.module('yapp')
     $scope.date = Date.now();
     $scope.$state = $state;
 
-    $scope.menuItems = [];
-    angular.forEach($state.get(), function (item) {
-      if (item.data && item.data.visible) {
-        $scope.menuItems.push({ name: item.name, text: item.data.text });
+   
 
-      }
-    });
-
-    $http.post($window.localStorage.getItem("base_url") + "/get_today_reading", { user_id: $scope.user._id }).success(function (data, status) {
-      console.log(data);
-      if (status == 200) {
-        if (data.sound && data.sound != "")
-          data.sound = $scope.getAudioUrl(data.sound);
-        // for(var question in data.questions){
+    $http.post($window.localStorage.getItem("base_url") + "/get_today_reading", { user_id: $scope.user._id }).then(function (response) {
+      console.log(response.data);
+      if (response.status == 200) {
+        if (response.data.sound && response.data.sound != "")
+          response.data.sound = $scope.getAudioUrl(response.data.sound);
+        // for(var question in response.data.questions){
         //   question.disabled= "";
         //   for(var user_ans_question in $scope.user.answered_questions){
         //     if(question.id==user_answered_question.question_id){
@@ -36,10 +30,10 @@ angular.module('yapp')
         //     }
         //   }
         // }
-        $scope.reading = data;
+        $scope.reading = response.data;
       };
       // var audioElement = angular.element( document.querySelector( '#audio' ) );
-      // audioElement.src = data.sound;
+      // audioElement.src = response.data.sound;
       // audioElement.play(); 
 
     });
@@ -53,19 +47,19 @@ angular.module('yapp')
         var right_element = $document[0].getElementById("atag_"+question_index + "_" + i);
         right_element.className += " disabled";
       }
-      $http.post($window.localStorage.getItem("base_url") + "/check_answer", { "user_id": $scope.user._id, "question_id": question_id, "choice": input_answer, "reading_id": $scope.reading._id }).success(function (data, status) {
-        console.log(data);
-        if (status == 201) {
-          toastr.warning(data);
-        } else if (status == 202) {
-          toastr.success(data);
-        } else if (status == 203) {
-          toastr.error(data);
-        } else if (status == 204) {
-          toastr.success(data);
+      $http.post($window.localStorage.getItem("base_url") + "/check_answer", { "user_id": $scope.user._id, "question_id": question_id, "choice": input_answer, "reading_id": $scope.reading._id }).then(function (response) {
+        console.log(response.data);
+        if (response.status == 201) {
+          toastr.warning(response.data);
+        } else if (response.status == 202) {
+          toastr.success(response.data);
+        } else if (response.status == 203) {
+          toastr.error(response.data);
+        } else if (response.status == 204) {
+          toastr.success(response.data);
           toastr.success("Congrats ... You leveled up !!");
         } else {
-          console.log(data);
+          console.log(response.data);
         }
       });
       // console.log(input_answer+" "+question_id+" "+choice_id);

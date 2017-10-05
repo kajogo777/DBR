@@ -40,11 +40,11 @@ angular.module('yapp')
       	console.log(users[0]);
 
 				
-        $http.post($window.localStorage.getItem("base_url")+"/add_users",{"users":kids }).success(function(data,status){
-          if(status==200){
-            toastr.success(data);
+        $http.post($window.localStorage.getItem("base_url")+"/add_users",{"users":kids }).then(function(response){
+          if(response.status==200){
+            toastr.success(response.data);
           }else{
-            toast.error(data);
+            toast.error(response.data);
           }
         }); 
         console.log(reading);
@@ -52,8 +52,8 @@ angular.module('yapp')
 			
 			$scope.get_class_users = function(reading){
       	
-        $http.post($window.localStorage.getItem("base_url")+"/get_class_users",{"class":user.class }).success(function(data,status){
-					console.log(data);
+        $http.post($window.localStorage.getItem("base_url")+"/get_class_users",{"class":user.class }).then(function(response){
+					console.log(response.data);
         }); 
       }
       return false;

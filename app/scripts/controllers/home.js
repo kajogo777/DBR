@@ -20,18 +20,18 @@ angular.module('yapp')
             }
         });
 
-        $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).success(function(data,status){
-          console.log(data);
-          if(status==200){
-            $window.localStorage.setItem("user",JSON.stringify(data));
-            $scope.user=data;
+        $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).then(function(response){
+          console.log(response.data);
+          if(response.status==200){
+            $window.localStorage.setItem("user",JSON.stringify(response.data));
+            $scope.user=response.data;
           }
         });
 
-        $http.post($window.localStorage.getItem("base_url")+"/next_level",{"level":$scope.user.level+1}).success(function(data,status){
-          console.log(data);
-          if(status==200){
-            $scope.next_level=data;
+        $http.post($window.localStorage.getItem("base_url")+"/next_level",{"level":$scope.user.level+1}).then(function(response){
+          console.log(response.data);
+          if(response.status==200){
+            $scope.next_level=response.data;
           }
         });  
 

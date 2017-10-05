@@ -22,14 +22,14 @@ angular.module('yapp')
     
     $scope.login_failed=undefined;
     $scope.submit = function(username,password) {
-      $http.post($window.localStorage.getItem("base_url")+"/login",{"username":username,"password":password}).success(function(data,status){
-        console.log(data);
-        if(status==200){
-          $window.localStorage.setItem("user",JSON.stringify(data));
+      $http.post($window.localStorage.getItem("base_url")+"/login",{"username":username,"password":password}).then(function(response){
+        console.log(response.data);
+        if(response.status==200){
+          $window.localStorage.setItem("user",JSON.stringify(response.data));
           $location.path('/dashboard');
-        }else if(status==201){
-          console.log(data);
-          $scope.login_failed=data;
+        }else if(response.status==201){
+          console.log(response.data);
+          $scope.login_failed=response.data;
         }
         
       });

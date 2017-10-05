@@ -42,11 +42,11 @@ angular.module('yapp')
             return text;
         }
 
-        $http.post($window.localStorage.getItem("base_url")+"/add_reading",{"reading":reading}).success(function(data,status){
-          if(status==200){
-            toastr.success(data);
+        $http.post($window.localStorage.getItem("base_url")+"/add_reading",{"reading":reading}).then(function(response){
+          if(response.status==200){
+            toastr.success(response.data);
           }else{
-            toast.error(data);
+            toast.error(response.data);
           }
         }); 
         console.log(reading);
