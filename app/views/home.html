@@ -57,11 +57,21 @@
 					</div>
 				</div>
 				<div class="clear"></div>
+
+
 				<div class="row text-center" style="padding-top:20px">
 						<h2>
 							<a ui-sref="reading" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Start Today's Reading? <span class="glyphicon glyphicon-book"></span></a>
 						</h2>
 				</div>
+				<div class="row text-center">
+						<div class="text-center" style="padding-top:20px">
+								<a ui-sref="history" class="btn btn-primary btn-lg btn-white">My History</a>
+						</div>
+				</div>
+			
+
+
 				<div class="container">
 					<div class="row"></div>
 						<div class="col-md-6">
@@ -71,14 +81,16 @@
 							      <tr>
 							        <th>Name</th>
 							        <th>Score</th>
-							      	<th>Level</th>
+											<th>Level</th>
+											<th>Class</th>
 							      </tr>
 							    </thead>
 							    <tbody>
 							      <tr ng-repeat="kid in topKids ">
 							        <th>{{kid.name}}</th>
 							        <th>{{kid.total_score}}</th>
-							      	<th>{{kid.level_score}}</th>
+											<th>{{kid.level}}</th>
+											<th>{{kid.class}}</th>
 							      </tr>
 							      
 							    </tbody>
@@ -91,14 +103,14 @@
 							      <tr>
 							        <th>Name</th>
 							        <th>Score</th>
-							      	<th>Level</th>
+											<th>Level</th>
 							      </tr>
 							    </thead>
 							    <tbody>
 							      <tr ng-repeat="kid in topKidsInClass ">
 							        <th>{{kid.name}}</th>
 							        <th>{{kid.total_score}}</th>
-							      	<th>{{kid.level_score}}</th>
+											<th>{{kid.level}}</th>
 							      </tr>
 							      
 							    </tbody>
@@ -111,6 +123,9 @@
 					<p>
 						<a ui-sref="add_reading" class="btn btn-primary btn-lg btn-white">Add Reading</a>
 					</p>
+				</div>
+				<div class="row text-center" style="padding-top:20px">
+					<a ui-sref="view_kids" class="btn btn-primary btn-lg btn-white">My boys</a>
 				</div>
 				<div class="row text-center" style="padding-top:20px" ng-if="user.admin != undefined && user.admin == 'true'">
 					<p>
