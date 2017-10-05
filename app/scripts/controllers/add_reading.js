@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('AddKidsCtrl', function($scope, $location,$http,$window,toastr) {
+  .controller('AddReadingCtrl', function($scope, $location,$http,$window,toastr) {
   
       
       $scope.add_reading = function(reading){
