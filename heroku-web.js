@@ -31,6 +31,7 @@ app.options('/*', function (req, res) {
 
 
 var User = require("./Models/User");
+var Trophy = require("./Models/Trophy");
 app.post('/login', function (req, res) {
     // console.log(req.body);
     var input_pass = req.body.password;
@@ -59,11 +60,11 @@ app.post('/login', function (req, res) {
 });
 
 app.post('/get_user', function (req, res) {
-
-    User.findOne({ '_id': req.body.id }, function (err, user) {
+    User.findOne({ '_id': req.body.id }).populate("trophies.trophy").exec(function (err, user) {
         if (err) {
             return res.status(400);
         } else {
+
             if (user) {
                 return res.send(user);
             }

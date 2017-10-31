@@ -22,6 +22,11 @@ var Schema = mongoose.Schema({
         score:{type:String},
         date:{type:Date}
       }
+    ],
+    trophies:[{
+      trophy:{ type : mongoose.Schema.Types.ObjectId, ref: 'trophy' },
+      date:{type:Date}
+      }
     ]
 })
 
