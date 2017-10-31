@@ -22,18 +22,22 @@
 				    <thead>
 				      <tr>
 				        <th>Name</th>
-				        <th>Username</th>
+								<th>Username</th>
+								<th>Password</th>
 				        <th>Score</th>
-				      	<th>Level</th>
+								<th>Level</th>
+								<th>Readings</th>
 				      	<th>Modify</th>
 				      </tr>
 				    </thead>
 				    <tbody>
 				      <tr ng-repeat="kid in myKids">
 				        <th>{{kid.name}}</th>
-				        <th>{{kid.username}}</th>
+								<th>{{kid.username}}</th>
+								<th>{{kid.password}}</th>
 				        <th>{{kid.total_score}}</th>
-				      	<th>{{kid.level}}</th>
+								<th>{{kid.level}}</th>
+								<th>{{kid.reading_dates.length}}</th>
 				      	<th><button ng-click="edit_user(kid)" class="btn btn-xs btn-success">edit</button> | <button ng-click="delete_user(kid)" class="btn btn-xs btn-danger">delete</button></th>
 				      </tr>
 				      
