@@ -129,7 +129,7 @@ app.post('/get_today_reading', function (req, res) {
         if (err)
             console.log(err);
         else {
-            // console.log(user);
+
             //checking for last reading
             var readings_num = user.reading_dates.length;
             if (readings_num != 0) { // if not first time to read
@@ -146,6 +146,33 @@ app.post('/get_today_reading', function (req, res) {
                 User.updateOne({ '_id': user._id }, { $push: { "reading_dates": Today } }, (err, u) => { console.log(u) });
             }
 
+
+            //get trophies of type reading_days
+            Trophy.find({type:"reading_days"},(err,trophies)=>{
+                //excluding trophies that are already taken by user
+                user_trophies=user.trophies;
+                for(i=0;i < trophies.length;i++){
+                    for(j=0;j< user_trophies.length;j++){
+                        if(trophies[i]._id.equals(user_trophies[j].trophy)){
+                            trophies.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
+                // console.log(trophies);
+                //checking if one of the trophies is achieved if its value is equal to number of readings of user
+                for(i=0;i<trophies.length;i++){
+                    if(readings_num==trophies.value){
+                        user_new_trophy = {
+                           trophy: trophies[i]._id,
+                           date: new Date.now() 
+                        }
+                        trophy_score = trophies[i].points;
+                        //User.update({_id:user._id},{ $push: { "trophies": user_new_trophy } })
+                    }
+                }
+            })
+
             Reading.findOne({
                 "number": readings_num
             }, function (err, reading) {
@@ -158,6 +185,8 @@ app.post('/get_today_reading', function (req, res) {
                     }
                 }
             });
+
+           
         }
     })
 });
@@ -225,11 +254,9 @@ app.post('/check_answer', function (req, res) {
                                         var level_changed = false;
                                         console.log(level.needed_score);
                                         console.log(new_level_score);
-                                        if (level.needed_score == new_level_score) {
                                         if (level.needed_score <= new_level_score) {
                                             console.log("hi");
                                             new_level = user.level + 1;
-                                            new_level_score = 0;
                                             new_level_score = new_level_score-level.needed_score;
                                             level_changed = true;
                                         }
