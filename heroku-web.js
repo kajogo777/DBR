@@ -171,6 +171,11 @@ app.get('/get_readings',function(req,res){
     Reading.find({}, ['number', 'shahed'],(err,readings)=>{ return res.send(readings)})
 })
 
+app.post('/update_reading',function(req,res){
+    var reading = new Reading(req.body.reading);
+    Reading.update({_id:req.body.reading._id},reading,(err,done)=>{return res.send(done)})
+})
+
 
 app.post('/check_answer', function (req, res) {
     console.log(req.body);
