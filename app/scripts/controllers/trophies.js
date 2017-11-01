@@ -12,12 +12,31 @@ angular.module('yapp')
   	
   	
       var user=JSON.parse($window.localStorage.getItem("user"));
-
-      
-      	
-        $http.post($window.localStorage.getItem("base_url")+"/get_class_users",{"class":user.class }).then(function(response){
+      $scope.reading_days_trophies=[];
+      $scope.reading_row_trophies=[];
+      $scope.correct_answers_row_trophies=[];
+        $http.get($window.localStorage.getItem("base_url")+"/get_trophies").then(function(response){
 					console.log(response.data);
-          $scope.myKids = response.data;
+          var trophies = response.data;
+
+          for(var i=0;i<trophies.length;i++){
+            console.log(trophies[i].type);
+            if(trophies[i].type=="reading_days")
+              $scope.reading_days_trophies.push(trophies[i]);
+            else if(trophies[i].type=="reading_row")
+              $scope.reading_row_trophies.push(trophies[i]);
+            else if(trophies[i].type=="correct_answers_row")
+              $scope.correct_answers_row_trophies.push(trophies[i]);
+          }
         }); 
+
+        $scope.check_if_trophy_earned = function(trophy_id){
+          for(var i=0;i<user.trophies.length;i++){
+            if(user.trophies[i].trophy._id==trophy_id){
+                return "";
+            }
+          }
+          return "decrease_opacity";
+        }
     });
 

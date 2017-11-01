@@ -41,55 +41,19 @@
 				<div class="section">
 					<h1 class="heading-2">Reading Bible</h1>
 					<div class="container w-container">
-						<div class="div-block">
-							<img sizes="200px" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
+						<div class="div-block" ng-repeat="trophy in reading_days_trophies">
+							<img sizes="200px" class="{{check_if_trophy_earned(trophy._id)}}" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
 							 width="200">
-							<div class="text-block">10</div>
-							<h4 class="heading">Reading Bible
-								<br>10 Days in a row</h4>
+							<div class="text-block">{{trophy.value}}</div>
+							<h4 class="heading">{{trophy.title}}</h4>
 						</div>
-						<div class="div-block">
-							<img sizes="200px" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
+						<div class="div-block" ng-repeat="trophy in reading_row_trophies">
+							<img sizes="200px" class="{{check_if_trophy_earned(trophy._id)}}" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
 							 width="200">
-							<div class="text-block">20</div>
-							<h4 class="heading">Reading Bible
-								<br>20 Days in a row</h4>
+							<div class="text-block">{{trophy.value}}</div>
+							<h4 class="heading">{{trophy.title}}</h4>
 						</div>
-						<div class="div-block">
-							<img sizes="200px" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
-							 width="200">
-							<div class="text-block">30</div>
-							<h4 class="heading">Reading Bible
-								<br>30 Days in a row</h4>
-						</div>
-
-						<div class="div-block">
-								<img sizes="200px" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
-								 width="200">
-								<div class="text-block">10</div>
-								<h4 class="heading">Reading Bible
-									<br>10 Days</h4>
-						</div>
-
-
-						<div class="div-block">
-								<img sizes="200px" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
-								 width="200">
-								<div class="text-block">20</div>
-								<h4 class="heading">Reading Bible
-									<br>20 Days</h4>
-						</div>
-
-
-
-						<div class="div-block">
-								<img sizes="200px" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
-								 width="200">
-								<div class="text-block">30</div>
-								<h4 class="heading">Reading Bible
-									<br>30 Days</h4>
-						</div>
-
+						
 					</div>
 				</div>
 
@@ -100,24 +64,13 @@
 				<div class="section">
 						<h1 class="heading-2">Correct Answers</h1>
 						<div class="container w-container">
-							<div class="div-block">
-								<img sizes="200px" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
-								 width="200">
-								<div class="text-block">5</div>
-								<h4 class="heading">5 Correct Answers<br>in a row</h4>
-							</div>
-							<div class="div-block">
-								<img sizes="200px" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
-								 width="200">
-								 <div class="text-block">10</div>
-								 <h4 class="heading">10 Correct Answers<br>in a row</h4>
-							</div>
-							<div class="div-block">
-								<img sizes="200px" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
-								 width="200">
-								 <div class="text-block">20</div>
-								 <h4 class="heading">20 Correct Answers<br>in a row</h4>
-							</div>
+								<div class="div-block" ng-repeat="trophy in correct_answers_row_trophies">
+										<img sizes="200px" class="{{check_if_trophy_earned(trophy._id)}}" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png" srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
+										 width="200">
+										<div class="text-block">{{trophy.value}}</div>
+										<h4 class="heading">{{trophy.title}}</h4>
+									</div>
+							
 	
 	
 						</div>
@@ -143,6 +96,10 @@
 
 
 <style>
+	.decrease_opacity{
+		opacity:0.2;
+	}
+
 	body {
 		background-color: #222;
 		font-family: 'Open Sans', sans-serif;
@@ -639,6 +596,7 @@
 		text-align: center;
 		text-transform: uppercase;
 		text-shadow: 1px 1px 6px #000;
+		white-space: pre-wrap;
 	}
 
 	.container {

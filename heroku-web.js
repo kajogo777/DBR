@@ -408,3 +408,7 @@ app.post('/get_class_users', function (req, res) {
         }
     })
 })
+
+app.get('/get_trophies', function (req, res) {
+    Trophy.find({},(err,trophies)=>{return res.send(trophies)})
+})
