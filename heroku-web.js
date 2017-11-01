@@ -164,8 +164,13 @@ app.post('/get_today_reading', function (req, res) {
 
 
 app.get('/get_reading/:id',function(req,res){
-    Reading.findOne({'_id':req.params.id},(err,reading)=>{console.log(req.params.id); return res.send(reading)})
+    Reading.findOne({'_id':req.params.id},(err,reading)=>{ return res.send(reading)})
 })
+
+app.get('/get_readings',function(req,res){
+    Reading.find({}, ['number', 'shahed'],(err,readings)=>{ return res.send(readings)})
+})
+
 
 app.post('/check_answer', function (req, res) {
     console.log(req.body);
