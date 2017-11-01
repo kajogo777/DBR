@@ -226,9 +226,11 @@ app.post('/check_answer', function (req, res) {
                                         console.log(level.needed_score);
                                         console.log(new_level_score);
                                         if (level.needed_score == new_level_score) {
+                                        if (level.needed_score <= new_level_score) {
                                             console.log("hi");
                                             new_level = user.level + 1;
                                             new_level_score = 0;
+                                            new_level_score = new_level_score-level.needed_score;
                                             level_changed = true;
                                         }
                                         //adding score
