@@ -29,7 +29,8 @@ angular.module('yapp', [
                 'ngAria',
                 'ngAnimate',
                 'ngMessages',
-                'ngMaterial'
+                'ngMaterial',
+                'readings' //the Reading Manager module
             ])
         .config(function($stateProvider, $urlRouterProvider) {
             $urlRouterProvider.when('/dashboard', '/dashboard/home');

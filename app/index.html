@@ -27,7 +27,7 @@
     <!-- Add your site or application content here -->
     <div class="">
 
-      <div ui-view ></div>
+      <div ui-view style="overflow-y: auto" ></div>
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -57,6 +57,7 @@
     <script src="../bower_components/angular-aria/angular-aria.js"></script>
     <script src="../bower_components/angular-messages/angular-messages.js"></script>
     <script src="../bower_components/angular-material/angular-material.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     
@@ -80,5 +81,31 @@
     crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!-- endbuild -->
+	
+	<!-- Reading Manager related files -->
+    <!-- Modules -->
+    <script src="readings/readings.module.js"></script>
+    <!-- Components -->
+    <script src="readings/readingManager/readingManager.component.js"></script>
+    <script src="readings/readingManager/readingsList/readingsList.component.js"></script>
+    <script src="readings/readingEdit/readingEdit.component.js"></script>
+    <script src="readings/readingView/readingView.component.js"></script>
+    <script src="readings/questionMcq/questionMcq.component.js"></script>
+    <script src="readings/questionEssay/questionEssay.component.js"></script>
+    <!-- Component-Controllers -->
+    <script src="readings/readingManager/readingManager.controller.js"></script>
+    <script src="readings/readingManager/readingsList/readingsList.controller.js"></script>
+    <script src="readings/readingEdit/readingEdit.controller.js"></script>
+    <script src="readings/readingView/readingView.controller.js"></script>
+    <script src="readings/questionMcq/questionMcq.controller.js"></script>
+    <script src="readings/questionEssay/questionEssay.controller.js"></script>
+    <!-- Services -->
+    <script src="readings/dataService.service.js"></script>
+    <!-- routes and states -->
+    <script src="readings/routes.js"></script>
+	  <!-- Stylesheets -->
+    <link rel="stylesheet" href="readings/questionMcq/questionMcq.css">
+    <link rel="stylesheet" href="readings/questionEssay/questionEssay.css">
+	<!-- end of Reading Manager related files -->
   </body>
 </html>

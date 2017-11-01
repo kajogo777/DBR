@@ -1,0 +1,19 @@
+question-essay{
+    /* only put styles that apply to
+    both editing and viewing */
+    display: block;
+}
+
+/* Edit */
+
+question-essay[edit=true]{
+    background-color: lightsalmon;
+    border: 1px solid orangered;
+}
+
+/* View */
+
+question-essay[edit=false]{
+    background-color: gray;
+    border: 1px solid black;
+}
