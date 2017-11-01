@@ -205,6 +205,36 @@ app.post('/update_reading',function(req,res){
     Reading.update({_id:req.body.reading._id},reading,(err,done)=>{return res.send(done)})
 })
 
+function AddPoints(user,points, callback){//get user object and points to add and return new user updated object,new level flag
+
+    Level.findOne({ 'number': parseInt(user.level) + 1 }, function (err, level) {
+        var new_level = user.level;
+        var new_level_score = parseInt(user.level_score) + parseInt(points);
+        var level_changed = false;
+        // console.log(level.needed_score);
+        // console.log(new_level_score);
+        if (level.needed_score <= new_level_score) {
+            // console.log("hi");
+            new_level = user.level + 1;
+            new_level_score = new_level_score-level.needed_score;
+            level_changed = true;
+        }
+        //adding score
+        User.findOneAndUpdate({ "_id": user._id }, {
+            "total_score": parseInt(user.total_score) + parseInt(points),
+            "level_score": new_level_score,
+            "level": new_level,
+        }, function (err, user_updated) {
+            callback(err,user_updated,level_changed);
+            // if (level_changed) {
+            //     return res.status(204).send("+" + question_score + " points");
+            // } else {
+            //     return res.status(202).send("+" + question_score + " points");
+            // }
+
+        })
+    });
+  };
 
 app.post('/check_answer', function (req, res) {
     console.log(req.body);
@@ -247,27 +277,12 @@ app.post('/check_answer', function (req, res) {
                                     }
                                     var question_score = reading.questions[j].score;
 
-                                    //checking level
-                                    Level.findOne({ 'number': parseInt(user.level) + 1 }, function (err, level) {
-                                        var new_level = user.level;
-                                        var new_level_score = parseInt(user.level_score) + parseInt(question_score);
-                                        var level_changed = false;
-                                        console.log(level.needed_score);
-                                        console.log(new_level_score);
-                                        if (level.needed_score <= new_level_score) {
-                                            console.log("hi");
-                                            new_level = user.level + 1;
-                                            new_level_score = new_level_score-level.needed_score;
-                                            level_changed = true;
-                                        }
-                                        //adding score
+                                    //adding points
+                                    AddPoints(user,question_score,function(err,user,isLevelChanged){
                                         User.updateOne({ "_id": req.body.user_id }, {
-                                            "total_score": parseInt(user.total_score) + parseInt(question_score),
-                                            "level_score": new_level_score,
-                                            "level": new_level,
                                             $push: { "answered_questions": question }
                                         }, function (err, user_updated) {
-                                            if (level_changed) {
+                                            if (isLevelChanged) {
                                                 return res.status(204).send("+" + question_score + " points");
                                             } else {
                                                 return res.status(202).send("+" + question_score + " points");
@@ -275,7 +290,7 @@ app.post('/check_answer', function (req, res) {
 
                                         })
                                     });
-
+                                   
                                 } else {
                                     //pushing that the answer was wrong
                                     var question = {
