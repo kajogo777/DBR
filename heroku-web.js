@@ -121,6 +121,76 @@ app.post('/get_today_reading', function (req, res) {
 });
 */
 
+function AddPoints(user, points, callback) {//get user object and points to add and return new user updated object,new level flag
+
+    Level.findOne({ 'number': parseInt(user.level) + 1 }, function (err, level) {
+        var new_level = user.level;
+        var new_level_score = parseInt(user.level_score) + parseInt(points);
+        var level_changed = false;
+        // console.log(level.needed_score);
+        // console.log(new_level_score);
+        if (level.needed_score <= new_level_score) {
+            // console.log("hi");
+            new_level = user.level + 1;
+            new_level_score = new_level_score - level.needed_score;
+            level_changed = true;
+        }
+        //adding score
+        User.findOneAndUpdate({ "_id": user._id }, {
+            "total_score": parseInt(user.total_score) + parseInt(points),
+            "level_score": new_level_score,
+            "level": new_level,
+        }, function (err, user_updated) {
+            callback(err, user_updated, level_changed);
+        })
+    });
+};
+
+
+function CheckTrophies(user, type, callback) {//get user object and trophies type to check and return new user updated object,new trophy
+    User.findOne({ '_id': user._id },function(err,user){
+        //get trophies of needed type 
+        Trophy.find({ type: type }, (err, trophies) => {
+            //excluding trophies that are already taken by user
+            user_trophies = user.trophies;
+            for (i = 0; i < trophies.length; i++) {
+                for (j = 0; j < user_trophies.length; j++) {
+                    if (trophies[i]._id.equals(user_trophies[j].trophy)) {
+                        trophies.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+
+            earnedNewTrophy = false;
+            if (type == "reading_days") {//check of trophies type reading bible for x days
+                //checking if one of the trophies is achieved if its value is equal to number of readings of user
+                var readings_num = user.reading_dates.length;
+                for (i = 0; i < trophies.length; i++) {
+                    if (readings_num == trophies[i].value) {
+                        
+                        earnedNewTrophy=true;
+                        user_new_trophy = {
+                            trophy: trophies[i]._id,
+                            date: new Date(Date.now())
+                        }
+                        trophy_score = trophies[i].points;
+                        AddPoints(user, trophy_score, function (err, user, trophy_score ){
+                            User.findOneAndUpdate({_id:user._id},{ $push: { "trophies": user_new_trophy } },(err,user)=>{
+                                callback(err,user,trophies[i]);
+                            })
+                        })
+                        break;
+                    }
+                }
+                if(!earnedNewTrophy){
+                    callback(err,user,null);
+                }
+            }
+
+        })
+    });
+};
 
 app.post('/get_today_reading', function (req, res) {
     var Today = new Date(Date.now());
@@ -145,96 +215,42 @@ app.post('/get_today_reading', function (req, res) {
                 readings_num++;
                 User.updateOne({ '_id': user._id }, { $push: { "reading_dates": Today } }, (err, u) => { console.log(u) });
             }
-
-
-            //get trophies of type reading_days
-            Trophy.find({type:"reading_days"},(err,trophies)=>{
-                //excluding trophies that are already taken by user
-                user_trophies=user.trophies;
-                for(i=0;i < trophies.length;i++){
-                    for(j=0;j< user_trophies.length;j++){
-                        if(trophies[i]._id.equals(user_trophies[j].trophy)){
-                            trophies.splice(i, 1);
-                            break;
+            
+            CheckTrophies(user,"reading_days",function(err,user,newTrophy){
+                Reading.findOne({
+                    "number": readings_num
+                }, function (err, reading) {
+                    if (err) {
+                        return res.status(400);
+                    } else {
+                        if(newTrophy != null){
+                            return res.status(205),send({reading,newTrophy});
+                        }
+                        if (reading) {
+                            return res.send(reading);
                         }
                     }
-                }
-                // console.log(trophies);
-                //checking if one of the trophies is achieved if its value is equal to number of readings of user
-                for(i=0;i<trophies.length;i++){
-                    if(readings_num==trophies.value){
-                        user_new_trophy = {
-                           trophy: trophies[i]._id,
-                           date: new Date.now() 
-                        }
-                        trophy_score = trophies[i].points;
-                        //User.update({_id:user._id},{ $push: { "trophies": user_new_trophy } })
-                    }
-                }
+                });
             })
 
-            Reading.findOne({
-                "number": readings_num
-            }, function (err, reading) {
-                if (err) {
-                    return res.status(400);
-                } else {
-                    console.log(reading);
-                    if (reading) {
-                        return res.send(reading);
-                    }
-                }
-            });
-
-           
         }
     })
 });
 
 
-app.get('/get_reading/:id',function(req,res){
-    Reading.findOne({'_id':req.params.id},(err,reading)=>{ return res.send(reading)})
+app.get('/get_reading/:id', function (req, res) {
+    Reading.findOne({ '_id': req.params.id }, (err, reading) => { return res.send(reading) })
 })
 
-app.get('/get_readings',function(req,res){
-    Reading.find({}, ['number', 'shahed'],(err,readings)=>{ return res.send(readings)})
+app.get('/get_readings', function (req, res) {
+    Reading.find({}, ['number', 'shahed'], (err, readings) => { return res.send(readings) })
 })
 
-app.post('/update_reading',function(req,res){
+app.post('/update_reading', function (req, res) {
     var reading = new Reading(req.body.reading);
-    Reading.update({_id:req.body.reading._id},reading,(err,done)=>{return res.send(done)})
+    Reading.update({ _id: req.body.reading._id }, reading, (err, done) => { return res.send(done) })
 })
 
-function AddPoints(user,points, callback){//get user object and points to add and return new user updated object,new level flag
-
-    Level.findOne({ 'number': parseInt(user.level) + 1 }, function (err, level) {
-        var new_level = user.level;
-        var new_level_score = parseInt(user.level_score) + parseInt(points);
-        var level_changed = false;
-        // console.log(level.needed_score);
-        // console.log(new_level_score);
-        if (level.needed_score <= new_level_score) {
-            // console.log("hi");
-            new_level = user.level + 1;
-            new_level_score = new_level_score-level.needed_score;
-            level_changed = true;
-        }
-        //adding score
-        User.findOneAndUpdate({ "_id": user._id }, {
-            "total_score": parseInt(user.total_score) + parseInt(points),
-            "level_score": new_level_score,
-            "level": new_level,
-        }, function (err, user_updated) {
-            callback(err,user_updated,level_changed);
-            // if (level_changed) {
-            //     return res.status(204).send("+" + question_score + " points");
-            // } else {
-            //     return res.status(202).send("+" + question_score + " points");
-            // }
-
-        })
-    });
-  };
 
 app.post('/check_answer', function (req, res) {
     console.log(req.body);
@@ -263,14 +279,14 @@ app.post('/check_answer', function (req, res) {
                             // console.log(reading.questions[j].score);
                             if (req.body.question_id == reading.questions[j].id) {
                                 if (reading.questions[j].answer == req.body.choice) {
-                                    
+
                                     var question = {
                                         question_id: req.body.question_id,
                                         reading_id: req.body.reading_id,
                                         is_right_answer: true,
                                         user_answer: req.body.choice,
-                                        right_answer:reading.questions[j].answer,
-                                        question:reading.questions[j].question,
+                                        right_answer: reading.questions[j].answer,
+                                        question: reading.questions[j].question,
                                         choices: reading.questions[j].choices,
                                         score: reading.questions[j].score,
                                         date: Date.now()
@@ -278,7 +294,7 @@ app.post('/check_answer', function (req, res) {
                                     var question_score = reading.questions[j].score;
 
                                     //adding points
-                                    AddPoints(user,question_score,function(err,user,isLevelChanged){
+                                    AddPoints(user, question_score, function (err, user, isLevelChanged) {
                                         User.updateOne({ "_id": req.body.user_id }, {
                                             $push: { "answered_questions": question }
                                         }, function (err, user_updated) {
@@ -290,7 +306,7 @@ app.post('/check_answer', function (req, res) {
 
                                         })
                                     });
-                                   
+
                                 } else {
                                     //pushing that the answer was wrong
                                     var question = {
@@ -298,8 +314,8 @@ app.post('/check_answer', function (req, res) {
                                         reading_id: req.body.reading_id,
                                         is_right_answer: false,
                                         user_answer: req.body.choice,
-                                        right_answer:reading.questions[j].answer,
-                                        question:reading.questions[j].question,
+                                        right_answer: reading.questions[j].answer,
+                                        question: reading.questions[j].question,
                                         choices: reading.questions[j].choices,
                                         score: reading.questions[j].score,
                                         date: Date.now()
@@ -341,7 +357,7 @@ app.post('/add_reading', function (req, res) {
 });
 
 app.post('/get_top_5_in_class', function (req, res) {
-    User.find({ "class": req.body.class ,"admin":{$ne:"true"}}).sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
+    User.find({ "class": req.body.class, "admin": { $ne: "true" } }).sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
         if (err) {
             res.send(err);
         } else {
@@ -351,7 +367,7 @@ app.post('/get_top_5_in_class', function (req, res) {
 });
 
 app.post('/get_top_5', function (req, res) {
-    User.find({"admin":{$ne:"true"}}).sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
+    User.find({ "admin": { $ne: "true" } }).sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
         if (err) {
             res.send(err);
         } else {
@@ -360,34 +376,34 @@ app.post('/get_top_5', function (req, res) {
     })
 });
 
-app.post('/add_users',function(req,res){
-    var users_to_be_inserted=[];
-    for(var i =0;i< 50;i++){
-        if(req.body.users[i].name=="")
+app.post('/add_users', function (req, res) {
+    var users_to_be_inserted = [];
+    for (var i = 0; i < 50; i++) {
+        if (req.body.users[i].name == "")
             break;
-        else{
+        else {
             var birthdate = new Date(req.body.users[i].birthdate);
             var year = birthdate.getFullYear();
-            var month= birthdate.getMonth()+1;
+            var month = birthdate.getMonth() + 1;
             var day = birthdate.getDate();
-            req.body.users[i].password=""+day+month+ year
+            req.body.users[i].password = "" + day + month + year
             users_to_be_inserted.push(req.body.users[i]);
         }
     }
-    User.collection.insert(users_to_be_inserted, function(err, docs){
-        if(err){
+    User.collection.insert(users_to_be_inserted, function (err, docs) {
+        if (err) {
             res.send(err);
-        }else{
-            res.send(users_to_be_inserted.length+ ' kids were successfully stored.');
+        } else {
+            res.send(users_to_be_inserted.length + ' kids were successfully stored.');
         }
     });
 })
 
-app.post('/get_class_users',function(req,res){
-    User.find({"class":req.body.class,"admin":{$ne:"true"}},function(err,users){
-        if(err){
+app.post('/get_class_users', function (req, res) {
+    User.find({ "class": req.body.class, "admin": { $ne: "true" } }, function (err, users) {
+        if (err) {
             res.send(err);
-        }else{
+        } else {
             res.send(users);
         }
     })
