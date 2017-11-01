@@ -1,0 +1,52 @@
+question-mcq{
+    /* only put styles that apply to
+    both editing and viewing */
+    display: block;
+}
+
+/* Edit */
+
+question-mcq[edit=true]{
+    background-color: lightblue;
+    border: 1px solid blue;
+}
+
+question-mcq[edit=true] .choice{
+    border: 1px solid red;
+    background-color: lightcoral;
+    display: inline-block;
+    /* todo temporary: remove following properties */
+    width: 200px;
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+question-mcq[edit=true] .choice-correct{
+    border: 1px solid green;
+    background-color: lightgreen;
+    display: inline-block;
+}
+
+
+/* View */
+
+question-mcq[edit=false]{
+    background-color: gray;
+    border: 1px solid black;
+}
+
+question-mcq[edit=false] .choice{
+    border: 1px solid red;
+    background-color: lightcoral;
+    display: inline-block;
+    /* todo temporary: remove following properties */
+    width: 200px;
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+question-mcq[edit=false] .choice-correct{
+    border: 1px solid green;
+    background-color: lightgreen;
+    display: inline-block;
+}

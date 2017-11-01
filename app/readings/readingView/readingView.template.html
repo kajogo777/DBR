@@ -1,0 +1,15 @@
+<div dir="rtl">
+    
+    <p><span>رقم اليوم: </span>{{$ctrl.reading.number}}</p>
+    <p><span>الشاهد: </span>{{$ctrl.reading.shahed}}</p>
+    <pre>{{$ctrl.reading.content}}</pre>
+
+    <div ng-repeat="question in $ctrl.reading.questions">
+        <div ng-switch="question.type">
+            <question-mcq question="question" edit="false" ng-switch-when="mcq"></question-mcq>
+            <question-essay question="question" edit="false" ng-switch-when="essay"></question-essay>
+        </div>
+    </div>
+</div>
+
+<input type="button" value="Back" ui-sref="readingManager">

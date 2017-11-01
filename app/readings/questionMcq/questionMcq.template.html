@@ -1,0 +1,40 @@
+<label>Question type: {{$ctrl.question.type}}</label>
+<br>
+<label>Question</label>
+<br>
+<textarea placeholder="Question text" ng-model="$ctrl.question.question"
+    class="question-text" ng-if="$ctrl.edit"></textarea>
+<p ng-if="!$ctrl.edit">{{$ctrl.question.question}}</p>
+<br>
+<label>Choices</label>
+<div ng-repeat="choice in $ctrl.question.choices">
+    <p ng-class="{'choice-correct': $ctrl.question.choiceIsCorrect($index)}" 
+        class="choice">{{choice}}</p>
+    <input type="button" value="x" tabindex="-1" ng-if="$ctrl.edit"
+        ng-click="$ctrl.question.choiceRemove($index)">
+    <input type="button" value="&#9660;" tabindex="-1" ng-if="$ctrl.edit"
+        ng-click="$ctrl.question.choiceMoveDown($index)">
+    <input type="button" value="&#9650;" tabindex="-1" ng-if="$ctrl.edit"
+        ng-click="$ctrl.question.choiceMoveUp($index)">
+</div>
+<form ng-submit="$ctrl.choiceAdd()" ng-if="$ctrl.edit">
+    <input type="text" placeholder="Add choice" ng-model="$ctrl.new_choice">
+    <input type="submit" value="Add" tabindex="-1">
+</form>
+
+<div ng-if="$ctrl.edit">
+    <label>Correct Choice</label>
+    <select ng-model="$ctrl.question.answer">
+        <option value="" disabled>-- Correct Choice --</option>
+        <option ng-repeat="choice in $ctrl.question.choices" value="{{choice}}">{{choice}}</option>
+    </select>
+    <br>
+</div>
+
+<div ng-if="$ctrl.edit">
+    <label>Score</label>
+    <input type="text" placeholder="points" ng-model="$ctrl.question.score">
+</div>
+<div ng-if="!$ctrl.edit">
+    <p>Score: {{$ctrl.question.score}}</p>
+</div>

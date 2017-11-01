@@ -1,0 +1,7 @@
+<ul>
+    <li ng-repeat="item in $ctrl.readings">
+        <input type="button" value="View" ng-click="$ctrl.view($index)">
+        <input type="button" value="Edit" ng-click="$ctrl.edit($index)">
+        <span>Reading number: {{item.number}} - Shahed: {{item.shahed}}</span>
+    </li>
+</ul>
