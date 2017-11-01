@@ -33,8 +33,8 @@ angular.module('yapp')
 
     $http.post($window.localStorage.getItem("base_url") + "/get_today_reading", { user_id: $scope.user._id }).then(function (response) {
       console.log(response.data);
-      if (response.status == 200) {
-        if (response.data.sound && response.data.sound != "")
+      if (response.data.reading != undefined) {
+        if (response.data.reading.sound && response.data.reading.sound != "")
           response.data.sound = $scope.getAudioUrl(response.data.sound);
         // for(var question in response.data.questions){
         //   question.disabled= "";
@@ -45,8 +45,15 @@ angular.module('yapp')
         //     }
         //   }
         // }
-        $scope.reading = response.data;
-      };
+        $scope.reading = response.data.reading;
+        if(response.data.LevelChanged != undefined){
+          toastr.success("Congrats ... You leveled up !!");
+        }
+        if(response.data.newTrophy != undefined){
+          toastr.info("Congrats ... New Trophy for " +response.data.newTrophy.title+ " !");
+          toastr.success("You got "+response.data.newTrophy.points+" points from the new trophy");
+        }
+       };
       // var audioElement = angular.element( document.querySelector( '#audio' ) );
       // audioElement.src = response.data.sound;
       // audioElement.play(); 
@@ -64,18 +71,31 @@ angular.module('yapp')
       }
       $http.post($window.localStorage.getItem("base_url") + "/check_answer", { "user_id": $scope.user._id, "question_id": question_id, "choice": input_answer, "reading_id": $scope.reading._id }).then(function (response) {
         console.log(response.data);
-        if (response.status == 201) {
-          toastr.warning(response.data);
-        } else if (response.status == 202) {
-          toastr.success(response.data);
-        } else if (response.status == 203) {
-          toastr.error(response.data);
-        } else if (response.status == 204) {
-          toastr.success(response.data);
-          toastr.success("Congrats ... You leveled up !!");
-        } else {
-          console.log(response.data);
+        if(response.data.question_score != undefined){
+            toastr.success("+"+response.data.question_score+" points.");
         }
+        if(response.data.LevelChanged != undefined){
+          toastr.success("Congrats ... You leveled up !!");
+        }
+        if(response.data.newTrophy != undefined){
+          toastr.info("Congrats ... New Trophy for " +response.data.newTrophy.title+ " !");
+          toastr.success("You got "+response.data.newTrophy.points+" points from the new trophy");
+        }
+        if(response.data.question_score == undefined){
+          toastr.error("Wrong answer :(");
+      }
+        // if (response.status == 201) {
+        //   toastr.warning(response.data);
+        // } else if (response.status == 202) {
+        //   toastr.success(response.data);
+        // } else if (response.status == 203) {
+        //   toastr.error(response.data);
+        // } else if (response.status == 204) {
+        //   toastr.success(response.data);
+        //   toastr.success("Congrats ... You leveled up !!");
+        // } else {
+        //   console.log(response.data);
+        // }
       });
       // console.log(input_answer+" "+question_id+" "+choice_id);
       //checking answer

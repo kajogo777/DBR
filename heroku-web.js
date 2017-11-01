@@ -175,9 +175,9 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
                             date: new Date(Date.now())
                         }
                         trophy_score = trophies[i].points;
-                        AddPoints(user, trophy_score, function (err, user, trophy_score ){
+                        AddPoints(user, trophy_score, function (err, user, LevelChanged ){
                             User.findOneAndUpdate({_id:user._id},{ $push: { "trophies": user_new_trophy } },(err,user)=>{
-                                callback(err,user,trophies[i]);
+                                callback(err,user,trophies[i],LevelChanged);
                             })
                         })
                         break;
@@ -187,6 +187,34 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
                     callback(err,user,null);
                 }
             }
+
+
+
+            if (type == "correct_answers_row") {//check of trophies type reading bible for x days
+                //checking if one of the trophies is achieved if its value is equal to number of readings of user
+                var correct_answers_row = user.row_correct_answer_count;
+                for (i = 0; i < trophies.length; i++) {
+                    if (correct_answers_row == trophies[i].value) {
+                        
+                        earnedNewTrophy=true;
+                        user_new_trophy = {
+                            trophy: trophies[i]._id,
+                            date: new Date(Date.now())
+                        }
+                        trophy_score = trophies[i].points;
+                        AddPoints(user, trophy_score, function (err, user, LevelChanged ){
+                            User.findOneAndUpdate({_id:user._id},{ $push: { "trophies": user_new_trophy } },(err,user)=>{
+                                callback(err,user,trophies[i],LevelChanged);
+                            })
+                        })
+                        break;
+                    }
+                }
+                if(!earnedNewTrophy){
+                    callback(err,user,null);
+                }
+            }
+
 
         })
     });
@@ -216,15 +244,18 @@ app.post('/get_today_reading', function (req, res) {
                 User.updateOne({ '_id': user._id }, { $push: { "reading_dates": Today } }, (err, u) => { console.log(u) });
             }
             
-            CheckTrophies(user,"reading_days",function(err,user,newTrophy){
+            CheckTrophies(user,"reading_days",function(err,user,newTrophy,LevelChanged){
                 Reading.findOne({
                     "number": readings_num
                 }, function (err, reading) {
                     if (err) {
                         return res.status(400);
                     } else {
+                        if(newTrophy != null && LevelChanged){
+                            return res.status(206).send({reading,newTrophy,LevelChanged:true});
+                        }
                         if(newTrophy != null){
-                            return res.status(205),send({reading,newTrophy});
+                            return res.status(205).send({reading,newTrophy});
                         }
                         if (reading) {
                             return res.send(reading);
@@ -268,7 +299,7 @@ app.post('/check_answer', function (req, res) {
 
                     }
                 }
-                //if not.. check for answer and add it in the answered quesions
+                //if not answered before.. check for answer and add it in the answered quesions
                 Reading.findOne({ "_id": req.body.reading_id }, function (err, reading) {
                     console.log('reading: ', reading);
                     if (err) {
@@ -294,16 +325,21 @@ app.post('/check_answer', function (req, res) {
                                     var question_score = reading.questions[j].score;
 
                                     //adding points
-                                    AddPoints(user, question_score, function (err, user, isLevelChanged) {
+                                    AddPoints(user, question_score, function (err, user, LevelChanged1) {
                                         User.updateOne({ "_id": req.body.user_id }, {
+                                            row_correct_answer_count: user.row_correct_answer_count+1,
                                             $push: { "answered_questions": question }
                                         }, function (err, user_updated) {
-                                            if (isLevelChanged) {
-                                                return res.status(204).send("+" + question_score + " points");
-                                            } else {
-                                                return res.status(202).send("+" + question_score + " points");
-                                            }
-
+                                            CheckTrophies(user,"correct_answers_row",function(err,user,newTrophy,LevelChanged2){
+                                                if(newTrophy!=null && (LevelChanged1||LevelChanged2)){
+                                                    return res.status(207).send({question_score:question_score,newTrophy,LevelChanged:true})
+                                                }
+                                                if (LevelChanged1||LevelChanged2) {
+                                                    return res.status(204).send({question_score:question_score,LevelChanged:true});
+                                                } else {
+                                                    return res.status(202).send({question_score:question_score});
+                                                }
+                                            })
                                         })
                                     });
 
@@ -320,7 +356,10 @@ app.post('/check_answer', function (req, res) {
                                         score: reading.questions[j].score,
                                         date: Date.now()
                                     }
-                                    User.updateOne({ "_id": req.body.user_id }, { $push: { "answered_questions": question } }, function (err) {
+                                    User.updateOne({ "_id": req.body.user_id }, { 
+                                        row_correct_answer_count:0,
+                                        $push: { "answered_questions": question }
+                                     }, function (err) {
                                         return res.status(203).send("Wrong Answer");
 
                                     })
