@@ -38,5 +38,14 @@ angular.module('yapp')
           }
           return "decrease_opacity";
         }
+
+        $scope.check_if_trophy_earned_bool = function(trophy_id){
+          for(var i=0;i<user.trophies.length;i++){
+            if(user.trophies[i].trophy._id==trophy_id){
+                return true;
+            }
+          }
+          return false;
+        }
     });
 
