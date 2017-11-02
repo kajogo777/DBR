@@ -31,6 +31,7 @@ angular.module('yapp', [
                 'ngAnimate',
                 'ngMessages',
                 'ngMaterial',
+				'toastr',
                 'readings' //the Reading Manager module
             ])
         .config(function($stateProvider, $urlRouterProvider) {

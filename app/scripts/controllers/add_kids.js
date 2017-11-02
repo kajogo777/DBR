@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('AddKidsCtrl', function($scope, $location,$http,$window) {
+  .controller('AddKidsCtrl', function($scope, $location,$http,$window,toastr) {
   	var myDate = new Date();
 
   	$scope.minDate = new Date(
@@ -44,7 +44,7 @@ angular.module('yapp')
           if(response.status==200){
             toastr.success(response.data);
           }else{
-            toast.error(response.data);
+            toastr.error(response.data);
           }
         }); 
         console.log(reading);

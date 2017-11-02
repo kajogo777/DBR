@@ -17,12 +17,14 @@ module.exports = function(config) {
       // bower:js
       '../bower_components/angular/angular.js',
       '../bower_components/angular-mocks/angular-mocks.js',
-      '../bower_components/ui-router/release/angular-ui-router.js',
       '../bower_components/angular-animate/angular-animate.js',
       '../bower_components/angular-aria/angular-aria.js',
       '../bower_components/angular-messages/angular-messages.js',
       '../bower_components/angular-material/angular-material.js',
       '../bower_components/angular-ui-router/release/angular-ui-router.js',
+      '../bower_components/angular-toastr/dist/angular-toastr.tpls.js',
+      '../bower_components/snapjs/snap.js',
+      '../bower_components/angular-snap/angular-snap.js',
       // endbower
       '../app/scripts/**/*.js',
       //'../test/mock/**/*.js',
