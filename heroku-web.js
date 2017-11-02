@@ -190,8 +190,35 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
 
 
 
-            if (type == "correct_answers_row") {//check of trophies type reading bible for x days
-                //checking if one of the trophies is achieved if its value is equal to number of readings of user
+            if (type == "reading_row") {//check of trophies type reading bible for x days in a row
+                //checking if one of the trophies is achieved if its value is equal to number of readings in a row of user
+                var row_readings_count = user.row_readings_count;
+                for (i = 0; i < trophies.length; i++) {
+                    if (row_readings_count == trophies[i].value) {
+                        
+                        earnedNewTrophy=true;
+                        user_new_trophy = {
+                            trophy: trophies[i]._id,
+                            date: new Date(Date.now())
+                        }
+                        trophy_score = trophies[i].points;
+                        AddPoints(user, trophy_score, function (err, user, LevelChanged ){
+                            User.findOneAndUpdate({_id:user._id},{ $push: { "trophies": user_new_trophy } },(err,user)=>{
+                                callback(err,user,trophies[i],LevelChanged);
+                            })
+                        })
+                        break;
+                    }
+                }
+                if(!earnedNewTrophy){
+                    callback(err,user,null);
+                }
+            }
+
+
+
+            if (type == "correct_answers_row") {//check of trophies type x correct answers in a row
+                //checking if one of the trophies is achieved if its value is equal to number of row correct answer of user
                 var correct_answers_row = user.row_correct_answer_count;
                 for (i = 0; i < trophies.length; i++) {
                     if (correct_answers_row == trophies[i].value) {
@@ -216,6 +243,7 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
             }
 
 
+
         })
     });
 };
@@ -237,31 +265,62 @@ app.post('/get_today_reading', function (req, res) {
                 if (last_reading.toDateString() != Today.toDateString()) {
 
                     readings_num++;
-                    User.updateOne({ '_id': user._id }, { $push: { "reading_dates": Today } }, (err, u) => { });
+
+                    //checking if it's a reading in a row
+                    var today = new Date(Date.now());
+                    console.log('today: ', today);
+                    var last_reading = new Date(last_reading.toDateString());
+                    console.log('last_reading: ', last_reading);
+                    var timeDiff = Math.abs(today.getTime() - today.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                    console.log('diffDays: ', diffDays);
+                    if(diffDays>1)
+                        row_readings_count = 1;
+                    else
+                        row_readings_count++;    
+
+                    User.updateOne({ '_id': user._id }, {'row_readings_count':row_readings_count, $push: { "reading_dates": Today } }, (err, u) => { });
                 }
             } else { // if first time to read
+                row_readings_count=1; 
                 readings_num++;
-                User.updateOne({ '_id': user._id }, { $push: { "reading_dates": Today } }, (err, u) => { console.log(u) });
+                User.updateOne({ '_id': user._id }, {'row_readings_count':row_readings_count, $push: { "reading_dates": Today } }, (err, u) => { console.log(u) });
             }
             
-            CheckTrophies(user,"reading_days",function(err,user,newTrophy,LevelChanged){
-                Reading.findOne({
-                    "number": readings_num
-                }, function (err, reading) {
-                    if (err) {
-                        return res.status(400);
-                    } else {
-                        if(newTrophy != null && LevelChanged){
-                            return res.status(206).send({reading,newTrophy,LevelChanged:true});
+            CheckTrophies(user,"reading_row",function(err,user,newTrophy1,LevelChanged1){
+                CheckTrophies(user,"reading_days",function(err,user,newTrophy2,LevelChanged2){
+                    Reading.findOne({
+                        "number": readings_num
+                    }, function (err, reading) {
+                        if (err) {
+                            return res.status(400);
+                        } else {
+                            out={};
+                            if(newTrophy1!=null) //row trophy is more important
+                                out.newTrophy= newTrophy1;
+                            else if(newTrophy2!=null)
+                                out.newTrophy= newTrophy2;
+
+                            if(LevelChanged1||LevelChanged2)
+                                out.LevelChanged=true;
+
+                            if(reading)
+                                out.reading= reading;
+                               
+                            res.send(out);    
+
+                            // if(newTrophy2 != null && (LevelChanged1||LevelChanged2)){
+                            //     return res.status(206).send({reading,newTrophy:newTrophy2,LevelChanged:true});
+                            // }
+                            // if(newTrophy2 != null){
+                            //     return res.status(205).send({reading,newTrophy:newTrophy2});
+                            // }
+                            // if (reading) {
+                            //     return res.send(reading);
+                            // }
                         }
-                        if(newTrophy != null){
-                            return res.status(205).send({reading,newTrophy});
-                        }
-                        if (reading) {
-                            return res.send(reading);
-                        }
-                    }
-                });
+                    });
+                })
             })
 
         }

@@ -36,16 +36,9 @@ angular.module('yapp')
       if (response.data.reading != undefined) {
         if (response.data.reading.sound && response.data.reading.sound != "")
           response.data.sound = $scope.getAudioUrl(response.data.sound);
-        // for(var question in response.data.questions){
-        //   question.disabled= "";
-        //   for(var user_ans_question in $scope.user.answered_questions){
-        //     if(question.id==user_answered_question.question_id){
-        //       question.disabled= "disabled";
-        //       break;
-        //     }
-        //   }
-        // }
+
         $scope.reading = response.data.reading;
+
         if(response.data.LevelChanged != undefined){
           toastr.success("Congrats ... You leveled up !!");
         }
@@ -53,6 +46,7 @@ angular.module('yapp')
           toastr.info("Congrats ... New Trophy for " +response.data.newTrophy.title+ " !");
           toastr.success("You got "+response.data.newTrophy.points+" points from the new trophy");
         }
+        
        };
       // var audioElement = angular.element( document.querySelector( '#audio' ) );
       // audioElement.src = response.data.sound;

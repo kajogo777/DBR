@@ -73,7 +73,7 @@
 					<h1 class="heading-2">Correct Answers</h1>
 					<div class="container w-container">
 						<div class="div-block {{check_if_trophy_earned(trophy._id)==''?'gold':''}}" ng-repeat="trophy in correct_answers_row_trophies">
-							<div class="text-block-2" ng-if="check_if_trophy_earned_bool(trophy._id)">
+							<div class="text-block-2" ng-if="!check_if_trophy_earned_bool(trophy._id)">
 								<strong>+{{trophy.points}}</strong>
 							</div>
 							<img sizes="200px" class="{{check_if_trophy_earned(trophy._id)}}" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png"
