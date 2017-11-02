@@ -27,15 +27,18 @@
 						  </div>
 						  <div>
 							<div class="container-2 w-container">
-							  <div class="level-holder">
-								<h2 class="heading-4">Level 1</h2>
+							  
+							  <div class="level-holder" ng-repeat="level in levels" style="opacity:{{level==user.level?'1':'0.2'}};cursor:{{level==user.level?'default':'no-drop'}};">
+								<h2 class="heading-4">Level {{level}}</h2>
 								<div class="gifts-container">
-								  <div class="gift-holder"><img class="image-2 image-3" sizes="(max-width: 767px) 15vw, 100px" src="images/selfie_stick_detail02_grande.jpg" srcset="images/selfie_stick_detail02_grande.jpg 500w, images/selfie_stick_detail02_grande.jpg 600w">
-									<div><strong class="bold-text">Selfie Stick</strong></div>
+								  <div class="gift-holder" ng-repeat="gift in gifts" ng-if="level>=gift.level">
+									  <img class="image-2 image-3" sizes="(max-width: 767px) 15vw, 100px" src="{{gift.image}}" >
+									<div><strong class="bold-text">{{gift.title}}</strong></div>
 								  </div>
 								</div>
 							  </div>
-							  <div class="level-holder">
+
+							  <!-- <div class="level-holder">
 								<h2 class="heading-4">Level 2</h2>
 								<div class="gifts-container">
 								  <div class="gift-holder"><img class="image-2 image-3" sizes="(max-width: 767px) 15vw, 100px" src="images/selfie_stick_detail02_grande.jpg" srcset="images/selfie_stick_detail02_grande.jpg 500w, images/selfie_stick_detail02_grande.jpg 600w">
@@ -45,7 +48,7 @@
 									<div class="text-block-4"><strong>Selfie Stick</strong></div>
 								  </div>
 								</div>
-							  </div>
+							  </div> -->
 							</div>
 						  </div>
 						 

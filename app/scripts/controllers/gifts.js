@@ -9,43 +9,20 @@
  */
 angular.module('yapp')
   .controller('GiftsCtrl', function($scope, $location,$http,$window) {
+
+      $scope.gifts =[];
+      $scope.levels=[];
   	
-  	
-      var user=JSON.parse($window.localStorage.getItem("user"));
-      $scope.reading_days_trophies=[];
-      $scope.reading_row_trophies=[];
-      $scope.correct_answers_row_trophies=[];
-        $http.get($window.localStorage.getItem("base_url")+"/get_trophies").then(function(response){
+      $scope.user=JSON.parse($window.localStorage.getItem("user"));
+        $http.get($window.localStorage.getItem("base_url")+"/get_gifts").then(function(response){
 					console.log(response.data);
-          var trophies = response.data;
-
-          for(var i=0;i<trophies.length;i++){
-            console.log(trophies[i].type);
-            if(trophies[i].type=="reading_days")
-              $scope.reading_days_trophies.push(trophies[i]);
-            else if(trophies[i].type=="reading_row")
-              $scope.reading_row_trophies.push(trophies[i]);
-            else if(trophies[i].type=="correct_answers_row")
-              $scope.correct_answers_row_trophies.push(trophies[i]);
+          var gifts = response.data;
+          $scope.gifts=gifts;
+          //max_level=gifts[gifts.length-1].level;
+          for(var i=0;i<gifts.length;i++){
+            $scope.levels.push(gifts[i].level);
           }
-        }); 
-
-        $scope.check_if_trophy_earned = function(trophy_id){
-          for(var i=0;i<user.trophies.length;i++){
-            if(user.trophies[i].trophy._id==trophy_id){
-                return "";
-            }
-          }
-          return "decrease_opacity";
-        }
-
-        $scope.check_if_trophy_earned_bool = function(trophy_id){
-          for(var i=0;i<user.trophies.length;i++){
-            if(user.trophies[i].trophy._id==trophy_id){
-                return true;
-            }
-          }
-          return false;
-        }
+          
+        });
     });
 

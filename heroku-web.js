@@ -32,6 +32,8 @@ app.options('/*', function (req, res) {
 
 var User = require("./Models/User");
 var Trophy = require("./Models/Trophy");
+var Gift = require("./Models/Gift");
+
 app.post('/login', function (req, res) {
     // console.log(req.body);
     var input_pass = req.body.password;
@@ -509,4 +511,8 @@ app.post('/get_class_users', function (req, res) {
 
 app.get('/get_trophies', function (req, res) {
     Trophy.find({},(err,trophies)=>{return res.send(trophies)})
+})
+
+app.get('/get_gifts', function (req, res) {
+    Gift.find({}).sort('level').exec((err,gifts)=>{return res.send(gifts)})
 })
