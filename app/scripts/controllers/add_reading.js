@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('AddReadingCtrl', function($scope, $location,$http,$window) {
+  .controller('AddReadingCtrl', function($scope, $location,$http,$window, toastr) {
   
       
       $scope.add_reading = function(reading){
@@ -46,7 +46,7 @@ angular.module('yapp')
           if(response.status==200){
             toastr.success(response.data);
           }else{
-            toast.error(response.data);
+            toastr.error(response.data);
           }
         }); 
         console.log(reading);
