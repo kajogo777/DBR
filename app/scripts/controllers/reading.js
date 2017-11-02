@@ -10,6 +10,7 @@
 angular.module('yapp')
   .controller('readingCtrl', function ($scope, $location, $http, $window, $state, $sce, $document) {
     $scope.user = JSON.parse($window.localStorage.getItem("user"));
+    $scope.levelCelebrate= false;
 
     $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).then(function(response){
       console.log(response.data);
@@ -41,6 +42,7 @@ angular.module('yapp')
 
         if(response.data.LevelChanged != undefined){
           toastr.success("Congrats ... You leveled up !!");
+          $scope.levelCelebrate= true;
         }
         if(response.data.newTrophy != undefined){
           toastr.info("Congrats ... New Trophy for " +response.data.newTrophy.title+ " !");
@@ -70,6 +72,7 @@ angular.module('yapp')
         }
         if(response.data.LevelChanged != undefined){
           toastr.success("Congrats ... You leveled up !!");
+          $scope.levelCelebrate= true;
         }
         if(response.data.newTrophy != undefined){
           toastr.info("Congrats ... New Trophy for " +response.data.newTrophy.title+ " !");
@@ -117,6 +120,11 @@ angular.module('yapp')
         }
       }
       
+    }
+
+
+    $scope.closeLevelCelebration= function(){
+      $scope.levelCelebrate= false;
     }
 
     // toastr.success('Hello world!', 'Toastr fun!');

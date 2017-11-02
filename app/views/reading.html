@@ -1,8 +1,10 @@
 <script src="https://unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css" />
+
 <div>
 	<div ng-include="'menu.html'"></div>
 	<!-- <snap-dragger></snap-dragger> -->
+
 	<snap-content snap-opt-tap-to-close="false" style="background-color:#a15f83">
 
 		<!-- <a href="" snap-toggle="left" ng-click="menuOpen = !menuOpen">
@@ -12,8 +14,101 @@
 			</span>
 		</a> -->
 
+
+		<!-- level celebration -->
+		<style>
+			.celebration {
+				position: absolute;
+				z-index: 10;
+				width: 95%;
+				margin-left: auto;
+				margin-right: auto;
+				height: 100vh;
+				background-image: url('images/celebration.gif');
+				top: 0;
+				left: 0px;
+			}
+		</style>
+
+			<div class="celebration"  ng-if="levelCelebrate">
+
+				<div class="div-block-2">
+					<img class="image" src="images/LevelUp.gif">
+					<h1 class="heading-3">
+						<strong>You are now at</strong>
+						<br>
+						<strong>LEVEL {{user.level +1}}</strong>
+					</h1>
+					<a class="button-2 w-button" ng-click="closeLevelCelebration()">OK</a>
+				</div>
+
+			</div>
+
+
+		<style>
+			.div-block-2 {
+				position: fixed;
+				left: 0px;
+				top: 0px;
+				right: 0px;
+				bottom: 0px;
+				display: block;
+				width: 100%;
+				height: 100%;
+				margin: auto auto 0px;
+				background-image: -webkit-linear-gradient(270deg, rgba(0, 0, 0, .5), rgba(0, 0, 0, .5));
+				background-image: linear-gradient(180deg, rgba(0, 0, 0, .5), rgba(0, 0, 0, .5));
+			}
+
+			.image {
+				position: static;
+				display: block;
+				width: 80%;
+				margin-right: auto;
+				margin-left: auto;
+			}
+
+			.heading-3 {
+				display: block;
+				width: 80%;
+				margin-right: auto;
+				margin-left: auto;
+				color: #27f5a2;
+				font-size: 85px;
+				line-height: 90px;
+				text-align: center;
+				text-shadow: 11px 11px 6px #000;
+			}
+
+			.button-2 {
+				position: absolute;
+				left: 0px;
+				right: 0px;
+				bottom: 13px;
+				display: block;
+				width: 200px;
+				margin-right: auto;
+				margin-bottom: 1px;
+				margin-left: auto;
+				padding-bottom: 12px;
+				clear: none;
+				border: 5px solid #fff;
+				border-radius: 14px;
+				background-color: #0a9440;
+				font-size: 43px;
+				line-height: 32px;
+				font-weight: 700;
+				text-align: center;
+				text-shadow: 1px 1px 6px #000;
+			}
+		</style>
+
+		<!-- end level celebration -->
+
 		<div class="fr">
-			<h2>D.B.R<small> Daily Bible Reading</small></h2>
+			<h2>D.B.R
+				<small> Daily Bible Reading</small>
+			</h2>
 		</div>
 		<!-- <span class="glyphicon glyphicon-plus bg-fade" style="position:fixed"></span> -->
 		<div class="jumbotron">
@@ -22,50 +117,61 @@
 				<div class="row">
 					<div class="panel panel-default" style="text-align: -webkit-right;margin-top: 35px;" ng-if="reading!=undefined">
 						<div class="panel-heading">
-						  <h2 class="panel-title" style="font-size: 54px;display: -webkit-inline-box;">{{reading.shahed}}</h2>
-								<audio ng-if="reading!=undefined" id="audio" controls autoplay preload="auto" style="float: left;margin-top: 12px;" ng-src="{{reading.sound}}"></audio>
+							<h2 class="panel-title" style="font-size: 54px;display: -webkit-inline-box;">{{reading.shahed}}</h2>
+							<audio ng-if="reading!=undefined" id="audio" controls autoplay preload="auto" style="float: left;margin-top: 12px;" ng-src="{{reading.sound}}"></audio>
 						</div>
 						<div style="color: #071f9d;font-size: 31px;white-space: pre-wrap;direction:rtl;">{{reading.content}}</div>
-					  </div>
+					</div>
 				</div>
 
 				<h1>Questions</h1>
 				<div class="row" ng-repeat="question in reading.questions track by $index" ng-init="$questionIndex = $index">
-						<div class="panel panel-default" style="text-align: -webkit-right;margin-top: 60px;" ng-if="reading!=undefined">
-							<div class="panel-heading">
-							  <h2 class="panel-title" style="font-size: 54px;display: -webkit-inline-box;">{{question.question}}</h2>					
-							  <span class="badge primary" style="float: left; font-size: 54px;
-							  background-color: #337ab7;">+{{question.score}}</span></a></li>
-							</div>
-						  </div>
-						  <!-- if not answered before -->
-						  <div ng-if="!answered_questions_ids.includes(question.id)" class="row"  ng-repeat="choice in question.choices track by $index" style="margin-right: 0px;margin-left: 0px;">
-								<p class="pull-right"  style="width: 100%;" id="{{$questionIndex}}_{{$index}}">
-										<a id="atag_{{$questionIndex}}_{{$index}}" ng-click="check_answer(choice,question.id,$index,$questionIndex)" style="font-size:31px;width: 100%;" class="btn btn-lg btn-white">{{choice}}</a>
-								</p> 
-						  </div>
+					<div class="panel panel-default" style="text-align: -webkit-right;margin-top: 60px;" ng-if="reading!=undefined">
+						<div class="panel-heading">
+							<h2 class="panel-title" style="font-size: 54px;display: -webkit-inline-box;">{{question.question}}</h2>
+							<span class="badge primary" style="float: left; font-size: 54px;
+							  background-color: #337ab7;">+{{question.score}}</span>
+							</a>
+							</li>
+						</div>
+					</div>
+					<!-- if not answered before -->
+					<div ng-if="!answered_questions_ids.includes(question.id)" class="row" ng-repeat="choice in question.choices track by $index"
+					 style="margin-right: 0px;margin-left: 0px;">
+						<p class="pull-right" style="width: 100%;" id="{{$questionIndex}}_{{$index}}">
+							<a id="atag_{{$questionIndex}}_{{$index}}" ng-click="check_answer(choice,question.id,$index,$questionIndex)" style="font-size:31px;width: 100%;"
+							 class="btn btn-lg btn-white">{{choice}}</a>
+						</p>
+					</div>
 
-						  <!-- if answered before -->
-						  <div ng-if="answered_questions_ids.includes(question.id)" class="row"  ng-repeat="choice in question.choices track by $index" style="margin-right: 0px;margin-left: 0px;">
-							<p class="pull-right"  style="width: 100%;" id="{{$questionIndex}}_{{$index}}" ng-init="answered_question = get_answered_question(question.id)">
-									<a  ng-if="answered_question.user_answer==choice &&  answered_question.is_right_answer == true"  style="font-size:31px;width: 100%;background-color:green" class="btn btn-lg btn-white disabled">{{choice}}</a>
-									<a  ng-if="answered_question.user_answer==choice &&  answered_question.is_right_answer == false"  style="font-size:31px;width: 100%;background-color:red" class="btn btn-lg btn-white disabled">{{choice}}</a>
-									<a  ng-if="answered_question.is_right_answer == false && answered_question.right_answer==choice"  style="font-size:31px;width: 100%;background-color:green" class="btn btn-lg btn-white disabled">{{choice}}</a>
-									<a  ng-if="answered_question.user_answer!=choice &&  answered_question.is_right_answer != choice && answered_question.right_answer!=choice"  style="font-size:31px;width: 100%;" class="btn btn-lg btn-white disabled">{{choice}}</a>
-							</p> 
-					  </div>
-						
+					<!-- if answered before -->
+					<div ng-if="answered_questions_ids.includes(question.id)" class="row" ng-repeat="choice in question.choices track by $index"
+					 style="margin-right: 0px;margin-left: 0px;">
+						<p class="pull-right" style="width: 100%;" id="{{$questionIndex}}_{{$index}}" ng-init="answered_question = get_answered_question(question.id)">
+							<a ng-if="answered_question.user_answer==choice &&  answered_question.is_right_answer == true" style="font-size:31px;width: 100%;background-color:green"
+							 class="btn btn-lg btn-white disabled">{{choice}}</a>
+							<a ng-if="answered_question.user_answer==choice &&  answered_question.is_right_answer == false" style="font-size:31px;width: 100%;background-color:red"
+							 class="btn btn-lg btn-white disabled">{{choice}}</a>
+							<a ng-if="answered_question.is_right_answer == false && answered_question.right_answer==choice" style="font-size:31px;width: 100%;background-color:green"
+							 class="btn btn-lg btn-white disabled">{{choice}}</a>
+							<a ng-if="answered_question.user_answer!=choice &&  answered_question.is_right_answer != choice && answered_question.right_answer!=choice"
+							 style="font-size:31px;width: 100%;" class="btn btn-lg btn-white disabled">{{choice}}</a>
+						</p>
+					</div>
+
 
 				</div>
 
 
-				
+
 				<div class="row text-center" style="padding-top:20px">
-						<h2>
-							<a ui-sref="home" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Home <span class="glyphicon glyphicon-home"></span></a>
-						</h2>
+					<h2>
+						<a ui-sref="home" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Home
+							<span class="glyphicon glyphicon-home"></span>
+						</a>
+					</h2>
 				</div>
-				
+
 
 			</div>
 		</div>
