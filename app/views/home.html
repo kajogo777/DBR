@@ -88,14 +88,16 @@
 							<table class="table" >
 							    <thead>
 							      <tr>
+									<th>Rank</th>
 							        <th>Name</th>
 							        <th>Score</th>
-											<th>Level</th>
-											<th>Class</th>
+									<th>Level</th>
+									<th>Class</th>
 							      </tr>
 							    </thead>
 							    <tbody>
-							      <tr ng-repeat="kid in topKids ">
+							      <tr ng-repeat="kid in topKids  track by $index">
+									<th>{{$index+1}}</th>
 							        <th>{{kid.name}}</th>
 							        <th>{{kid.total_score}}</th>
 											<th>{{kid.level}}</th>
@@ -110,13 +112,15 @@
 							<table class="table">
 							    <thead>
 							      <tr>
+									<th>Rank</th>
 							        <th>Name</th>
 							        <th>Score</th>
-											<th>Level</th>
+									<th>Level</th>
 							      </tr>
 							    </thead>
 							    <tbody>
-							      <tr ng-repeat="kid in topKidsInClass ">
+							      <tr ng-repeat="kid in topKidsInClass track by $index">
+									<th>{{$index+1}}</th>
 							        <th>{{kid.name}}</th>
 							        <th>{{kid.total_score}}</th>
 											<th>{{kid.level}}</th>
