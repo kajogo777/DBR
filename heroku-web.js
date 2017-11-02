@@ -457,7 +457,7 @@ app.post('/add_reading', function (req, res) {
 });
 
 app.post('/get_top_5_in_class', function (req, res) {
-    User.find({ "class": req.body.class, "admin": { $gte: "5" } }).sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
+    User.find({ "class": req.body.class, "admin": { $lt: "5" } }).sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
         if (err) {
             res.send(err);
         } else {
@@ -467,7 +467,7 @@ app.post('/get_top_5_in_class', function (req, res) {
 });
 
 app.post('/get_top_5', function (req, res) {
-    User.find({ "admin": { $gte: "5" } }).sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
+    User.find({ "admin": { $lt: "5" } }).sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
         if (err) {
             res.send(err);
         } else {
@@ -500,7 +500,7 @@ app.post('/add_users', function (req, res) {
 })
 
 app.post('/get_class_users', function (req, res) {
-    User.find({ "class": req.body.class, "admin": { $gte: "5" } }, function (err, users) {
+    User.find({ "class": req.body.class, "admin": { $lt: "5" } }, function (err, users) {
         if (err) {
             res.send(err);
         } else {
