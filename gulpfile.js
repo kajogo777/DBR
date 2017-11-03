@@ -5,6 +5,7 @@ var gulp = require('gulp');
 var karma = require('karma').server;
 var argv = require('yargs').argv;
 var $ = require('gulp-load-plugins')();
+var bower = require('gulp-bower');
 
 gulp.task('styles', function() {
   return gulp.src('app/styles/main.less')
@@ -151,7 +152,7 @@ gulp.task('builddist', ['jshint', 'html', 'images', 'fonts', 'extras'],
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
-gulp.task('build', ['clean'], function() {
+gulp.task('build', ['clean', 'bower'], function() {
   gulp.start('builddist');
 });
 
@@ -168,6 +169,10 @@ gulp.task('serveprod', function() {
   });
 });
 
-gulp.task('heroku:',['build'], function(){
+gulp.task('heroku:', ['build'], function(){
   console.log('herokuduction');
+});
+
+gulp.task('bower', function() {
+  return bower();
 });
