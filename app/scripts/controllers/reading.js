@@ -10,7 +10,10 @@
 angular.module('yapp')
   .controller('readingCtrl', function ($scope, $location, $http, $window, $state, $sce, $document, toastr) {
     $scope.user = JSON.parse($window.localStorage.getItem("user"));
-    $scope.levelCelebrate= false;
+   $scope.levelCelebrate= false;
+   $scope.trophyCelebrate= false;
+   $scope.newTrophy= undefined;
+   $scope.celebrations=[];
 
     $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).then(function(response){
       console.log(response.data);
@@ -40,20 +43,25 @@ angular.module('yapp')
 
         $scope.reading = response.data.reading;
 
-        if(response.data.LevelChanged != undefined){
-          toastr.success("Congrats ... You leveled up !!");
-          $scope.levelCelebrate= true;
-        }
         if(response.data.newTrophy != undefined){
-          toastr.info("Congrats ... New Trophy for " +response.data.newTrophy.title+ " !");
-          toastr.success("You got "+response.data.newTrophy.points+" points from the new trophy");
+          //toastr.info("Congrats ... New Trophy for " +response.data.newTrophy.title+ " !");
+         // toastr.success("You got "+response.data.newTrophy.points+" points from the new trophy");
+          $scope.celebrations.push("trophyCelebration");
+          $scope.newTrophy= response.data.newTrophy;
         }
+
+        if(response.data.LevelChanged != undefined){
+          // toastr.success("Congrats ... You leveled up !!");
+          //$scope.levelCelebrate= true;
+          $scope.celebrations.push("levelCelebration");
+        }
+
         
        };
       // var audioElement = angular.element( document.querySelector( '#audio' ) );
       // audioElement.src = response.data.sound;
       // audioElement.play(); 
-
+      $scope.checkCelebration();
     });
     $scope.getAudioUrl = function (sound) {
       return $sce.trustAsResourceUrl(sound);
@@ -70,14 +78,20 @@ angular.module('yapp')
         if(response.data.question_score != undefined){
             toastr.success("+"+response.data.question_score+" points.");
         }
-        if(response.data.LevelChanged != undefined){
-          toastr.success("Congrats ... You leveled up !!");
-          $scope.levelCelebrate= true;
-        }
+
         if(response.data.newTrophy != undefined){
-          toastr.info("Congrats ... New Trophy for " +response.data.newTrophy.title+ " !");
-          toastr.success("You got "+response.data.newTrophy.points+" points from the new trophy");
+          // toastr.info("Congrats ... New Trophy for " +response.data.newTrophy.title+ " !");
+          // toastr.success("You got "+response.data.newTrophy.points+" points from the new trophy");
+          $scope.celebrations.push("trophyCelebration");
+          $scope.newTrophy= response.data.newTrophy;
+         }
+
+        if(response.data.LevelChanged != undefined){
+         // toastr.success("Congrats ... You leveled up !!");
+         // $scope.levelCelebrate= true;
+         $scope.celebrations.push("levelCelebration");
         }
+        
         if(response.data.question_score == undefined){
           toastr.error("Wrong answer :(");
       }
@@ -110,6 +124,8 @@ angular.module('yapp')
         }
       }
 
+
+
     };
 
 
@@ -120,11 +136,22 @@ angular.module('yapp')
         }
       }
       
+      $scope.checkCelebration();
     }
 
 
-    $scope.closeLevelCelebration= function(){
+    $scope.checkCelebration= function(){
+      console.log($scope.celebrations);
       $scope.levelCelebrate= false;
+      $scope.trophyCelebrate= false;
+
+      if($scope.celebrations[0]=="trophyCelebration") 
+      $scope.trophyCelebrate= true; 
+
+      if($scope.celebrations[0]=="levelCelebration")
+        $scope.levelCelebrate= true;
+
+      $scope.celebrations.shift();  
     }
 
     // toastr.success('Hello world!', 'Toastr fun!');

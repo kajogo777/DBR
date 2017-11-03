@@ -27,16 +27,22 @@
 			}
 		</style>
 
-			<div class="celebration"  ng-if="levelCelebrate">
+			<div class="celebration"  ng-if="levelCelebrate || trophyCelebrate">
 
 				<div class="div-block-2">
-					<img class="image" src="images/LevelUp.gif">
-					<h1 class="heading-3">
+					<img ng-if="levelCelebrate" class="image" src="images/LevelUp.gif">
+					<img ng-if="trophyCelebrate" class="image" style="width:25%;margin-bottom: -6%;" src="images/trophy.gif">
+					<h1 class="heading-3" ng-if="levelCelebrate">
 						<strong>You are now at</strong>
 						<br>
 						<strong>LEVEL {{user.level +1}}</strong>
 					</h1>
-					<a class="button-2 w-button" ng-click="closeLevelCelebration()">OK</a>
+					<h3 class="heading-3" style="font-size:40px;" ng-if="trophyCelebrate">
+						<strong>Congratulations!! You got {{newTrophy.points}} points for having a new Trophy:</strong>
+						<br>
+						<strong>{{newTrophy.title}}</strong>
+					</h3>
+					<a class="button-2 w-button" ng-click="checkCelebration()">OK</a>
 				</div>
 
 			</div>
