@@ -3,3 +3,4 @@ node_modules/
 gen/
 docs/
 bower_components/
+dist/
