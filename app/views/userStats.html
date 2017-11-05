@@ -21,8 +21,11 @@
 			</div>
 			<div class="container">
 				<!-- calendar -->
-				<h1 class="text-center">{{ user.name }}</h1>
-				<div class="col-md-6 text-center">
+				<h1 class="text-center" style=" text-transform: uppercase;">{{ user.name }}</h1>
+				<div class="col-md-6 text-center" style="background-color: darkviolet;
+				padding: 15px;
+				border-radius: 33px;
+				box-shadow: 3px 3px 13px 0 #fff;">
 
 					<h2 class="text-center">{{ calendarTitle }}</h2>
 					<div class="row">
@@ -72,12 +75,12 @@
 
 						mwl-calendar .cal-day-weekend span[data-cal-date] {
 							color: #fff;
-							opacity: 1;
+							opacity: 1!important;
 						}
 
 						span.pull-right.ng-binding{
 							color: #fff!important;
-							opacity: 1;
+							opacity: 1!important;
 						}
 
 						mwl-calendar .cal-day-today {
@@ -103,9 +106,14 @@
 						 <li>Total Number of Readings: {{user.reading_dates.length}}</li>
 						 <li>Number of Readings in a row: {{user.row_readings_count}}</li>
 						 <li>Number of Answered Questions: {{user.answered_questions.length}}</li>
-						 <li>Number of Correct Questions: {{correctAnswers}}</li>
-						 <li>% of Correct Questions: {{correctAnswers/user.answered_questions.length*100}}%</li>
-						 <li>Number of Correct Questions in a row: {{user.row_correct_answer_count}}</li>
+						 <li>Number of Correct Answers: {{correctAnswers}}</li>
+						 <li>% of Correct Answers: {{correctAnswers/user.answered_questions.length*100}}%</li>
+						 <li>Correct Answers in a row: {{user.row_correct_answer_count}}</li>
+						 <li>Trophies:
+							 <ul style="font-size:25px">
+								 <li ng-repeat="trophy in user.trophies">{{trophy.trophy.title}}</li>
+							 </ul>
+						 </li>
 					 </ul>
 				</div>
 

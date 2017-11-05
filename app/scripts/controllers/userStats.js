@@ -32,7 +32,7 @@ angular.module('yapp')
                 title: "reading "+ reading_number,
                 startsAt: new Date($scope.user.reading_dates[i]),
                 color: { // can also be calendarConfig.colorTypes.warning for shortcuts to the deprecated event types
-                  primary: 'green', // the primary event color (should be darker than secondary)
+                  primary: '#26ff26', // the primary event color (should be darker than secondary)
                   secondary: '#fdf1ba' // the secondary event color (should be lighter than primary)
                 },
                 allDay: true,
