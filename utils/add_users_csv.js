@@ -18,12 +18,15 @@ Example file showing all file rules:
     #first column
     St. Andrew,,
     
-    #Full Name, #username, #password
-    John Doe, john.doe, 1234
-    Foo Bar, foo.bar, abc
+    #Full Name, #username, #birthday
+    John Doe, john.doe, 31/12/2005
+    Foo Bar, foo.bar, 05/06/2006
     ,,
     ,,
     ,,
+    #birthday separator is a '/'
+    #birthday is dd/mm/yyyy (with leading zeroes)
+    #username should not have spaces (not checked here (todo))
 */
 
 var fs = require('fs');
@@ -108,13 +111,20 @@ if(args.length !== 1){
             }else if(birthday.length === 0){
                 exit_error('bad birthday', line_number, input_filename);
             }
+            //break down birthday
+            var parts, year, month, day;
+            parts = birthday.split('/');
+            day = parts[0];
+            month = parts[1];
+            year = parts[2];
             //add user to temp list
             var user = new User();
             user.name = full_name;
             user.username = user_name;
-            user.password = birthday.split('/')[0] + birthday.split('/')[1];
+            user.password = day + month;
             user.class = class_name;
-            user.admin = -5; //todo: temp, for easy deletion in db
+            user.admin = -5; //todo: temp, for easy deletion in db 
+            user.birthday = new Date(Date.UTC(year, month-1, day));
             user_list.push(user);
         }
     }
@@ -124,7 +134,7 @@ if(args.length !== 1){
         console.log('Found (' + user_list.length + ') users in file (' +
             input_filename + ')', ', Class name: ' + class_name);
         //console.log(user_list);
-        pushToDatabase();
+        pushToDatabase(); //todo: uncomment
     }
 }
 
