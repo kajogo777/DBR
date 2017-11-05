@@ -64,7 +64,7 @@ if(args.length !== 1){
     var input_lines = input.split(os.EOL);
     var class_name;
     var user_list = [];
-    for(i=0; i<input_lines.length; i++){
+    for(var i=0; i<input_lines.length; i++){
         //ignore comments (comments are *whole* lines that start with #)
         var line = input_lines[i].trim();
         var line_number = i+1;
@@ -113,6 +113,7 @@ if(args.length !== 1){
                 exit_error('bad birthday', line_number, input_filename);
             }
             //break down birthday
+            //todo feature: handle wrong dates
             var parts, year, month, day;
             parts = birthday.split('/');
             day = parts[0].trim();
@@ -158,22 +159,37 @@ function pushToDatabase(){
             console.log('Connected to MongoDB...');
         }
     });
-    User.collection.insert(user_list, function(err){
-        if(err){
-            //to test this: try to insert one object
-            //with duplicate _id
-            console.log(err);
-            console.log('Error on inserting users to db...');
-            console.log('Aborting...');
-            conn.disconnect();
-        }else{
-            console.log('Finished inserting users');
-            console.log('No guarantee that there were no errors!');
-            //todo feature: check for insertion errors, probably by
-            //default if one of the objects in list gives an error,
-            //the remaining objects are inserted normally
-            conn.disconnect();
-        }
+    var num_inserted = 0;
+    var num_failed = 0;
+    var promise_list = [];
+    for(var j=0; j<user_list.length; j++){
+        var promise = user_list[j].save(function(err, user, numAffected){
+            if(err){
+                console.log('Failed: ' + err.message);
+                num_failed += 1;
+            }else{
+                num_inserted += numAffected;
+                console.log('User saved: ' + user.name + ', ' + user.username);
+            }
+        })
+        //used only to signal when all promises 'finish' whether
+        //resolved or rejected, to print total numbers and close
+        //connection
+        var promise_catch = promise.catch(function(err){
+            return err;
+        });
+        promise_list.push(promise_catch);
+    }
+    Promise.all(promise_list).then(function(results){
+        console.log('Finished inserting users...');
+        console.log('Inserted: ' + num_inserted + ' out of ' + user_list.length + ' total users in file');
+        console.log('Failed:   ' + num_failed + ' out of ' + user_list.length + ' total users in file');
+        conn.disconnect();
+        console.log('Disconnected from MongoDB');
+    }).catch(function(err){
+        console.log('Unexpected error');
+        conn.disconnect();
+        console.log('Disconnected from MongoDB');
     });
 }
 
