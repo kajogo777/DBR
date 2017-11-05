@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="readings/questionMcq/questionMcq.css">
     <link rel="stylesheet" href="readings/questionEssay/questionEssay.css">
     <link rel="stylesheet" type="text/css" href="../bower_components/angular-material/angular-material.css" />
+    <link href="../bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css" rel="stylesheet">
     <!-- endbuild -->
   </head>
   <body ng-app="yapp">
@@ -52,6 +53,11 @@
     <![endif]-->
     <!-- endbuild -->
     
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="../bower_components/angular/angular.js"></script>
@@ -64,6 +70,7 @@
     <script src="../bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
     <script src="../bower_components/snapjs/snap.js"></script>
     <script src="../bower_components/angular-snap/angular-snap.js"></script>
+    <script src="../bower_components/moment/moment.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     
@@ -80,12 +87,10 @@
     <script src="scripts/controllers/history.js"></script>
     <script src="scripts/controllers/trophies.js"></script>
     <script src="scripts/controllers/gifts.js"></script>
+    <script src="scripts/controllers/userStats.js"></script>
 
     
-    <script
-    src="https://code.jquery.com/jquery-3.2.1.min.js"
-    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous"></script>
+    
 
     <!-- Reading Manager related files -->
 		<!-- Modules -->

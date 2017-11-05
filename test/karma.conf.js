@@ -25,6 +25,7 @@ module.exports = function(config) {
       '../bower_components/angular-toastr/dist/angular-toastr.tpls.js',
       '../bower_components/snapjs/snap.js',
       '../bower_components/angular-snap/angular-snap.js',
+      '../bower_components/moment/moment.js',
       // endbower
       '../app/scripts/**/*.js',
       //'../test/mock/**/*.js',

@@ -68,9 +68,13 @@
 				
 				<div class="row text-center" style="padding-top:20px;display: -webkit-inline-box;">
 
-							<div class="text-center pd" style="padding-top:20px">
-									<a ui-sref="history" class="btn btn-primary btn-lg btn-white">My History</a>
-							</div>
+						<div class="text-center pd" style="padding-top:20px">
+							<a ui-sref="userStats({id:user._id})" class="btn btn-primary btn-lg btn-white">Statistics <i class="glyphicon glyphicon-stats"></i></a>
+						</div>	
+
+						<div class="text-center pd" style="padding-top:20px">
+									<a ui-sref="history" class="btn btn-primary btn-lg btn-white">History <i class="glyphicon glyphicon-time"></i></a>
+						</div>
 
 						<div class="text-center pd" style="padding-top:20px">
 								<a ui-sref="trophies" class="btn btn-primary btn-lg btn-white">Trophies <i class="glyphicon glyphicon-tower"></i></a>
