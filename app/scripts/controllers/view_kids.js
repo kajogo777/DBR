@@ -32,5 +32,22 @@ angular.module('yapp')
          
         }
 
+        $scope.edit_user = function(kid){
+          var name = prompt("Edit name : ", kid.name);
+          var username = prompt("Edit username : ", kid.username);
+          var password = prompt("Edit password : ", kid.password);
+          
+          if(name != null)
+            kid.name = name;
+          if(username != null)
+            kid.username = username;
+          if(password != null)
+            kid.password = password;
+
+          $http.post($window.localStorage.getItem("base_url")+"/update_user",{"id":kid._id,"name":kid.name,"username":kid.username,"password":kid.password }).then(function(response){
+              toastr.success(name+" updated");
+          });
+        }
+
     });
 

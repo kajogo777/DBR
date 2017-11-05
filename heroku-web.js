@@ -510,6 +510,15 @@ app.post('/delete_user', function (req, res) {
     })
 })
 
+app.post('/update_user', function (req, res) {
+    User.update({"_id":req.body.id},{"name":req.body.name,"username":req.body.username,"password":req.body.password} ).exec(function (err, status) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(status);
+        }
+    })
+})
 
 app.post('/get_class_users', function (req, res) {
     User.find({ "class": req.body.class, "admin": { $lt: "5" } }, function (err, users) {
