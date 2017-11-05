@@ -499,6 +499,18 @@ app.post('/add_users', function (req, res) {
     });
 })
 
+
+app.post('/delete_user', function (req, res) {
+    User.findById(req.body.id ).remove().exec(function (err, status) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(status);
+        }
+    })
+})
+
+
 app.post('/get_class_users', function (req, res) {
     User.find({ "class": req.body.class, "admin": { $lt: "5" } }, function (err, users) {
         if (err) {

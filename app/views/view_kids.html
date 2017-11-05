@@ -31,14 +31,14 @@
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr ng-repeat="kid in myKids">
+				      <tr ng-repeat="kid in myKids track by $index">
 				        <th>{{kid.name}}</th>
 								<th>{{kid.username}}</th>
 								<th>{{kid.password}}</th>
 				        <th>{{kid.total_score}}</th>
 								<th>{{kid.level}}</th>
 								<th>{{kid.reading_dates.length}}</th>
-				      	<th><button ng-click="edit_user(kid)" class="btn btn-xs btn-success">edit</button> | <button ng-click="delete_user(kid)" class="btn btn-xs btn-danger">delete</button></th>
+				      	<th><button ng-click="edit_user(kid)" class="btn btn-xs btn-success">edit</button> | <button ng-click="delete_user(kid._id,$index,kid.name)" class="btn btn-xs btn-danger">delete</button></th>
 				      </tr>
 				      
 				    </tbody>
