@@ -18,12 +18,16 @@ Example file showing all file rules:
     #first column
     St. Andrew,,
     
-    #Full Name, #username, #password
-    John Doe, john.doe, 1234
-    Foo Bar, foo.bar, abc
+    #Full Name, #username, #birthday
+    John Doe, john.doe, 31/12/2005
+    Foo Bar, foo.bar, 05/06/2006
     ,,
     ,,
     ,,
+    #birthday separator is a '/'
+    #birthday is d/m/yyyy
+    #birthday day and month with OR without leading zeroes
+    #username should not have spaces (not checked here (todo feature))
 */
 
 var fs = require('fs');
@@ -108,13 +112,27 @@ if(args.length !== 1){
             }else if(birthday.length === 0){
                 exit_error('bad birthday', line_number, input_filename);
             }
+            //break down birthday
+            var parts, year, month, day;
+            parts = birthday.split('/');
+            day = parts[0].trim();
+            if(day.length < 2){
+                day = '0' + day;
+            }
+            month = parts[1].trim();
+            if(month.length < 2){
+                month = '0' + month;
+            }
+            year = parts[2].trim();
+            
             //add user to temp list
             var user = new User();
             user.name = full_name;
             user.username = user_name;
-            user.password = birthday.split('/')[0] + birthday.split('/')[1];
+            user.password = day + month;
+            user.birthday = new Date(Date.UTC(year, month-1, day));
             user.class = class_name;
-            user.admin = -5; //todo: temp, for easy deletion in db
+            user.admin = -5; //todo important: temp, for easy deletion in db
             user_list.push(user);
         }
     }
@@ -125,6 +143,8 @@ if(args.length !== 1){
             input_filename + ')', ', Class name: ' + class_name);
         //console.log(user_list);
         pushToDatabase();
+    }else{
+        console.log('Found no users in file (' + input_filename + ')');
     }
 }
 
@@ -149,9 +169,9 @@ function pushToDatabase(){
         }else{
             console.log('Finished inserting users');
             console.log('No guarantee that there were no errors!');
-            //todo: check for insertion errors, probably by default if
-            //one of the objects in list gives an error, the remaining
-            //objects are inserted normally
+            //todo feature: check for insertion errors, probably by
+            //default if one of the objects in list gives an error,
+            //the remaining objects are inserted normally
             conn.disconnect();
         }
     });
