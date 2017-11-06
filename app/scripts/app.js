@@ -23,7 +23,8 @@ var states = [
         { name: 'history', state: { url: '/history',templateUrl: 'views/history.html', controller: 'HistoryCtrl', parent: 'dashboard'}},
         { name: 'trophies', state: { url: '/trophies',templateUrl: 'views/trophies.html', controller: 'TrophiesCtrl', parent: 'dashboard'}},
         { name: 'gifts', state: { url: '/gifts',templateUrl: 'views/gifts.html', controller: 'GiftsCtrl', parent: 'dashboard'}},
-        { name: 'userStats', state: { url: '/userStats/:id',templateUrl: 'views/userStats.html', controller: 'UserStatsCtrl', parent: 'dashboard'}}
+        { name: 'userStats', state: { url: '/userStats/:id',templateUrl: 'views/userStats.html', controller: 'UserStatsCtrl', parent: 'dashboard'}},
+        { name: 'adminStats', state: { url: '/adminStats',templateUrl: 'views/adminStats.html', controller: 'AdminStatsCtrl', parent: 'dashboard'}}
     ];
    
 angular.module('yapp', [
@@ -34,7 +35,8 @@ angular.module('yapp', [
                 'ngMaterial',
 				'toastr',
                 'readings', //the Reading Manager module
-                'mwl.calendar'
+                'mwl.calendar',
+                'vAccordion'
             ])
         .config(function($stateProvider, $urlRouterProvider) {
             $urlRouterProvider.when('/dashboard', '/dashboard/home');

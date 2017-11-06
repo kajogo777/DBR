@@ -77,7 +77,7 @@ app.post('/get_user', function (req, res) {
 var Level = require("./Models/Level");
 app.post('/next_level', function (req, res) {
     console.log(req.body);
-    Level.findOne({ "number": req.body.level }, function (err, level) {
+    Level.findOne({ number: req.body.level }, function (err, level) {
         if (err) {
             return res.status(400);
         } else {
@@ -136,6 +136,9 @@ function AddPoints(user, points, callback) {//get user object and points to add 
             new_level = user.level + 1;
             new_level_score = new_level_score - level.needed_score;
             level_changed = true;
+
+            //updating level user counter
+            Level.updateOne({_id:level._id},{'$inc':{'users_count':'1'}},()=>{});
         }
         //adding score
         User.findOneAndUpdate({ "_id": user._id }, {
@@ -562,7 +565,7 @@ app.post('/get_class_users', function (req, res) {
 })
 
 app.get('/get_trophies', function (req, res) {
-    Trophy.find({},(err,trophies)=>{return res.send(trophies)})
+    Trophy.find().sort({type: 1, value: 1}).exec((err,trophies)=>{return res.send(trophies)})
 })
 
 app.get('/get_gifts', function (req, res) {
@@ -571,4 +574,8 @@ app.get('/get_gifts', function (req, res) {
 
 app.get('/get_all_users', function (req, res) {
     User.find((err,users)=>res.send(users));
+})
+
+app.get('/get_levels', function (req, res) {
+    Level.find().sort('number').exec((err,levels)=>res.send(levels));
 })

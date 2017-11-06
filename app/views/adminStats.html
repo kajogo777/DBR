@@ -1,0 +1,91 @@
+<div>
+	<div ng-include="'menu.html'"></div>
+	<!-- <snap-dragger></snap-dragger> -->
+	<snap-content snap-opt-tap-to-close="false" style="background-color:rgb(36, 3, 156)">
+
+		<!-- <a href="" snap-toggle="left" ng-click="menuOpen = !menuOpen">
+			<span class="menutoggle">
+				<i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+				<i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+			</span>
+		</a> -->
+
+		<div class="fr">
+			<h2>D.B.R
+				<small> Daily Bible Reading</small>
+			</h2>
+		</div>
+		<div class="jumbotron">
+			<div class="row text-center" style="padding-top:20px">
+
+			</div>
+			<div class="container">
+				
+				<h2 class="text-center" style=" text-transform: uppercase;">Readings Statistics</h2>
+
+				<v-accordion class="vAccordion--default" >	
+						  <!-- add expanded attribute to open the section -->
+						  <v-pane ng-repeat="reading in readings">
+							<v-pane-header>
+							  ({{reading.number}})  {{reading.shahed}} 
+							  <span style="float:right;padding-right:20px">users counter: {{reading.users_count}}</span>
+
+							</v-pane-header>
+						
+							<v-pane-content>
+								<span style="direction: rtl;text-align: -webkit-right;display: -webkit-box;">{{reading.content}}</span>
+								<br>
+								<br>
+								<strong>Questions</strong>
+								<div ng-repeat="question in reading.questions">
+									♦{{question.question}}
+									<br>
+									Answered {{question.answers_count}} times, with correct answers {{question.correct_answers_count/question.answers_count*100}}%	
+									<br>
+								</div>
+							</v-pane-content>
+						  </v-pane>
+						
+						</v-accordion>
+
+
+				<h2 class="text-center" style=" text-transform: uppercase;">Trophies Statistics</h2>
+				<div>
+						<div ng-repeat="trophy in trophies">
+							♦{{trophy.title}} : {{trophy.users_count}} users
+							<br>	
+						</div>
+				</div>
+
+				<h2 class="text-center" style=" text-transform: uppercase;">Levels Statistics</h2>
+				<div>	
+						♦ Level 1 : all users
+						<br>	
+						<div ng-repeat="level in levels">
+							♦ Level {{level.number}} : {{level.users_count}} users
+							<br>	
+						</div>
+				</div>
+						
+				<h2 class="text-center">
+					<a ui-sref="home" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Home
+						<span class="glyphicon glyphicon-home"></span>
+					</a>
+				</h2>
+
+			</div>
+
+		</div>
+
+	</snap-content>
+</div>
+
+<style>
+	.submit-btn {
+		font-size: 54px;
+		margin-left: auto;
+		margin-right: auto;
+		display: -webkit-box;
+		margin-top: 20px;
+	}
+</style>

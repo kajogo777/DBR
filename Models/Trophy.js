@@ -3,8 +3,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema({
         type:{type:String},
         title:{type:String},
-        points:{type:String},
-        value:{type:String},
+        points:{type:Number},
+        value:{type:Number},
         users_count:{type:Number,default:0}
 })
 
