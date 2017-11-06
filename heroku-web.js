@@ -177,6 +177,9 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
                             date: new Date(Date.now())
                         }
                         trophy_score = trophies[i].points;
+                        //update trophy user counter
+                        Trophy.updateOne({_id:trophies[i]._id},{'$inc':{'users_count':'1'}},()=>{});
+
                         AddPoints(user, trophy_score, function (err, user, LevelChanged ){
                             User.findOneAndUpdate({_id:user._id},{ $push: { "trophies": user_new_trophy } },(err,user)=>{
                                 callback(err,user,trophies[i],LevelChanged);
@@ -204,6 +207,10 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
                             date: new Date(Date.now())
                         }
                         trophy_score = trophies[i].points;
+
+                        //update trophy user counter
+                        Trophy.updateOne({_id:trophies[i]._id},{'$inc':{'users_count':'1'}},()=>{});
+
                         AddPoints(user, trophy_score, function (err, user, LevelChanged ){
                             User.findOneAndUpdate({_id:user._id},{ $push: { "trophies": user_new_trophy } },(err,user)=>{
                                 callback(err,user,trophies[i],LevelChanged);
@@ -231,6 +238,10 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
                             date: new Date(Date.now())
                         }
                         trophy_score = trophies[i].points;
+
+                        //update trophy user counter
+                        Trophy.updateOne({_id:trophies[i]._id},{'$inc':{'users_count':'1'}},()=>{});
+
                         AddPoints(user, trophy_score, function (err, user, LevelChanged ){
                             User.findOneAndUpdate({_id:user._id},{ $push: { "trophies": user_new_trophy } },(err,user)=>{
                                 callback(err,user,trophies[i],LevelChanged);
@@ -335,7 +346,7 @@ app.get('/get_reading/:id', function (req, res) {
 })
 
 app.get('/get_readings', function (req, res) {
-    Reading.find({}, ['number', 'shahed'], (err, readings) => { return res.send(readings) })
+    Reading.find({}, (err, readings) => { return res.send(readings) })
 })
 
 app.post('/update_reading', function (req, res) {
@@ -370,7 +381,14 @@ app.post('/check_answer', function (req, res) {
                             // console.log(req.body.question_id);
                             // console.log(reading.questions[j].score);
                             if (req.body.question_id == reading.questions[j].id) {
-                                if (reading.questions[j].answer == req.body.choice) {
+                                //if correct answer
+                                if (reading.questions[j].answer == req.body.choice) { 
+
+                                    //update question counters in reading model (inc answers counter and correct answer counter)
+                                    Reading.updateOne({'questions.id': req.body.question_id},{'$inc': {
+                                        'questions.$.answers_count': '1',
+                                        'questions.$.correct_answers_count': '1'
+                                    }},()=>{});
 
                                     var question = {
                                         question_id: req.body.question_id,
@@ -403,8 +421,13 @@ app.post('/check_answer', function (req, res) {
                                             })
                                         })
                                     });
+                                    
+                                } else {// if wrong answer
+                                    //update question counter in reading model (inc answers counter)
+                                    Reading.updateOne({'questions.id': req.body.question_id},{'$inc': {
+                                        'questions.$.answers_count': '1'
+                                    }},()=>{});
 
-                                } else {
                                     //pushing that the answer was wrong
                                     var question = {
                                         question_id: req.body.question_id,
@@ -536,4 +559,8 @@ app.get('/get_trophies', function (req, res) {
 
 app.get('/get_gifts', function (req, res) {
     Gift.find({}).sort('level').exec((err,gifts)=>{return res.send(gifts)})
+})
+
+app.get('/get_all_users', function (req, res) {
+    User.find((err,users)=>res.send(users));
 })

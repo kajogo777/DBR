@@ -13,7 +13,9 @@ var Schema = mongoose.Schema({
         choices: [],
         type: {type:String},
         score: {type:String},
-        id:{type:String}
+        id:{type:String},
+        answers_count: {type:Number,default:0},
+        correct_answers_count:  {type:Number,default:0}
       }
     ]
 })
