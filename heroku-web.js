@@ -293,13 +293,21 @@ app.post('/get_today_reading', function (req, res) {
                         row_readings_count++;    
 
                     User.updateOne({ '_id': user._id }, {'row_readings_count':row_readings_count, $push: { "reading_dates": Today } }, (err, u) => { });
+
+                    //update Reading users counter
+                     Reading.updateOne({"number": readings_num},{'$inc':{'users_count':'1'}},()=>{});
                 }
             } else { // if first time to read
                 row_readings_count=1; 
                 readings_num++;
                 User.updateOne({ '_id': user._id }, {'row_readings_count':row_readings_count, $push: { "reading_dates": Today } }, (err, u) => { console.log(u) });
+
+                 //update Reading users counter
+                 Reading.updateOne({"number": readings_num},{'$inc':{'users_count':'1'}},()=>{});
             }
             
+           
+
             CheckTrophies(user,"reading_row",function(err,user,newTrophy1,LevelChanged1){
                 CheckTrophies(user,"reading_days",function(err,user,newTrophy2,LevelChanged2){
                     Reading.findOne({

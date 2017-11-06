@@ -6,6 +6,7 @@ var Schema = mongoose.Schema({
     shahed:{type:String},
     content:{type:String},
     sound:{type:String},
+    users_count: {type:Number,default:0},
     questions:[
       {
         question: {type:String},
