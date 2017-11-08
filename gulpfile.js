@@ -112,7 +112,11 @@ gulp.task('test', function(done) {
 gulp.task('wiredep', function() {
   var wiredep = require('wiredep').stream;
   var exclude = [
-    'bootstrap',
+	//the first slash '/' in '/bootstrap' to avoid
+	//excluding angular-bootstrap-calendar too
+	//see link (about grunt but it works):
+	//https://github.com/stephenplusplus/grunt-wiredep/issues/72
+    '/bootstrap',
     'jquery',
     'es5-shim',
     'json3',
