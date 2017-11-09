@@ -77,7 +77,7 @@ app.post('/get_user', function (req, res) {
 var Level = require("./Models/Level");
 app.post('/next_level', function (req, res) {
     console.log(req.body);
-    Level.findOne({ number: req.body.level }, function (err, level) {
+    Level.findOne({ "number": req.body.level }, function (err, level) {
         if (err) {
             return res.status(400);
         } else {
