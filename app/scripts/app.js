@@ -46,3 +46,28 @@ angular.module('yapp', [
                 $stateProvider.state(state.name, state.state);
             });
         });
+  
+
+//disable caching
+        function configureTemplateFactory($provide) {
+            // Set a suffix outside the decorator function 
+            var cacheBuster = Date.now().toString();
+        
+            function templateFactoryDecorator($delegate) {
+                var fromUrl = angular.bind($delegate, $delegate.fromUrl);
+                $delegate.fromUrl = function (url, params) {
+                    if (url !== null && angular.isDefined(url) && angular.isString(url)) {
+                        url += (url.indexOf("?") === -1 ? "?" : "&");
+                        url += "v=" + cacheBuster;
+                    }
+        
+                    return fromUrl(url, params);
+                };
+        
+                return $delegate;
+            }
+        
+            $provide.decorator('$templateFactory', ['$delegate', templateFactoryDecorator]);
+        }
+        
+        angular.module('yapp').config(['$provide', configureTemplateFactory]);
