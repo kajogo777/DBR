@@ -32,7 +32,10 @@
 								<h2 class="heading-4">Level {{level}}</h2>
 								<div class="gifts-container">
 								  <div class="gift-holder" ng-repeat="gift in gifts" ng-if="level>=gift.level">
-									  <img class="image-2 image-3" sizes="(max-width: 767px) 15vw, 100px" src="{{gift.image}}" >
+                    <a href="{{gift.image}}"target="new">
+                        <img class="image-2 image-3" sizes="(max-width: 767px) 15vw, 100px" src="{{gift.image}}" >
+                    </a>
+									  
 									<div><strong class="bold-text">{{gift.title}}</strong></div>
 								  </div>
 								</div>
