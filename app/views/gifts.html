@@ -33,7 +33,7 @@
 								<div class="gifts-container">
 								  <div class="gift-holder" ng-repeat="gift in gifts" ng-if="level>=gift.level">
                     <a href="{{gift.image}}"target="new">
-                        <img class="image-2 image-3" sizes="(max-width: 767px) 15vw, 100px" src="{{gift.image}}" >
+                        <img class="image-2 image-3" sizes="(max-width: 767px) 15vw, 100px" src="{{gift.image}}" style="cursor:{{level==user.level?'default':'no-drop'}};" >
                     </a>
 									  
 									<div><strong class="bold-text">{{gift.title}}</strong></div>
