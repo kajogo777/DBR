@@ -10,38 +10,58 @@
 angular.module('yapp')
   .controller('readingCtrl', function ($scope, $location, $http, $window, $state, $sce, $document, toastr) {
     $scope.user = JSON.parse($window.localStorage.getItem("user"));
-    $scope.reading = undefined;
-    $scope.date = Date.now();
-    $scope.$state = $state;
+   $scope.levelCelebrate= false;
+   $scope.trophyCelebrate= false;
+   $scope.newTrophy= undefined;
+   $scope.celebrations=[];
 
-    $scope.menuItems = [];
-    angular.forEach($state.get(), function (item) {
-      if (item.data && item.data.visible) {
-        $scope.menuItems.push({ name: item.name, text: item.data.text });
+    $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).then(function(response){
+      console.log(response.data);
+      if(response.status==200){
+        $window.localStorage.setItem("user",JSON.stringify(response.data));
+        $scope.user=response.data;
+        $scope.answered_questions_ids= [];
+        for(var i=0;i<$scope.user.answered_questions.length;i++){
+          $scope.answered_questions_ids.push($scope.user.answered_questions[i].question_id);
+        }
+        console.log('answered_questions_ids: ', $scope.answered_questions_ids);
 
       }
     });
 
-    $http.post($window.localStorage.getItem("base_url") + "/get_today_reading", { user_id: $scope.user._id }).success(function (data, status) {
-      console.log(data);
-      if (status == 200) {
-        if (data.sound && data.sound != "")
-          data.sound = $scope.getAudioUrl(data.sound);
-        // for(var question in data.questions){
-        //   question.disabled= "";
-        //   for(var user_ans_question in $scope.user.answered_questions){
-        //     if(question.id==user_answered_question.question_id){
-        //       question.disabled= "disabled";
-        //       break;
-        //     }
-        //   }
-        // }
-        $scope.reading = data;
-      };
-      // var audioElement = angular.element( document.querySelector( '#audio' ) );
-      // audioElement.src = data.sound;
-      // audioElement.play(); 
+    $scope.reading = undefined;
+    $scope.date = Date.now();
+    $scope.$state = $state;
 
+   
+
+    $http.post($window.localStorage.getItem("base_url") + "/get_today_reading", { user_id: $scope.user._id }).then(function (response) {
+      console.log(response.data);
+      if (response.data.reading != undefined) {
+        if (response.data.reading.sound && response.data.reading.sound != "")
+          response.data.sound = $scope.getAudioUrl(response.data.sound);
+
+        $scope.reading = response.data.reading;
+
+        if(response.data.newTrophy != undefined){
+          //toastr.info("Congrats ... New Trophy for " +response.data.newTrophy.title+ " !");
+         // toastr.success("You got "+response.data.newTrophy.points+" points from the new trophy");
+          $scope.celebrations.push("trophyCelebration");
+          $scope.newTrophy= response.data.newTrophy;
+        }
+
+        if(response.data.LevelChanged != undefined){
+          // toastr.success("Congrats ... You leveled up !!");
+          //$scope.levelCelebrate= true;
+          $scope.celebrations.push("levelCelebration");
+        }
+
+        
+       };
+      // var audioElement = angular.element( document.querySelector( '#audio' ) );
+      // audioElement.src = response.data.sound;
+      // audioElement.play(); 
+      $scope.checkCelebration();
     });
     $scope.getAudioUrl = function (sound) {
       return $sce.trustAsResourceUrl(sound);
@@ -53,20 +73,40 @@ angular.module('yapp')
         var right_element = $document[0].getElementById("atag_"+question_index + "_" + i);
         right_element.className += " disabled";
       }
-      $http.post($window.localStorage.getItem("base_url") + "/check_answer", { "user_id": $scope.user._id, "question_id": question_id, "choice": input_answer, "reading_id": $scope.reading._id }).success(function (data, status) {
-        console.log(data);
-        if (status == 201) {
-          toastr.warning(data);
-        } else if (status == 202) {
-          toastr.success(data);
-        } else if (status == 203) {
-          toastr.error(data);
-        } else if (status == 204) {
-          toastr.success(data);
-          toastr.success("Congrats ... You leveled up !!");
-        } else {
-          console.log(data);
+      $http.post($window.localStorage.getItem("base_url") + "/check_answer", { "user_id": $scope.user._id, "question_id": question_id, "choice": input_answer, "reading_id": $scope.reading._id }).then(function (response) {
+        console.log(response.data);
+        if(response.data.question_score != undefined){
+            toastr.success("+"+response.data.question_score+" points.");
         }
+
+        if(response.data.newTrophy != undefined){
+          // toastr.info("Congrats ... New Trophy for " +response.data.newTrophy.title+ " !");
+          // toastr.success("You got "+response.data.newTrophy.points+" points from the new trophy");
+          $scope.celebrations.push("trophyCelebration");
+          $scope.newTrophy= response.data.newTrophy;
+         }
+
+        if(response.data.LevelChanged != undefined){
+         // toastr.success("Congrats ... You leveled up !!");
+         // $scope.levelCelebrate= true;
+         $scope.celebrations.push("levelCelebration");
+        }
+        
+        if(response.data.question_score == undefined){
+          toastr.error("Wrong answer :(");
+      }
+        // if (response.status == 201) {
+        //   toastr.warning(response.data);
+        // } else if (response.status == 202) {
+        //   toastr.success(response.data);
+        // } else if (response.status == 203) {
+        //   toastr.error(response.data);
+        // } else if (response.status == 204) {
+        //   toastr.success(response.data);
+        //   toastr.success("Congrats ... You leveled up !!");
+        // } else {
+        //   console.log(response.data);
+        // }
       });
       // console.log(input_answer+" "+question_id+" "+choice_id);
       //checking answer
@@ -84,8 +124,35 @@ angular.module('yapp')
         }
       }
 
+
+
     };
 
+
+    $scope.get_answered_question = function(question_id){
+      for(var i=0;i<$scope.user.answered_questions.length;i++){
+        if($scope.user.answered_questions[i].question_id==question_id){
+            return $scope.user.answered_questions[i];
+        }
+      }
+      
+      $scope.checkCelebration();
+    }
+
+
+    $scope.checkCelebration= function(){
+      console.log($scope.celebrations);
+      $scope.levelCelebrate= false;
+      $scope.trophyCelebrate= false;
+
+      if($scope.celebrations[0]=="trophyCelebration") 
+      $scope.trophyCelebrate= true; 
+
+      if($scope.celebrations[0]=="levelCelebration")
+        $scope.levelCelebrate= true;
+
+      $scope.celebrations.shift();  
+    }
 
     // toastr.success('Hello world!', 'Toastr fun!');
 

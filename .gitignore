@@ -2,3 +2,5 @@ node_modules/
 .tmp/
 gen/
 docs/
+bower_components/
+dist/

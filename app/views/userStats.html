@@ -1,0 +1,141 @@
+<div>
+	<div ng-include="'menu.html'"></div>
+	<!-- <snap-dragger></snap-dragger> -->
+	<snap-content snap-opt-tap-to-close="false" style="background-color:rgb(36, 3, 156)">
+
+		<!-- <a href="" snap-toggle="left" ng-click="menuOpen = !menuOpen">
+			<span class="menutoggle">
+				<i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+				<i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+			</span>
+		</a> -->
+
+		<div class="fr">
+			<h2>D.B.R
+				<small> Daily Bible Reading</small>
+			</h2>
+		</div>
+		<div class="jumbotron">
+			<div class="row text-center" style="padding-top:20px">
+
+			</div>
+			<div class="container">
+				<!-- calendar -->
+				<h1 class="text-center" style=" text-transform: uppercase;">{{ user.name }}</h1>
+				<div class="col-md-6 text-center" style="background-color: darkviolet;
+				padding: 15px;
+				border-radius: 33px;
+				box-shadow: 3px 3px 13px 0 #fff;">
+
+					<h2 class="text-center">{{ calendarTitle }}</h2>
+					<div class="row">
+						<div class="col-md-12 text-center">
+							<div class="btn-group">
+
+								<button class="btn btn-primary" mwl-date-modifier date="viewDate" decrement="calendarView" ng-click="cellIsOpen = false">
+									Previous
+								</button>
+								<button class="btn btn-default" mwl-date-modifier date="viewDate" set-to-today ng-click="cellIsOpen = false">
+									Today
+								</button>
+								<button class="btn btn-primary" mwl-date-modifier date="viewDate" increment="calendarView" ng-click="cellIsOpen = false">
+									Next
+								</button>
+							</div>
+						</div>
+					</div>
+					<style>
+						mwl-calendar .cal-cell.drop-active,
+						mwl-calendar .cal-day-hour-part.drop-active,
+						mwl-calendar .cal-week-box .cal-cell1.drop-active,
+						mwl-calendar .cell-focus,
+						mwl-calendar [class*=cal-cell] .drop-active,
+						mwl-calendar [class*=cal-cell]:hover {
+							background-color: rgb(36, 3, 156);
+						}
+
+						mwl-calendar .cal-row-fluid:hover,
+						mwl-calendar .cal-year-box .row:hover {
+							background-color: rgb(36, 3, 156);
+						}
+
+						.cal-week-box-cell {
+							visibility: hidden!important;
+						}
+
+						.events-list.ng-scope {
+							height: 100%;
+							width: 100%;
+						}
+
+						a.pull-left.event.ng-scope {
+							height: 100%;
+							width: 100%;
+						}
+
+						mwl-calendar .cal-day-weekend span[data-cal-date] {
+							color: #fff;
+							opacity: 1!important;
+						}
+
+						span.pull-right.ng-binding{
+							color: #fff!important;
+							opacity: 1!important;
+						}
+
+						mwl-calendar .cal-day-today {
+							background-color: #393c39;
+						}
+
+						.cal-month-box.ng-scope.cal-grid-7 {
+							width: 100%;
+						}
+					</style>
+					<!-- <div ui-calendar ng-model="readings" style="width: 80ex;"></div> -->
+					<mwl-calendar view="calendarView" view-date="viewDate" events="readings" view-title="calendarTitle" on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+					 cell-is-open="cellIsOpen" cell-auto-open-disabled="false" style="width:50%;">
+					</mwl-calendar>
+
+				</div>
+				<!-- end calendar -->
+
+				<div class="col-md-6">
+					 <ul style="font-size: 30px;padding-top: 100px;">
+						 <li>Total Score: {{user.total_score}}</li>
+						 <li>Level: {{user.level}}</li>
+						 <li>Total Number of Readings: {{user.reading_dates.length}}</li>
+						 <li>Number of Readings in a row: {{user.row_readings_count}}</li>
+						 <li>Number of Answered Questions: {{user.answered_questions.length}}</li>
+						 <li>Number of Correct Answers: {{correctAnswers}}</li>
+						 <li>% of Correct Answers: {{correctAnswers/user.answered_questions.length*100}}%</li>
+						 <li>Correct Answers in a row: {{user.row_correct_answer_count}}</li>
+						 <li>Trophies:
+							 <ul style="font-size:25px">
+								 <li ng-repeat="trophy in user.trophies">{{trophy.trophy.title}}</li>
+							 </ul>
+						 </li>
+					 </ul>
+				</div>
+
+				<h2 class="text-center">
+					<a ui-sref="home" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Home
+						<span class="glyphicon glyphicon-home"></span>
+					</a>
+				</h2>
+
+			</div>
+
+		</div>
+
+	</snap-content>
+</div>
+
+<style>
+	.submit-btn {
+		font-size: 54px;
+		margin-left: auto;
+		margin-right: auto;
+		display: -webkit-box;
+		margin-top: 20px;
+	}
+</style>

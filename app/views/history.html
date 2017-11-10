@@ -1,0 +1,54 @@
+<div>
+	<div ng-include="'menu.html'"></div>
+	<!-- <snap-dragger></snap-dragger> -->
+	<snap-content snap-opt-tap-to-close="false" style="background-color:#a15f83">
+
+		<!-- <a href="" snap-toggle="left" ng-click="menuOpen = !menuOpen">
+			<span class="menutoggle">
+				<i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+				<i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+			</span>
+		</a> -->
+
+		<div class="fr">
+			<h2>D.B.R<small> Daily Bible Reading</small></h2>
+		</div>
+		<!-- <span class="glyphicon glyphicon-plus bg-fade" style="position:fixed"></span> -->
+		<div class="jumbotron">
+			<div class="container">
+					<h1 ng-if="user!=undefined">Total Questions : {{user.answered_questions.length}}</h1>
+				<div class="row" ng-repeat="question in user.answered_questions" ng-if="user!=undefined">
+						<h2>{{question.date | date:'EEEE - d MMMM yyyy hh:mm a'}}</h2>
+						<div class="panel panel-default" style="text-align: -webkit-right;margin-top: 60px;" >
+							<div class="panel-heading">
+							  <h2 class="panel-title" style="font-size: 54px;display: -webkit-inline-box;">{{question.question}}</h2>					
+							  <span class="badge primary" style="float: left; font-size: 54px;
+							  background-color: #337ab7;">+{{question.score}}</span></a></li>
+							</div>
+						  </div>
+						 
+						  <div class="row"  ng-repeat="choice in question.choices " style="margin-right: 0px;margin-left: 0px;">
+							<p class="pull-right"  style="width: 100%;" id="{{$questionIndex}}_{{$index}}" >
+									<a  ng-if="question.user_answer==choice &&  question.is_right_answer == true"  style="font-size:31px;width: 100%;background-color:green" class="btn btn-lg btn-white disabled">{{choice}}</a>
+									<a  ng-if="question.user_answer==choice &&  question.is_right_answer == false"  style="font-size:31px;width: 100%;background-color:red" class="btn btn-lg btn-white disabled">{{choice}}</a>
+									<a  ng-if="question.is_right_answer == false && question.right_answer==choice"  style="font-size:31px;width: 100%;background-color:green" class="btn btn-lg btn-white disabled">{{choice}}</a>
+									<a  ng-if="question.user_answer!=choice &&  question.is_right_answer != choice && question.right_answer!=choice"  style="font-size:31px;width: 100%;" class="btn btn-lg btn-white disabled">{{choice}}</a>
+							</p> 
+					  </div>
+						
+
+				</div>
+
+
+				
+				<div class="row text-center" style="padding-top:20px">
+						<h2>
+							<a ui-sref="home" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Home <span class="glyphicon glyphicon-home"></span></a>
+						</h2>
+				</div>
+				
+
+			</div>
+		</div>
+	</snap-content>
+</div>

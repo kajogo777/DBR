@@ -20,20 +20,33 @@ angular.module('yapp')
             }
         });
 
-        $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).success(function(data,status){
-          console.log(data);
-          if(status==200){
-            $window.localStorage.setItem("user",JSON.stringify(data));
-            $scope.user=data;
+        $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).then(function(response){
+          console.log(response.data);
+          if(response.status==200){
+            $window.localStorage.setItem("user",JSON.stringify(response.data));
+            $scope.user=response.data;
           }
         });
 
-        $http.post($window.localStorage.getItem("base_url")+"/next_level",{"level":$scope.user.level+1}).success(function(data,status){
-          console.log(data);
-          if(status==200){
-            $scope.next_level=data;
+        $http.post($window.localStorage.getItem("base_url")+"/next_level",{"level":$scope.user.level+1}).then(function(response){
+          console.log(response.data);
+          if(response.status==200){
+            $scope.next_level=response.data;
           }
-        });  
+        });
+        $http.post($window.localStorage.getItem("base_url")+"/get_top_5").then(function(response){
+          if(response.status==200){
+            $scope.topKids=response.data;
+            console.log($scope.topKids);
+          }
+        });
+        $http.post($window.localStorage.getItem("base_url")+"/get_top_5_in_class",{"class":$scope.user.class}
+          ).then(function(response){
+          if(response.status==200){
+            $scope.topKidsInClass=response.data;
+            console.log($scope.topKids);
+          }
+        });    
 
         $scope.logout= function(){
           $window.localStorage.removeItem("user","");

@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('AddReadingCtrl', function($scope, $location,$http,$window,toastr) {
+  .controller('AddReadingCtrl', function($scope, $location,$http,$window, toastr) {
   
       
       $scope.add_reading = function(reading){
@@ -42,11 +42,11 @@ angular.module('yapp')
             return text;
         }
 
-        $http.post($window.localStorage.getItem("base_url")+"/add_reading",{"reading":reading}).success(function(data,status){
-          if(status==200){
-            toastr.success(data);
+        $http.post($window.localStorage.getItem("base_url")+"/add_reading",{"reading":reading}).then(function(response){
+          if(response.status==200){
+            toastr.success(response.data);
           }else{
-            toast.error(data);
+            toastr.error(response.data);
           }
         }); 
         console.log(reading);

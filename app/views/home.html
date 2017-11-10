@@ -31,8 +31,8 @@
 						</h1>
 					</div>
 
-					<div class="col-md-8" ng-if="next_level!=undefined">
-							<div class="progress progress-striped active" style="height:50px;margin-top: 100px;">
+					<div class="col-md-8" ng-if="next_level!=undefined" style="max-width:80%;width:63%;display:inline-block;">
+							<div class="progress progress-striped active" style="height:50px;margin-top: 13%;">
 									<div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" aria-valuenow="{{user.score}}" aria-valuemin="0" aria-valuemax="{{next_level.needed_score}}" style="width: {{(user.level_score/next_level.needed_score)*100}}%"><span style="width: 150px;
 										display: -webkit-inline-box;">{{next_level.needed_score-user.level_score}} points left</span></div>
 							</div>
@@ -57,16 +57,113 @@
 					</div>
 				</div>
 				<div class="clear"></div>
+
+
 				<div class="row text-center" style="padding-top:20px">
 						<h2>
 							<a ui-sref="reading" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Start Today's Reading? <span class="glyphicon glyphicon-book"></span></a>
 						</h2>
 				</div>
-				<div class="row text-center" style="padding-top:20px" ng-if="user.admin != undefined && user.admin == 'true'">
-					<p>
-						<a ui-sref="add_reading" class="btn btn-primary btn-lg btn-white">Add Reading</a>
-					</p>
+				<center>
+				
+				<div class="row text-center" style="padding-top:20px;display: -webkit-inline-box;">
+
+						<div class="text-center pd" style="padding-top:20px">
+							<a ui-sref="userStats({id:user._id})" class="btn btn-primary btn-lg btn-white">Statistics <i class="glyphicon glyphicon-stats"></i></a>
+						</div>	
+
+						<div class="text-center pd" style="padding-top:20px">
+									<a ui-sref="history" class="btn btn-primary btn-lg btn-white">History <i class="glyphicon glyphicon-time"></i></a>
+						</div>
+
+						<div class="text-center pd" style="padding-top:20px">
+								<a ui-sref="trophies" class="btn btn-primary btn-lg btn-white">Trophies <i class="glyphicon glyphicon-tower"></i></a>
+						</div>
+
+						<div class="text-center pd" style="padding-top:20px">
+								<a ui-sref="gifts" class="btn btn-primary btn-lg btn-white">Gifts <i class="glyphicon glyphicon-gift"></i></a>
+						</div>
+
 				</div>
+			
+
+
+				<div class="container">
+					<div class="row"></div>
+						<div class="col-md-6">
+							<h3>Family Top 5</h3>
+							<table class="table" >
+							    <thead>
+							      <tr>
+									<th>Rank</th>
+							        <th>Name</th>
+							        <th>Score</th>
+									<th>Level</th>
+									<th>Class</th>
+							      </tr>
+							    </thead>
+							    <tbody>
+							      <tr ng-repeat="kid in topKids  track by $index">
+									<th>{{$index+1}}</th>
+							        <th>{{kid.name}}</th>
+							        <th>{{kid.total_score}}</th>
+											<th>{{kid.level}}</th>
+											<th>{{kid.class}}</th>
+							      </tr>
+							      
+							    </tbody>
+							</table>
+						</div>
+						<div class="col-md-6">
+							<h3>My Class Top 5</h3>
+							<table class="table">
+							    <thead>
+							      <tr>
+									<th>Rank</th>
+							        <th>Name</th>
+							        <th>Score</th>
+									<th>Level</th>
+							      </tr>
+							    </thead>
+							    <tbody>
+							      <tr ng-repeat="kid in topKidsInClass track by $index">
+									<th>{{$index+1}}</th>
+							        <th>{{kid.name}}</th>
+							        <th>{{kid.total_score}}</th>
+											<th>{{kid.level}}</th>
+							      </tr>
+							      
+							    </tbody>
+							</table>
+						</div>
+					
+				</div>
+
+				<!-- bottom buttons -->
+				<center>
+				<div class="row text-center" style="padding-top:20px;display: -webkit-inline-box;">
+							<div class="text-center pd"  ng-if="user.admin != undefined && user.admin >=10">
+									<a ui-sref="adminStats" class="btn btn-primary btn-lg btn-white ">Admin Statistics</a>
+							</div>
+							<div class="text-center pd"  ng-if="user.admin != undefined && user.admin >=10">
+									<a ui-sref="readingManager" class="btn btn-primary btn-lg btn-white ">Reading Manager</a>
+							</div>
+							<div class="text-center pd"  ng-if="user.admin != undefined && user.admin >=5" >
+								<a ui-sref="view_kids" class="btn btn-primary btn-lg btn-white">My boys</a>
+							</div>
+							<div class="text-center pd"  ng-if="user.admin != undefined && user.admin >=5">
+								<p>
+									<a ui-sref="add_kids" class="btn btn-primary btn-lg btn-white ">Add Kids</a>
+								</p>
+							</div>
+				</div>
+				<style>
+					.pd{
+						padding-left: 10px!important;
+					}
+				</style>
+			</center>
+				
 				<div class="row text-center" style="padding-top:20px">
 					<p>
 						<a ng-click="logout()" class="btn btn-primary btn-lg btn-white">Logout</a>

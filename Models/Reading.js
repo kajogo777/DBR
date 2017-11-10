@@ -6,6 +6,7 @@ var Schema = mongoose.Schema({
     shahed:{type:String},
     content:{type:String},
     sound:{type:String},
+    users_count: {type:Number,default:0},
     questions:[
       {
         question: {type:String},
@@ -13,7 +14,9 @@ var Schema = mongoose.Schema({
         choices: [],
         type: {type:String},
         score: {type:String},
-        id:{type:String}
+        id:{type:String},
+        answers_count: {type:Number,default:0},
+        correct_answers_count:  {type:Number,default:0}
       }
     ]
 })

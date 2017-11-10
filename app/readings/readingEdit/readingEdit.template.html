@@ -1,0 +1,42 @@
+<h3>{{$ctrl.title}}</h3>
+<div dir="rtl">
+    <label>رقم اليوم</label>
+    <input type="text" ng-model="$ctrl.reading.number">
+    <br>
+    <label>الشاهد</label>
+    <input type="text" ng-model="$ctrl.reading.shahed">
+    <br>
+    <textarea ng-model="$ctrl.reading.content"></textarea>
+    <br>
+    <label>Sound Link</label>
+    <br>
+    <textarea placeholder="link" ng-model="$ctrl.reading.sound"></textarea>
+
+    <div ng-repeat="question in $ctrl.reading.questions">
+        <label>Question #{{$index+1}}</label>
+        <div ng-switch="question.type">
+            <question-mcq question="question" edit="true" ng-switch-when="mcq"></question-mcq>
+            <question-essay question="question" edit="true" ng-switch-when="essay"></question-essay>
+        </div>
+        <input type="button" value="Delete Question" tabindex="-1"
+            ng-click="$ctrl.reading.questionRemove($index)">
+        <input type="button" value="&#9660;" tabindex="-1"
+            ng-click="$ctrl.reading.questionMoveDown($index)">
+        <input type="button" value="&#9650;" tabindex="-1"
+            ng-click="$ctrl.reading.questionMoveUp($index)">
+    </div>
+    <br>
+
+    <select ng-model="$ctrl.new_question_type">
+        <option value="" disabled>-- Question Type --</option>
+        <option value="mcq">MCQ</option>
+        <option value="essay">Essay</option>
+    </select>
+    <input type="button" value="Add Question"
+        ng-click="$ctrl.questionAdd()">
+</div>
+
+<hr>
+<input type="button" value="Save" ng-click="$ctrl.save()" ng-disabled="!$ctrl.can_save">
+<input type="button" value="Discard" ng-click="$ctrl.discard()">
+<p ng-if="$ctrl.show_save_msg">{{$ctrl.save_msg}}</p>
