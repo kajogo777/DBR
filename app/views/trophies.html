@@ -51,22 +51,30 @@
 							<div class="text-block">{{trophy.value}}</div>
 							<h4 class="heading">{{trophy.title}}</h4>
 						</div>
-						<div class="div-block {{check_if_trophy_earned(trophy._id)==''?'gold':''}}" ng-repeat="trophy in reading_row_trophies">
-								<div class="text-block-2" ng-if="!check_if_trophy_earned_bool(trophy._id)">
-										<strong>+{{trophy.points}}</strong>
-									</div>
-							<img sizes="200px" class="{{check_if_trophy_earned(trophy._id)}}" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png"
-							 srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
-							 width="200">
-							<div class="text-block">{{trophy.value}}</div>
-							<h4 class="heading">{{trophy.title}}</h4>
-						</div>
+						
 
 					</div>
 				</div>
 
 
+				<div class="section">
+					<h1 class="heading-2">Reading Bible in a row</h1>
+					<div class="container w-container">
+						<div class="div-block {{check_if_trophy_earned(trophy._id)==''?'gold':''}}" ng-repeat="trophy in reading_row_trophies">
+							<div class="text-block-2" ng-if="!check_if_trophy_earned_bool(trophy._id)">
+									<strong>+{{trophy.points}}</strong>
+								</div>
+						<img sizes="200px" class="{{check_if_trophy_earned(trophy._id)}}" src="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png"
+						 srcset="images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 500w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 800w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1080w, images/Transparent_Gold_Cup_Trophy_PNG_Picture_Clipart.png 1278w"
+						 width="200">
+						<div class="text-block">{{trophy.value}}</div>
+						<h4 class="heading">{{trophy.title}}</h4>
+					</div>
 
+
+
+					</div>
+				</div>
 
 
 				<div class="section">
