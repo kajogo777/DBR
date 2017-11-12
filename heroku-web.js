@@ -555,7 +555,7 @@ app.post('/update_user', function (req, res) {
 })
 
 app.post('/get_class_users', function (req, res) {
-    User.find({ "class": req.body.class, "admin": { $lt: "5" } }, function (err, users) {
+    User.find({ "class": req.body.class, "admin": { $lt: "5" } }).sort({"name":1}).exec( function (err, users) {
         if (err) {
             res.send(err);
         } else {
