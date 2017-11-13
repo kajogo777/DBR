@@ -493,7 +493,7 @@ app.post('/add_reading', function (req, res) {
 });
 
 app.post('/get_top_5_in_class', function (req, res) {
-    User.find({ "class": req.body.class, "admin": { $lt: "5" } }).sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
+    User.find({ "class": req.body.class,  $or:[{"admin": { $lt: "5" }} , {'admin':6} ]} ).sort({ "total_score": -1 }).limit(5).exec(function (err, users) {
         if (err) {
             res.send(err);
         } else {
