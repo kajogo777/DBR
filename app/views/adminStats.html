@@ -40,7 +40,7 @@
 								<div ng-repeat="question in reading.questions">
 									♦{{question.question}}
 									<br>
-									Answered {{question.answers_count}} times, with correct answers {{question.correct_answers_count/question.answers_count*100}}%	
+									Answered {{question.answers_count}} times, with correct answers {{question.correct_answers_count/question.answers_count*100| number : 1}}%	
 									<br>
 								</div>
 							</v-pane-content>

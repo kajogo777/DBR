@@ -107,7 +107,7 @@
 						 <li>Number of Readings in a row: {{user.row_readings_count}}</li>
 						 <li>Number of Answered Questions: {{user.answered_questions.length}}</li>
 						 <li>Number of Correct Answers: {{correctAnswers}}</li>
-						 <li>% of Correct Answers: {{correctAnswers/user.answered_questions.length*100}}%</li>
+						 <li>% of Correct Answers: {{correctAnswers/user.answered_questions.length*100| number : 1}}%</li>
 						 <li>Correct Answers in a row: {{user.row_correct_answer_count}}</li>
 						 <li>Trophies:
 							 <ul style="font-size:25px">
