@@ -97,6 +97,8 @@ angular.module('yapp')
         if(response.data.question_score == undefined){
           toastr.error("Wrong answer :(");
       }
+
+      $scope.checkCelebration();
         // if (response.status == 201) {
         //   toastr.warning(response.data);
         // } else if (response.status == 202) {
@@ -138,7 +140,7 @@ angular.module('yapp')
         }
       }
       
-      $scope.checkCelebration();
+      //$scope.checkCelebration();
     }
 
 

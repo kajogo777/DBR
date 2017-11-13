@@ -426,6 +426,8 @@ app.post('/check_answer', function (req, res) {
                                                 }
                                                 if (LevelChanged1||LevelChanged2) {
                                                     return res.status(204).send({question_score:question_score,LevelChanged:true});
+                                                }if(newTrophy!=null){
+                                                    return res.status(207).send({question_score:question_score,newTrophy})
                                                 } else {
                                                     return res.status(202).send({question_score:question_score});
                                                 }
