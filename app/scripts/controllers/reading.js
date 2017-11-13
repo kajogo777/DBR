@@ -13,6 +13,7 @@ angular.module('yapp')
    $scope.levelCelebrate= false;
    $scope.trophyCelebrate= false;
    $scope.newTrophy= undefined;
+   $scope.showLoader=true;
    $scope.celebrations=[];
 
     $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).then(function(response){
@@ -62,6 +63,7 @@ angular.module('yapp')
       // audioElement.src = response.data.sound;
       // audioElement.play(); 
       $scope.checkCelebration();
+      $scope.showLoader=false;
     });
     $scope.getAudioUrl = function (sound) {
       return $sce.trustAsResourceUrl(sound);
