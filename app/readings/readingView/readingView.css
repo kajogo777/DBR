@@ -1,0 +1,10 @@
+reading-view p,
+reading-view pre{
+    font-size: 1.5em;
+}
+reading-view .content{
+    white-space: pre-wrap;
+    border-radius: 10px;
+    background-color: lightgoldenrodyellow;
+    padding: 2%;
+}

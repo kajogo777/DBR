@@ -9,21 +9,20 @@
 	
     <!-- build:css(.tmp) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="../bower_components/components-font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css" />
     <link rel="stylesheet" href="../bower_components/angular-toastr/dist/angular-toastr.css" />
-    <link rel="stylesheet" href="../bower_components/angular-snap/angular-snap.css" />
+    <link rel="stylesheet" href="../bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css" />
+    <link rel="stylesheet" href="../bower_components/v-accordion/dist/v-accordion.css" />
     <!-- endbower -->
     <!-- endbuild -->
 	
-    <!-- build:css(.tmp) styles/main.css -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- reading manager Stylesheets -->
     <link rel="stylesheet" href="readings/questionMcq/questionMcq.css">
     <link rel="stylesheet" href="readings/questionEssay/questionEssay.css">
-    <link rel="stylesheet" type="text/css" href="../bower_components/angular-material/angular-material.css" />
-    <link href="../bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css" rel="stylesheet">
-    <link href="../bower_components/v-accordion/dist/v-accordion.css" rel="stylesheet" />
-    <!-- <link href="../bower_components/angular-bootstrap-calendar/dist/css/v-accordion.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="readings/readingView/readingView.css">
+    <link rel="stylesheet" href="readings/readingEdit/readingEdit.css">
     <!-- endbuild -->
     <style>
       .jumbotron {
@@ -75,16 +74,11 @@
     <script src="../bower_components/angular-material/angular-material.js"></script>
     <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="../bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
-    <script src="../bower_components/snapjs/snap.js"></script>
-    <script src="../bower_components/angular-snap/angular-snap.js"></script>
     <script src="../bower_components/moment/moment.js"></script>
+    <script src="../bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js"></script>
     <script src="../bower_components/v-accordion/dist/v-accordion.js"></script>
-    <script src="../bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-
-    <!-- <script src="../bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js"></script> -->
-    
     
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -102,9 +96,6 @@
     <script src="scripts/controllers/userStats.js"></script>
     <script src="scripts/controllers/adminStats.js"></script>
 
-    
-    
-
     <!-- Reading Manager related files -->
 		<!-- Modules -->
 		<script src="readings/readings.module.js"></script>
@@ -119,17 +110,15 @@
 		<script src="readings/readingManager/readingManager.controller.js"></script>
 		<script src="readings/readingManager/readingsList/readingsList.controller.js"></script>
 		<script src="readings/readingEdit/readingEdit.controller.js"></script>
-		<script src="readings/readingView/readingView.controller.js"></script>
 		<script src="readings/questionMcq/questionMcq.controller.js"></script>
 		<script src="readings/questionEssay/questionEssay.controller.js"></script>
 		<!-- Services -->
 		<script src="readings/dataService.service.js"></script>
 		<!-- routes and states -->
 		<script src="readings/routes.js"></script>
-	<!-- end of Reading Manager related files -->
+	  <!-- end of Reading Manager related files -->
 
     <!-- endbuild -->
 	
-
   </body>
 </html>

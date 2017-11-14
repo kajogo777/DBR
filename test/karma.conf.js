@@ -23,9 +23,8 @@ module.exports = function(config) {
       '../bower_components/angular-material/angular-material.js',
       '../bower_components/angular-ui-router/release/angular-ui-router.js',
       '../bower_components/angular-toastr/dist/angular-toastr.tpls.js',
-      '../bower_components/snapjs/snap.js',
-      '../bower_components/angular-snap/angular-snap.js',
       '../bower_components/moment/moment.js',
+      '../bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js',
       '../bower_components/v-accordion/dist/v-accordion.js',
       // endbower
       '../app/scripts/**/*.js',

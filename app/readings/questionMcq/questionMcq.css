@@ -2,7 +2,11 @@ question-mcq{
     /* only put styles that apply to
     both editing and viewing */
     display: block;
+    border-radius: 10px;
+    padding: 1% 2%;
+
 }
+
 
 /* Edit */
 
@@ -31,22 +35,32 @@ question-mcq[edit=true] .choice-correct{
 /* View */
 
 question-mcq[edit=false]{
-    background-color: gray;
-    border: 1px solid black;
+    background-color: rgb(211, 219, 230);
+    margin-bottom: 2%;
 }
 
 question-mcq[edit=false] .choice{
     border: 1px solid red;
     background-color: lightcoral;
-    display: inline-block;
-    /* todo temporary: remove following properties */
-    width: 200px;
-    margin: 0;
-    margin-bottom: 5px;
+    border-radius: 4px;
 }
 
 question-mcq[edit=false] .choice-correct{
     border: 1px solid green;
     background-color: lightgreen;
-    display: inline-block;
+}
+
+question-mcq[edit=false] .choice-index{
+    display: block;
+}
+
+question-mcq[edit=false] p{
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+question-mcq[edit=false] .question{
+    background-color: rgb(231, 236, 240);
+    border-radius: 5px;
+    padding: 1%;
 }

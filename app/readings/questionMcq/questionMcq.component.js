@@ -7,7 +7,8 @@
         controller: 'questionMcqController',
         bindings:{
             edit: '<',
-            question: '<'
+            question: '<',
+            index: '@'
         }
     });
 	
