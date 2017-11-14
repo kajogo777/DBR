@@ -1,15 +1,32 @@
-<div dir="rtl">
-    
-    <p><span>رقم اليوم: </span>{{$ctrl.reading.number}}</p>
-    <p><span>الشاهد: </span>{{$ctrl.reading.shahed}}</p>
-    <pre>{{$ctrl.reading.content}}</pre>
-
+<div class="container" dir="rtl">
+    <div class="row" dir="ltr">
+        <div class="col text-center"><h2>Reading #{{$ctrl.reading.number}}</h2></div>
+    </div>
+    <div class="row">
+        <p dir="ltr"><small>Users Count: {{$ctrl.reading.users_count}}</small></p>
+    </div>
+    <div class="row">
+        <h3>{{$ctrl.reading.shahed}}</h3>
+    </div>
+    <div class="row">
+        <p class="content">{{$ctrl.reading.content}}</p>
+    </div>
     <div ng-repeat="question in $ctrl.reading.questions">
-        <div ng-switch="question.type">
-            <question-mcq question="question" edit="false" ng-switch-when="mcq"></question-mcq>
-            <question-essay question="question" edit="false" ng-switch-when="essay"></question-essay>
+        <div class="container-fluid">
+            <div class="row" ng-switch="question.type">
+                <div class="col-xs-12">
+                    <question-mcq question="question" edit="false" index="{{$index+1}}" ng-switch-when="mcq"></question-mcq>
+                    <question-essay question="question" edit="false" index="{{$index+1}}" ng-switch-when="essay"></question-essay>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="row" dir="ltr">
+        <div class="col text-center">
+            <input type="button" value="Back" ui-sref="readingManager" class="btn btn-lg btn-primary">
+        </div>
+    </div>
+    <br>
 </div>
 
-<input type="button" value="Back" ui-sref="readingManager">
+
