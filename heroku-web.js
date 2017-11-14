@@ -274,6 +274,7 @@ app.post('/get_today_reading', function (req, res) {
 
             //checking for last reading
             var readings_num = user.reading_dates.length;
+            var row_readings_count= user.row_readings_count;
             if (readings_num != 0) { // if not first time to read
                 var last_reading = new Date(user.reading_dates[readings_num - 1]);
 
@@ -295,18 +296,18 @@ app.post('/get_today_reading', function (req, res) {
                     else
                         row_readings_count++;    
 
-                    User.updateOne({ '_id': user._id }, {'row_readings_count':row_readings_count, $push: { "reading_dates": Today } }, (err, u) => { });
+                    User.updateOne({ '_id': user._id }, {'row_readings_count':row_readings_count, $push: { "reading_dates": Today } }, (err, u) => { if (err) console.log(err)});
 
                     //update Reading users counter
-                     Reading.updateOne({"number": readings_num},{'$inc':{'users_count':'1'}},()=>{});
+                     Reading.updateOne({"number": readings_num},{'$inc':{'users_count':'1'}},(err)=>{if (err) console.log(err)});
                 }
             } else { // if first time to read
                 row_readings_count=1; 
                 readings_num++;
-                User.updateOne({ '_id': user._id }, {'row_readings_count':row_readings_count, $push: { "reading_dates": Today } }, (err, u) => { console.log(u) });
+                User.updateOne({ '_id': user._id }, {'row_readings_count':row_readings_count, $push: { "reading_dates": Today } }, (err, u) => {if (err) console.log(err); console.log(u) });
 
                  //update Reading users counter
-                 Reading.updateOne({"number": readings_num},{'$inc':{'users_count':'1'}},()=>{});
+                 Reading.updateOne({"number": readings_num},{'$inc':{'users_count':'1'}},(err)=>{if (err) console.log(err)});
             }
             
            
