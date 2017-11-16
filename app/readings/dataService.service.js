@@ -123,9 +123,30 @@
         }
 
         var getBaseUrl = function(){
-            //todo critical
-            return 'http://dbr.herokuapp.com';
-            //return $window.localStorage.getItem('base_url');
+            //return 'http://dbr.herokuapp.com';
+            return $window.localStorage.getItem('base_url');
+        }
+
+        service.canEditReading = function(reading_number){
+            //check if editing a reading is allowed
+
+            //for now, editing is disabled for readings that
+            //went live
+            //todo feature improve
+            var start_date = new Date(Date.UTC(2017, 11-1, 13));
+            var current_date = new Date();
+            var current_date_utc = new Date(
+                Date.UTC(
+                    current_date.getUTCFullYear(),
+                    current_date.getUTCMonth(),
+                    current_date.getUTCDate()
+                )
+            )
+            var days_passed = ((current_date_utc - start_date)/1000/60/60/24) + 1;
+            if(reading_number > days_passed){
+                return true;
+            }
+            return false;
         }
 
 

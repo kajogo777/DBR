@@ -16,5 +16,9 @@
         $ctrl.view = function(index){
             dataService.goToReadingView(index);
         };
+
+        $ctrl.canEdit = function(reading_number){
+            return dataService.canEditReading(reading_number);
+        }
     }
 })();

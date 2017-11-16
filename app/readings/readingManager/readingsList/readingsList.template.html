@@ -1,7 +1,9 @@
 <ul>
     <li ng-repeat="item in $ctrl.readings">
-        <input type="button" value="View" ng-click="$ctrl.view($index)">
-        <input type="button" value="Edit" ng-click="$ctrl.edit($index)">
+        <input type="button" value="View" ng-click="$ctrl.view($index)"
+            class="btn btn-primary">
+        <input type="button" value="Edit" ng-click="$ctrl.edit($index)"
+            class="btn btn-primary" ng-disabled="!$ctrl.canEdit(item.number)">
         <span>Reading number: {{item.number}} - Shahed: {{item.shahed}}</span>
     </li>
 </ul>
