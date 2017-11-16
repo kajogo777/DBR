@@ -143,6 +143,7 @@ gulp.task('watch', ['connect'], function() {
   gulp.watch([
     'app/**/*.html',
     'app/**/*.css',
+    'app/**/*.js',
     '.tmp/styles/**/*.css',
     'app/scripts/**/*.js',
     'app/images/**/*'

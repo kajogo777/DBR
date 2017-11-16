@@ -1,3 +1,39 @@
+reading-edit .container{
+    background-color: rgb(217, 228, 236);
+}
+
 reading-edit textarea{
     resize: vertical;
+    font-size: 1.5em !important;
+}
+
+reading-edit p{
+    font-size: 1.5em;
+}
+
+reading-edit input,
+reading-edit label{
+    font-size: 1.5em;
+}
+
+reading-edit .question-controls{
+    /* a hack to fake the question controls as being
+    a part of the question component */
+    background-color: rgb(161, 184, 202);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-bottom: 1%;
+    margin-top: -20px;
+}
+
+reading-edit .btn-blue{
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+
+reading-edit .btn-blue:hover{
+    color: #fff;
+    background-color: #286090;
+    border-color: #204d74;
 }

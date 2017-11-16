@@ -26,7 +26,7 @@
         //feature: fix page scroll on question re-order, OR:
         //feature: add better question re-ordering functionality
 
-        $ctrl.new_question_type = '';
+        $ctrl.new_question_type = 'mcq';
         $ctrl.questionAdd = function(){
             //check if a question type is selected
             if($ctrl.new_question_type !== ''){
@@ -39,7 +39,7 @@
         //false when:
         //- currently saving, to disable
         //  the save button, and further save requests,
-        //- and after saving successfully
+        //- and after saving successfully,
         //- todo and when inputs are still invalid
         $ctrl.can_save = true;
 
