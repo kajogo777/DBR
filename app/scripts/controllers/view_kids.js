@@ -13,7 +13,15 @@ angular.module('yapp')
   	
       var user=JSON.parse($window.localStorage.getItem("user"));
 
-      
+      $scope.now = Date.now();
+      $scope.subDates= function(lastSeen){
+        var diff=  moment().diff( moment(lastSeen), 'days');
+        switch(diff){
+          case 0 : return "Today";break;
+          case 1: return "1 day ago";break;
+          default: return diff+ " days ago";
+        }
+      }
       	
         $http.post($window.localStorage.getItem("base_url")+"/get_class_users",{"class":user.class }).then(function(response){
 					console.log(response.data);

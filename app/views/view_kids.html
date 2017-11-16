@@ -27,6 +27,7 @@
 				        <th>Score</th>
 								<th>Level</th>
 								<th>Readings</th>
+								<th>Last Seen</th>
 				      	<th>Modify</th>
 				      </tr>
 				    </thead>
@@ -38,6 +39,7 @@
 				        <th>{{kid.total_score}}</th>
 								<th>{{kid.level}}</th>
 								<th>{{kid.reading_dates.length}}</th>
+								<th>{{kid.reading_dates.length==0?'Not Started Yet': subDates(kid.reading_dates[kid.reading_dates.length-1]) }}</th>
 				      	<th>
 									<button ng-click="edit_user(kid)" class="btn btn-xs btn-success">edit</button> | <button ng-click="delete_user(kid._id,$index,kid.name)" class="btn btn-xs btn-danger">delete</button> | <button ui-sref="userStats({id:kid._id})" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-stats"></i</button></th>
 				      </tr>
