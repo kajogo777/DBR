@@ -67,6 +67,7 @@ question-mcq[edit=true] input[type=text]{
 question-mcq[edit=false]{
     background-color: rgb(211, 219, 230);
     margin-bottom: 2%;
+    border-radius: 10px;
 }
 
 question-mcq[edit=false] .choice{
