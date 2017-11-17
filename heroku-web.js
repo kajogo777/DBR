@@ -25,9 +25,11 @@ app.use(bodyParser.json());
 mongoose.connect(DB_URI);
 console.log("connecting to global db..");
 
+
 app.options('/*', function (req, res) {
     return res.sendStatus(200);
 });
+
 
 
 var User = require("./Models/User");
@@ -288,9 +290,12 @@ app.post('/get_today_reading', function (req, res) {
                     console.log('today: ', today);
                     var last_reading = new Date(last_reading.toDateString());
                     console.log('last_reading: ', last_reading);
-                    var timeDiff = Math.abs(today.getTime() - today.getTime());
-                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+
+                    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+
+                    var diffDays = Math.floor(Math.abs((last_reading.getTime() - today.getTime())/(oneDay)));
                     console.log('diffDays: ', diffDays);
+
                     if(diffDays>1)
                         row_readings_count = 1;
                     else
