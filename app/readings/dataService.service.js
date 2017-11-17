@@ -123,9 +123,46 @@
         }
 
         var getBaseUrl = function(){
-            //todo critical
-            return 'http://dbr.herokuapp.com';
-            //return $window.localStorage.getItem('base_url');
+            //return 'http://dbr.herokuapp.com';
+            return $window.localStorage.getItem('base_url');
+        }
+
+        service.canEditReading = function(reading_number){
+            //check if editing a reading is allowed
+
+            //for now, editing is disabled for readings that
+            //went live,
+            //and enabled for editings that don't have
+            //a valid reading_number
+            //treats local time as the time used by server
+            //todo feature improve method
+            //todo check server's timezone
+
+            //check if argument is valid number
+            reading_number = parseInt(reading_number, 10);
+            if(isNaN(reading_number)){
+                return true;
+            }
+            var start_date = new Date(Date.UTC(2017, 11-1, 13));
+            var current_date = new Date();
+            var current_date_utc = new Date(
+                Date.UTC(
+                    current_date.getUTCFullYear(),
+                    current_date.getUTCMonth(),
+                    current_date.getUTCDate(),
+                    current_date.getUTCHours(),
+                    current_date.getUTCMinutes() - current_date.getTimezoneOffset(),
+                    current_date.getUTCSeconds()
+                )
+            )
+            // console.log('start:', start_date);
+            // console.log('current:', current_date);
+            // console.log('utc:', current_date_utc);
+            var days_passed = ((current_date_utc - start_date)/1000/60/60/24) + 1;
+            if(reading_number > days_passed){
+                return true;
+            }
+            return false;
         }
 
 
