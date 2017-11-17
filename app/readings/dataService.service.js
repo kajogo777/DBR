@@ -132,9 +132,17 @@
 
             //for now, editing is disabled for readings that
             //went live,
+            //and enabled for editings that don't have
+            //a valid reading_number
             //treats local time as the time used by server
             //todo feature improve method
             //todo check server's timezone
+
+            //check if argument is valid number
+            reading_number = parseInt(reading_number, 10);
+            if(isNaN(reading_number)){
+                return true;
+            }
             var start_date = new Date(Date.UTC(2017, 11-1, 13));
             var current_date = new Date();
             var current_date_utc = new Date(
