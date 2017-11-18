@@ -15,12 +15,8 @@ angular.module('yapp')
 
       $scope.now = Date.now();
       $scope.subDates= function(lastSeen){
-        var diff=  moment().diff( moment(lastSeen), 'days');
-        switch(diff){
-          case 0 : return "Today";break;
-          case 1: return "1 day ago";break;
-          default: return diff+ " days ago";
-        }
+        return moment(lastSeen).fromNow();
+        moment().diff( moment(lastSeen), 'days');
       }
       	
         $http.post($window.localStorage.getItem("base_url")+"/get_class_users",{"class":user.class }).then(function(response){
