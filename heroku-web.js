@@ -140,7 +140,7 @@ function AddPoints(user, points, callback) {//get user object and points to add 
             level_changed = true;
 
             //updating level user counter
-            Level.updateOne({_id:level._id},{'$inc':{'users_count':'1'}},()=>{});
+            Level.updateOne({ _id: level._id }, { '$inc': { 'users_count': '1' } }, () => { });
         }
         //adding score
         User.findOneAndUpdate({ "_id": user._id }, {
@@ -155,7 +155,7 @@ function AddPoints(user, points, callback) {//get user object and points to add 
 
 
 function CheckTrophies(user, type, callback) {//get user object and trophies type to check and return new user updated object,new trophy
-    User.findOne({ '_id': user._id },function(err,user){
+    User.findOne({ '_id': user._id }, function (err, user) {
         //get trophies of needed type 
         Trophy.find({ type: type }, (err, trophies) => {
             //excluding trophies that are already taken by user
@@ -175,26 +175,26 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
                 var readings_num = user.reading_dates.length;
                 for (i = 0; i < trophies.length; i++) {
                     if (readings_num == trophies[i].value) {
-                        
-                        earnedNewTrophy=true;
+
+                        earnedNewTrophy = true;
                         user_new_trophy = {
                             trophy: trophies[i]._id,
                             date: new Date(Date.now())
                         }
                         trophy_score = trophies[i].points;
                         //update trophy user counter
-                        Trophy.updateOne({_id:trophies[i]._id},{'$inc':{'users_count':'1'}},()=>{});
+                        Trophy.updateOne({ _id: trophies[i]._id }, { '$inc': { 'users_count': '1' } }, () => { });
 
-                        AddPoints(user, trophy_score, function (err, user, LevelChanged ){
-                            User.findOneAndUpdate({_id:user._id},{ $push: { "trophies": user_new_trophy } },(err,user)=>{
-                                callback(err,user,trophies[i],LevelChanged);
+                        AddPoints(user, trophy_score, function (err, user, LevelChanged) {
+                            User.findOneAndUpdate({ _id: user._id }, { $push: { "trophies": user_new_trophy } }, (err, user) => {
+                                callback(err, user, trophies[i], LevelChanged);
                             })
                         })
                         break;
                     }
                 }
-                if(!earnedNewTrophy){
-                    callback(err,user,null);
+                if (!earnedNewTrophy) {
+                    callback(err, user, null);
                 }
             }
 
@@ -205,8 +205,8 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
                 var row_readings_count = user.row_readings_count;
                 for (i = 0; i < trophies.length; i++) {
                     if (row_readings_count == trophies[i].value) {
-                        
-                        earnedNewTrophy=true;
+
+                        earnedNewTrophy = true;
                         user_new_trophy = {
                             trophy: trophies[i]._id,
                             date: new Date(Date.now())
@@ -214,18 +214,18 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
                         trophy_score = trophies[i].points;
 
                         //update trophy user counter
-                        Trophy.updateOne({_id:trophies[i]._id},{'$inc':{'users_count':'1'}},()=>{});
+                        Trophy.updateOne({ _id: trophies[i]._id }, { '$inc': { 'users_count': '1' } }, () => { });
 
-                        AddPoints(user, trophy_score, function (err, user, LevelChanged ){
-                            User.findOneAndUpdate({_id:user._id},{ $push: { "trophies": user_new_trophy } },(err,user)=>{
-                                callback(err,user,trophies[i],LevelChanged);
+                        AddPoints(user, trophy_score, function (err, user, LevelChanged) {
+                            User.findOneAndUpdate({ _id: user._id }, { $push: { "trophies": user_new_trophy } }, (err, user) => {
+                                callback(err, user, trophies[i], LevelChanged);
                             })
                         })
                         break;
                     }
                 }
-                if(!earnedNewTrophy){
-                    callback(err,user,null);
+                if (!earnedNewTrophy) {
+                    callback(err, user, null);
                 }
             }
 
@@ -236,8 +236,8 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
                 var correct_answers_row = user.row_correct_answer_count;
                 for (i = 0; i < trophies.length; i++) {
                     if (correct_answers_row == trophies[i].value) {
-                        
-                        earnedNewTrophy=true;
+
+                        earnedNewTrophy = true;
                         user_new_trophy = {
                             trophy: trophies[i]._id,
                             date: new Date(Date.now())
@@ -245,18 +245,18 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
                         trophy_score = trophies[i].points;
 
                         //update trophy user counter
-                        Trophy.updateOne({_id:trophies[i]._id},{'$inc':{'users_count':'1'}},()=>{});
+                        Trophy.updateOne({ _id: trophies[i]._id }, { '$inc': { 'users_count': '1' } }, () => { });
 
-                        AddPoints(user, trophy_score, function (err, user, LevelChanged ){
-                            User.findOneAndUpdate({_id:user._id},{ $push: { "trophies": user_new_trophy } },(err,user)=>{
-                                callback(err,user,trophies[i],LevelChanged);
+                        AddPoints(user, trophy_score, function (err, user, LevelChanged) {
+                            User.findOneAndUpdate({ _id: user._id }, { $push: { "trophies": user_new_trophy } }, (err, user) => {
+                                callback(err, user, trophies[i], LevelChanged);
                             })
                         })
                         break;
                     }
                 }
-                if(!earnedNewTrophy){
-                    callback(err,user,null);
+                if (!earnedNewTrophy) {
+                    callback(err, user, null);
                 }
             }
 
@@ -265,6 +265,41 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
         })
     });
 };
+
+app.get('/correct_row_readings', function (req, res) {
+    User.find({ "admin": "0" }, function (err, users) {
+        var output="";
+        for (var i = 0; i < users.length; i++) {
+            var row_readings_counter = 0;
+            console.log('users[i].reading_dates.length: ', users[i].reading_dates.length);
+            if (users[i].reading_dates.length == 0) {
+                row_readings_counter = 0;
+            } else if (users[i].reading_dates.length == 1) {
+                row_readings_counter = 1;
+            } else {
+                var reading_dates = users[i].reading_dates;
+                row_readings_counter = 1;
+                for (var j = reading_dates.length - 1; j >= 1; j--) {
+                    var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+
+                    var diffDays = Math.floor(Math.abs((reading_dates[j].getTime() - reading_dates[j-1].getTime()) / (oneDay)));
+                    console.log('diffDays: ', diffDays);
+                    if (diffDays > 1)
+                        break;
+                    else
+                    row_readings_counter++;
+                }
+                console.log('row_readings_count: ', row_readings_counter);
+            }
+
+            if(row_readings_counter !=users[i].row_readings_count){
+                 output+= users[i].username+" ID: "+users[i]._id+" was: "+users[i].row_readings_count+" now : "+row_readings_counter+ "<br>";
+                 User.updateOne({"_id":users[i]._id},{"row_readings_count":row_readings_counter},()=>{});
+            }
+        }
+        res.send(output);
+    })
+})
 
 app.post('/get_today_reading', function (req, res) {
     var Today = new Date(Date.now());
@@ -276,7 +311,7 @@ app.post('/get_today_reading', function (req, res) {
 
             //checking for last reading
             var readings_num = user.reading_dates.length;
-            var row_readings_count= user.row_readings_count;
+            var row_readings_count = user.row_readings_count;
             if (readings_num != 0) { // if not first time to read
                 var last_reading = new Date(user.reading_dates[readings_num - 1]);
 
@@ -291,53 +326,53 @@ app.post('/get_today_reading', function (req, res) {
                     var last_reading = new Date(last_reading.toDateString());
                     console.log('last_reading: ', last_reading);
 
-                    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                    var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
-                    var diffDays = Math.floor(Math.abs((last_reading.getTime() - today.getTime())/(oneDay)));
+                    var diffDays = Math.floor(Math.abs((last_reading.getTime() - today.getTime()) / (oneDay)));
                     console.log('diffDays: ', diffDays);
 
-                    if(diffDays>1)
+                    if (diffDays > 1)
                         row_readings_count = 1;
                     else
-                        row_readings_count++;    
+                        row_readings_count++;
 
-                    User.updateOne({ '_id': user._id }, {'row_readings_count':row_readings_count, $push: { "reading_dates": Today } }, (err, u) => { if (err) console.log(err)});
+                    User.updateOne({ '_id': user._id }, { 'row_readings_count': row_readings_count, $push: { "reading_dates": Today } }, (err, u) => { if (err) console.log(err) });
 
                     //update Reading users counter
-                     Reading.updateOne({"number": readings_num},{'$inc':{'users_count':'1'}},(err)=>{if (err) console.log(err)});
+                    Reading.updateOne({ "number": readings_num }, { '$inc': { 'users_count': '1' } }, (err) => { if (err) console.log(err) });
                 }
             } else { // if first time to read
-                row_readings_count=1; 
+                row_readings_count = 1;
                 readings_num++;
-                User.updateOne({ '_id': user._id }, {'row_readings_count':row_readings_count, $push: { "reading_dates": Today } }, (err, u) => {if (err) console.log(err); console.log(u) });
+                User.updateOne({ '_id': user._id }, { 'row_readings_count': row_readings_count, $push: { "reading_dates": Today } }, (err, u) => { if (err) console.log(err); console.log(u) });
 
-                 //update Reading users counter
-                 Reading.updateOne({"number": readings_num},{'$inc':{'users_count':'1'}},(err)=>{if (err) console.log(err)});
+                //update Reading users counter
+                Reading.updateOne({ "number": readings_num }, { '$inc': { 'users_count': '1' } }, (err) => { if (err) console.log(err) });
             }
-            
-           
 
-            CheckTrophies(user,"reading_row",function(err,user,newTrophy1,LevelChanged1){
-                CheckTrophies(user,"reading_days",function(err,user,newTrophy2,LevelChanged2){
+
+
+            CheckTrophies(user, "reading_row", function (err, user, newTrophy1, LevelChanged1) {
+                CheckTrophies(user, "reading_days", function (err, user, newTrophy2, LevelChanged2) {
                     Reading.findOne({
                         "number": readings_num
                     }, function (err, reading) {
                         if (err) {
                             return res.status(400);
                         } else {
-                            out={};
-                            if(newTrophy1!=null) //row trophy is more important
-                                out.newTrophy= newTrophy1;
-                            else if(newTrophy2!=null)
-                                out.newTrophy= newTrophy2;
+                            out = {};
+                            if (newTrophy1 != null) //row trophy is more important
+                                out.newTrophy = newTrophy1;
+                            else if (newTrophy2 != null)
+                                out.newTrophy = newTrophy2;
 
-                            if(LevelChanged1||LevelChanged2)
-                                out.LevelChanged=true;
+                            if (LevelChanged1 || LevelChanged2)
+                                out.LevelChanged = true;
 
-                            if(reading)
-                                out.reading= reading;
-                               
-                            res.send(out);    
+                            if (reading)
+                                out.reading = reading;
+
+                            res.send(out);
 
                             // if(newTrophy2 != null && (LevelChanged1||LevelChanged2)){
                             //     return res.status(206).send({reading,newTrophy:newTrophy2,LevelChanged:true});
@@ -399,13 +434,15 @@ app.post('/check_answer', function (req, res) {
                             // console.log(reading.questions[j].score);
                             if (req.body.question_id == reading.questions[j].id) {
                                 //if correct answer
-                                if (reading.questions[j].answer == req.body.choice) { 
+                                if (reading.questions[j].answer == req.body.choice) {
 
                                     //update question counters in reading model (inc answers counter and correct answer counter)
-                                    Reading.updateOne({'questions.id': req.body.question_id},{'$inc': {
-                                        'questions.$.answers_count': '1',
-                                        'questions.$.correct_answers_count': '1'
-                                    }},()=>{});
+                                    Reading.updateOne({ 'questions.id': req.body.question_id }, {
+                                        '$inc': {
+                                            'questions.$.answers_count': '1',
+                                            'questions.$.correct_answers_count': '1'
+                                        }
+                                    }, () => { });
 
                                     var question = {
                                         question_id: req.body.question_id,
@@ -423,29 +460,31 @@ app.post('/check_answer', function (req, res) {
                                     //adding points
                                     AddPoints(user, question_score, function (err, user, LevelChanged1) {
                                         User.updateOne({ "_id": req.body.user_id }, {
-                                            row_correct_answer_count: user.row_correct_answer_count+1,
+                                            row_correct_answer_count: user.row_correct_answer_count + 1,
                                             $push: { "answered_questions": question }
                                         }, function (err, user_updated) {
-                                            CheckTrophies(user,"correct_answers_row",function(err,user,newTrophy,LevelChanged2){
-                                                if(newTrophy!=null && (LevelChanged1||LevelChanged2)){
-                                                    return res.status(207).send({question_score:question_score,newTrophy,LevelChanged:true})
+                                            CheckTrophies(user, "correct_answers_row", function (err, user, newTrophy, LevelChanged2) {
+                                                if (newTrophy != null && (LevelChanged1 || LevelChanged2)) {
+                                                    return res.status(207).send({ question_score: question_score, newTrophy, LevelChanged: true })
                                                 }
-                                                if (LevelChanged1||LevelChanged2) {
-                                                    return res.status(204).send({question_score:question_score,LevelChanged:true});
-                                                }if(newTrophy!=null){
-                                                    return res.status(207).send({question_score:question_score,newTrophy})
+                                                if (LevelChanged1 || LevelChanged2) {
+                                                    return res.status(204).send({ question_score: question_score, LevelChanged: true });
+                                                } if (newTrophy != null) {
+                                                    return res.status(207).send({ question_score: question_score, newTrophy })
                                                 } else {
-                                                    return res.status(202).send({question_score:question_score});
+                                                    return res.status(202).send({ question_score: question_score });
                                                 }
                                             })
                                         })
                                     });
-                                    
+
                                 } else {// if wrong answer
                                     //update question counter in reading model (inc answers counter)
-                                    Reading.updateOne({'questions.id': req.body.question_id},{'$inc': {
-                                        'questions.$.answers_count': '1'
-                                    }},()=>{});
+                                    Reading.updateOne({ 'questions.id': req.body.question_id }, {
+                                        '$inc': {
+                                            'questions.$.answers_count': '1'
+                                        }
+                                    }, () => { });
 
                                     //pushing that the answer was wrong
                                     var question = {
@@ -459,10 +498,10 @@ app.post('/check_answer', function (req, res) {
                                         score: reading.questions[j].score,
                                         date: Date.now()
                                     }
-                                    User.updateOne({ "_id": req.body.user_id }, { 
-                                        row_correct_answer_count:0,
+                                    User.updateOne({ "_id": req.body.user_id }, {
+                                        row_correct_answer_count: 0,
                                         $push: { "answered_questions": question }
-                                     }, function (err) {
+                                    }, function (err) {
                                         return res.status(203).send("Wrong Answer");
 
                                     })
@@ -499,7 +538,7 @@ app.post('/add_reading', function (req, res) {
 });
 
 app.post('/get_top_5_in_class', function (req, res) {
-    User.find({ "class": req.body.class,  $or:[{"admin": { $lt: "5" }} , {'admin':6} ]} ).sort({ "total_score": -1 }).limit(5).select('name _id level total_score').exec(function (err, users) {
+    User.find({ "class": req.body.class, $or: [{ "admin": { $lt: "5" } }, { 'admin': 6 }] }).sort({ "total_score": -1 }).limit(5).select('name _id level total_score').exec(function (err, users) {
         if (err) {
             res.send(err);
         } else {
@@ -543,7 +582,7 @@ app.post('/add_users', function (req, res) {
 
 
 app.post('/delete_user', function (req, res) {
-    User.findById(req.body.id ).remove().exec(function (err, status) {
+    User.findById(req.body.id).remove().exec(function (err, status) {
         if (err) {
             res.send(err);
         } else {
@@ -553,7 +592,7 @@ app.post('/delete_user', function (req, res) {
 })
 
 app.post('/update_user', function (req, res) {
-    User.update({"_id":req.body.id},{"name":req.body.name,"username":req.body.username,"password":req.body.password} ).exec(function (err, status) {
+    User.update({ "_id": req.body.id }, { "name": req.body.name, "username": req.body.username, "password": req.body.password }).exec(function (err, status) {
         if (err) {
             res.send(err);
         } else {
@@ -563,7 +602,7 @@ app.post('/update_user', function (req, res) {
 })
 
 app.post('/get_class_users', function (req, res) {
-    User.find({ "class": req.body.class, "admin": { $lt: "5" } }).sort({"name":1}).exec( function (err, users) {
+    User.find({ "class": req.body.class, "admin": { $lt: "5" } }).sort({ "name": 1 }).exec(function (err, users) {
         if (err) {
             res.send(err);
         } else {
@@ -573,17 +612,17 @@ app.post('/get_class_users', function (req, res) {
 })
 
 app.get('/get_trophies', function (req, res) {
-    Trophy.find().sort({type: 1, value: 1}).exec((err,trophies)=>{return res.send(trophies)})
+    Trophy.find().sort({ type: 1, value: 1 }).exec((err, trophies) => { return res.send(trophies) })
 })
 
 app.get('/get_gifts', function (req, res) {
-    Gift.find({}).sort('level').exec((err,gifts)=>{return res.send(gifts)})
+    Gift.find({}).sort('level').exec((err, gifts) => { return res.send(gifts) })
 })
 
 app.get('/get_all_users', function (req, res) {
-    User.find((err,users)=>res.send(users));
+    User.find((err, users) => res.send(users));
 })
 
 app.get('/get_levels', function (req, res) {
-    Level.find().sort('number').exec((err,levels)=>res.send(levels));
+    Level.find().sort('number').exec((err, levels) => res.send(levels));
 })
