@@ -66,6 +66,14 @@
 				</v-accordion>
 				
 
+				<h2 class="text-center" style=" text-transform: uppercase;">Days Statistics</h2>
+				<div>
+						<div ng-repeat="day in days">
+							♦ {{day.date}} : {{day.users_counter}} users
+							<br>	
+						</div>
+				</div>
+
 				<h2 class="text-center" style=" text-transform: uppercase;">Trophies Statistics</h2>
 				<div>
 						<div ng-repeat="trophy in trophies">
