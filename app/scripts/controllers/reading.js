@@ -15,6 +15,7 @@ angular.module('yapp')
    $scope.newTrophy= undefined;
    $scope.showLoader=true;
    $scope.celebrations=[];
+   $scope.selectedAnswer=-1;
 
     $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).then(function(response){
       console.log(response.data);
@@ -70,6 +71,10 @@ angular.module('yapp')
     };
 
     $scope.check_answer = function (input_answer, question_id, choice_id, question_index) {
+      if($scope.selectedAnswer!=choice_id){
+          $scope.selectedAnswer = choice_id;
+          return;
+      }
       //disabling answers
       for (var i = 0; i < $scope.reading.questions[question_index].choices.length; i++) {
         var right_element = $document[0].getElementById("atag_"+question_index + "_" + i);
