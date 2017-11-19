@@ -22,40 +22,49 @@
 			<div class="container">
 				
 				<h2 class="text-center" style=" text-transform: uppercase;">Readings Statistics</h2>
-
-				<v-accordion class="vAccordion--default" >	
-						  <!-- add expanded attribute to open the section -->
-						  <v-pane ng-repeat="reading in readings">
-							<v-pane-header>
-							  ({{reading.number}})  {{reading.shahed}} 
-							  <span style="float:right;padding-right:20px">users counter: {{reading.users_count}}</span>
-
-							</v-pane-header>
-						
+				<v-accordion class="vAccordion--default">
+					<v-pane ng-repeat="week in weeks">
+						<v-pane-header>
+							Week {{week+1}}
+						</v-pane-header>
 							<v-pane-content>
-								<span style="direction: rtl;text-align: -webkit-right;display: -webkit-box;">{{reading.content}}</span>
-								<br>
-								<br>
-								<strong>Questions</strong>
-								<div ng-repeat="question in reading.questions" style="direction:rtl">
-									♦ {{question.question}}
-									<br>
-									✔ {{question.answer}}
-									<br>
-									<span ng-repeat="choice in question.choices" ng-if="choice != question.answer">
-									-	{{choice}}
-									<br>
-									</span>
-
-									Answered {{question.answers_count}} times, with correct answers {{question.correct_answers_count/question.answers_count*100| number : 1}}%	
-									<br>
-									<br>
-								</div>
+									<v-accordion class="vAccordion--default" >	
+											<!-- add expanded attribute to open the section -->
+											<v-pane ng-repeat="reading in readings" 
+											ng-if="(reading.number< week*7+7 && reading.number>=week*7)">
+											  <v-pane-header>
+												({{reading.number}})  {{reading.shahed}} 
+												<span style="float:right;padding-right:20px">users counter: {{reading.users_count}}</span>
+				  
+											  </v-pane-header>
+										  
+											  <v-pane-content>
+												  <span style="direction: rtl;text-align: -webkit-right;display: -webkit-box;">{{reading.content}}</span>
+												  <br>
+												  <br>
+												  <strong>Questions</strong>
+												  <div ng-repeat="question in reading.questions" style="direction:rtl">
+													  ♦ {{question.question}}
+													  <br>
+													  ✔ {{question.answer}}
+													  <br>
+													  <span ng-repeat="choice in question.choices" ng-if="choice != question.answer">
+													  -	{{choice}}
+													  <br>
+													  </span>
+				  
+													  Answered {{question.answers_count}} times, with correct answers {{question.correct_answers_count/question.answers_count*100| number : 1}}%	
+													  <br>
+													  <br>
+												  </div>
+											  </v-pane-content>
+											</v-pane>
+										  
+										  </v-accordion>
 							</v-pane-content>
-						  </v-pane>
-						
-						</v-accordion>
-
+					</v-pane>
+				</v-accordion>
+				
 
 				<h2 class="text-center" style=" text-transform: uppercase;">Trophies Statistics</h2>
 				<div>
