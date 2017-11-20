@@ -22,7 +22,7 @@ gulp.task('html', ['styles'], function(){
   var outputDir = 'dist';
   var cssFilter = $.filter('**/*.css', {restore: true});
   var htmlFilter = $.filter('**/*.html', {restore: true});
-  var indexFilter = $.filter(['**/*', '!**/index.html'], {restore: true});
+  var indexFilter = $.filter(['**/*', '!**/index*.html'], {restore: true});
   var assets = $.useref.assets({searchPath: '{.tmp,app}'});  
 
   gulp.src('app/**/*.html')
