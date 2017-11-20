@@ -6,6 +6,9 @@ var karma = require('karma').server;
 var argv = require('yargs').argv;
 var $ = require('gulp-load-plugins')();
 var bower = require('gulp-bower');
+var rev = require('gulp-rev');
+var revReplace = require('gulp-rev-replace');
+var print = require('gulp-print');
 
 gulp.task('styles', function() {
   return gulp.src('app/styles/main.less')
@@ -14,6 +17,46 @@ gulp.task('styles', function() {
     .pipe($.autoprefixer({browsers: ['last 1 version']}))
     .pipe(gulp.dest('.tmp/styles'));
 });
+
+gulp.task('html', ['styles'], function(){
+  var outputDir = 'dist';
+  var cssFilter = $.filter('**/*.css', {restore: true});
+  var htmlFilter = $.filter('**/*.html', {restore: true});
+  var indexFilter = $.filter(['**/*', '!**/index.html'], {restore: true});
+  var assets = $.useref.assets({searchPath: '{.tmp,app}'});  
+
+  gulp.src('app/**/*.html')
+  //filter to list of assets in html files (gulp-useref)
+  .pipe(assets)
+  //minify css files using csso
+  .pipe(cssFilter)
+  .pipe($.size({title: 'css (before)'}))
+  .pipe($.csso())
+  .pipe($.size({title: 'css (after)'}))
+  .pipe(cssFilter.restore())
+  //restore files that were filtered as assets by useref
+  .pipe(assets.restore())
+  //concat html <link> and <script> tags (in all piped files)
+  .pipe($.useref())
+  //minify html files using htmlmin
+  // .pipe(htmlFilter)
+  // .pipe($.size({title: 'html (before)'}))
+  // .pipe($.htmlmin({collapseWhitespace: false, minifyCSS: true, removeComments: true}))
+  // .pipe($.size({title: 'html (after)'}))
+  // .pipe(htmlFilter.restore())
+  //rename all using gulp-rev except for 'index.html'
+  //and write them to output dir
+  .pipe(indexFilter)
+  .pipe(rev())
+  .pipe(indexFilter.restore())
+  .pipe(gulp.dest(outputDir))
+  //replace all filename references with new ones (in all piped files)
+  //and write them to output dir
+  .pipe(revReplace())
+  .pipe(gulp.dest(outputDir))
+  // .pipe(print()) //for debugging, move below any .pipe to see output of this pipe
+});
+
 
 gulp.task('jshint', function() {
   return gulp.src('app/scripts/**/*.js')
@@ -27,24 +70,22 @@ gulp.task('jshint', function() {
 //     .pipe($.jscs());
 // });
 
-gulp.task('html', ['styles'], function() {
-  var lazypipe = require('lazypipe');
-  var cssChannel = lazypipe()
-    .pipe($.csso)
-    .pipe($.replace, 'bower_components/bootstrap/fonts', 'fonts');
-
-  var assets = $.useref.assets({searchPath: '{.tmp,app}'});
-
-  return gulp.src('app/**/*.html')
-    .pipe(assets)
-    .pipe($.if('.*\.js', $.ngAnnotate()))
-    .pipe($.if('.*\.js', $.uglify()))
-    .pipe($.if('.*\.css', cssChannel()))
-    .pipe(assets.restore())
-    .pipe($.useref())
-    .pipe($.if('.*\.html', $.htmlmin({collapseWhitespace: true})))
-    .pipe(gulp.dest('dist'));
-});
+// gulp.task('html', ['styles'], function() {
+//   var lazypipe = require('lazypipe');
+//   var cssChannel = lazypipe()
+//     .pipe($.csso)
+//     .pipe($.replace, 'bower_components/bootstrap/fonts', 'fonts');
+//   var assets = $.useref.assets({searchPath: '{.tmp,app}'});
+//   return gulp.src('app/**/*.html')
+//     .pipe(assets)
+//     .pipe($.if('.*\.js', $.ngAnnotate()))
+//     .pipe($.if('.*\.js', $.uglify()))
+//     .pipe($.if('.*\.css', cssChannel()))
+//     .pipe(assets.restore())
+//     .pipe($.useref())
+//     .pipe($.if('.*\.html', $.htmlmin({collapseWhitespace: true})))
+//     .pipe(gulp.dest('dist'));
+// });
 
 gulp.task('images', function() {
   return gulp.src('app/images/**/*')
@@ -166,13 +207,6 @@ gulp.task('docs', [], function() {
   return gulp.src('app/scripts/**/**')
     .pipe($.ngdocs.process())
     .pipe(gulp.dest('./docs'));
-});
-
-gulp.task('serveprod', function() {
-  connect.server({
-    port: process.env.PORT || 8000, // localhost:8000
-    livereload: false
-  });
 });
 
 gulp.task('heroku:', ['build'], function(){
