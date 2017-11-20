@@ -626,3 +626,7 @@ app.get('/get_all_users', function (req, res) {
 app.get('/get_levels', function (req, res) {
     Level.find().sort('number').exec((err, levels) => res.send(levels));
 })
+
+app.get('/get_reading_dates', function (req, res) {
+    User.find({"admin":0}).select("reading_dates").exec((err, reading_dates) => res.send(reading_dates));
+})
