@@ -5,9 +5,32 @@ var morgan = require('morgan');
 var logger = morgan('combined');
 var fs = require('fs');
 var cors = require('cors');
+//app.use(gzippo.staticGzip("" + __dirname + "/dist"));
+var path = require('path');
+var serveStatic = require('serve-static');
+var indexHtml = 'index-1.html';
+var serve = serveStatic(path.resolve('dist'), {
+    index: indexHtml, //forces invalidation of cached 'index.html'
+    setHeaders: setCustomCacheControl,
+    // cacheControl: true, //default is true
+    // lastModified: true, //default is true
+    // etag: true, //default is true
+})
+function setCustomCacheControl(res, myPath, stat){
+    if(path.parse(myPath).base == indexHtml){
+        //browser must contact the server before
+        //serving a cached 'index.html'
+        res.setHeader('Cache-Control', 'public, no-cache');
+    }else{
+        //for all other files, cache for a long duration,
+        //and force cache invalidation using gulp-rev
+        var dur_in_ms = 2 * 24 * 60 * 60 * 1000; //2 days
+        res.setHeader('Cache-Control', 'public, max-age='+dur_in_ms);
+    }
+}
+app.use(serve);
 var accessLogStream = fs.createWriteStream(__dirname + '/access.log', { flags: 'a' })
 app.use(morgan({ combinedstream: accessLogStream }));
-app.use(gzippo.staticGzip("" + __dirname + "/dist"));
 app.listen(process.env.PORT || 5000);
 app.use(cors());
 console.log("app started");
@@ -17,8 +40,6 @@ var DB_URI = "mongodb://admin:admin@ds147964.mlab.com:47964/dbr";
 var bodyParser = require('body-parser');
 // app.use(express.static('../public'))
 // var Router = express.Router();
-var path = require('path');
-app.use(require('serve-static')(path.resolve('public')));
 app.use(bodyParser.urlencoded({ extended: false })); //this line must be on top of app config
 app.use(bodyParser.json());
 
