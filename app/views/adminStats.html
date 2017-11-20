@@ -31,7 +31,7 @@
 									<v-accordion class="vAccordion--default" >	
 											<!-- add expanded attribute to open the section -->
 											<v-pane ng-repeat="reading in readings" 
-											ng-if="(reading.number< week*7+7 && reading.number>=week*7)">
+											ng-if="(reading.number<= week*7+7 && reading.number>week*7)">
 											  <v-pane-header>
 												({{reading.number}})  {{reading.shahed}} 
 												<span style="float:right;padding-right:20px">users counter: {{reading.users_count}}</span>
