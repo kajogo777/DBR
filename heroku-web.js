@@ -8,7 +8,7 @@ var cors = require('cors');
 //app.use(gzippo.staticGzip("" + __dirname + "/dist"));
 var path = require('path');
 var serveStatic = require('serve-static');
-var indexHtml = 'index-1.html';
+var indexHtml = 'index-2.html';
 var serve = serveStatic(path.resolve('dist'), {
     index: indexHtml, //forces invalidation of cached 'index.html'
     setHeaders: setCustomCacheControl,
