@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('AdminStatsCtrl', function($scope, $location,$http,$window,) {
+  .controller('AdminStatsCtrl', function($scope, $location,$http,$window) {
   	
   	
       var user=JSON.parse($window.localStorage.getItem("user"));
