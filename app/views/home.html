@@ -11,7 +11,9 @@
 		</a> -->
 
 		<div class="fr">
-			<h2>D.B.R<small> Daily Bible Reading</small></h2>
+			<h2>D.B.R
+				<small> Daily Bible Reading</small>
+			</h2>
 		</div>
 		<div class="jumbotron">
 			<div class="container">
@@ -23,158 +25,205 @@
 						</h2>
 					</center>
 				</div>
+				<style>
+					.alert-warning {
+						background-color: #FFEB3B;
+						border-color: #FFC107;
+						border-width: thick;
+						color: #8a6d3b;
+					}
+				</style>
+				<div class="alert alert-warning" role="alert">
+					<div>
+						<p>
+							<strong>New Update!</strong>
+						</p>
+						<h3>When Answering questions, when you first click on an answer it will be yellow colored. If you are sure from your answer
+							click once more to get the question points.</h3>
+					</div>
+					<br>
+					<div style="direction:rtl">
+						<p>
+							<strong> تحديث جديد !</strong>
+						</p>
+						<h3>وانت بتحل السؤال، أول مرة تختار اجابة هتتعلم باللون الأصفر . لما تتأكد من اجابتك دوس مرة تانية عشان الpoints تتحسبلك.</h3>
+						<p>
+								<strong>تنبيه: </strong>
+								لو مدوستش مرة تانية على الإجابة مفيش points هتتحسبلك أكنك ماجوبتش بظبط
+						</p>
+					</div>
+
+				</div>
+
 				<div class="row">
 					<div class="col-md-2 pull-left">
 						<h1 style="text-align:center">
-							<small>Level</small><br> {{user.level}}
-							
+							<small>Level</small>
+							<br> {{user.level}}
+
 						</h1>
 					</div>
 
 					<div class="col-md-8" ng-if="next_level!=undefined" style="max-width:80%;width:63%;display:inline-block;">
-							<div class="progress progress-striped active" style="height:50px;margin-top: 13%;">
-									<div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" aria-valuenow="{{user.score}}" aria-valuemin="0" aria-valuemax="{{next_level.needed_score}}" style="width: {{(user.level_score/next_level.needed_score)*100}}%"><span style="width: 150px;
-										display: -webkit-inline-box;">{{next_level.needed_score-user.level_score}} points left</span></div>
+						<div class="progress progress-striped active" style="height:50px;margin-top: 13%;">
+							<div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" aria-valuenow="{{user.score}}" aria-valuemin="0"
+							 aria-valuemax="{{next_level.needed_score}}" style="width: {{(user.level_score/next_level.needed_score)*100}}%">
+								<span style="width: 150px;
+										display: -webkit-inline-box;">{{next_level.needed_score-user.level_score}} points left</span>
 							</div>
-							
-							
-							<style>
-								.progress-bar{
-									background-color:#1a8ebc!important;
-									font-size: large;
-									padding-top: 13px;
-								}
-								.progress{
-									background-color: #226457;
-								}
-							</style>
+						</div>
+
+
+						<style>
+							.progress-bar {
+								/*background-color: #1a8ebc!important;*/
+								background-color: {{level_progressbar_colors[user.level%10]}}!important;
+								font-size: large;
+								padding-top: 13px;
+							}
+
+							.progress {
+								background-color: #226457;
+							}
+						</style>
 					</div>
 
 					<div class="col-md-2 pull-right">
 						<h1 style="text-align:center">
-							<small>Level</small><br> {{user.level+1}}
+							<small>Level</small>
+							<br> {{user.level+1}}
 						</h1>
 					</div>
 				</div>
 				<div class="clear"></div>
 
 
-				<!-- <div class="row text-center" style="padding-top:20px">
-						<h2>
-							<a ui-sref="reading" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Start Today's Reading? <span class="glyphicon glyphicon-book"></span></a>
-						</h2>
-				</div> -->
 				<div class="row text-center" style="padding-top:20px">
+					<h2>
+						<a ui-sref="reading" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Start Today's Reading?
+							<span class="glyphicon glyphicon-book"></span>
+						</a>
+					</h2>
+				</div>
+			<!--	<div class="row text-center" style="padding-top:20px">
 					<h2>
 						<a style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Website under maintainance <br>please come back Today at 6:00 PM <span class="glyphicon glyphicon-book"></span></a>
 					</h2>
 			</div>
-				
+				-->
 				<center>
-				
-				<!-- <div class="row text-center" style="padding-top:20px;display: -webkit-inline-box;">
+
+					<div class="row text-center" style="padding-top:20px;display: -webkit-inline-box;">
 
 						<div class="text-center pd" style="padding-top:20px">
-							<a ui-sref="userStats({id:user._id})" class="btn btn-primary btn-lg btn-white">Statistics <i class="glyphicon glyphicon-stats"></i></a>
-						</div>	
-
-						<div class="text-center pd" style="padding-top:20px">
-									<a ui-sref="history" class="btn btn-primary btn-lg btn-white">History <i class="glyphicon glyphicon-time"></i></a>
+							<a ui-sref="userStats({id:user._id})" class="btn btn-primary btn-lg btn-white">Statistics
+								<i class="glyphicon glyphicon-stats"></i>
+							</a>
 						</div>
 
 						<div class="text-center pd" style="padding-top:20px">
-								<a ui-sref="trophies" class="btn btn-primary btn-lg btn-white">Trophies <i class="glyphicon glyphicon-tower"></i></a>
+							<a ui-sref="history" class="btn btn-primary btn-lg btn-white">History
+								<i class="glyphicon glyphicon-time"></i>
+							</a>
 						</div>
 
 						<div class="text-center pd" style="padding-top:20px">
-								<a ui-sref="gifts" class="btn btn-primary btn-lg btn-white">Gifts <i class="glyphicon glyphicon-gift"></i></a>
+							<a ui-sref="trophies" class="btn btn-primary btn-lg btn-white">Trophies
+								<i class="glyphicon glyphicon-tower"></i>
+							</a>
 						</div>
 
-				</div> -->
-			
+						<div class="text-center pd" style="padding-top:20px">
+							<a ui-sref="gifts" class="btn btn-primary btn-lg btn-white">Gifts
+								<i class="glyphicon glyphicon-gift"></i>
+							</a>
+						</div>
+
+					</div>
 
 
-				<!-- <div class="container">
-					<div class="row"></div>
+
+					<div class="container">
+						<div class="row"></div>
 						<div class="col-md-6">
 							<h3>Family Top 5</h3>
-							<table class="table" >
-							    <thead>
-							      <tr>
-									<th>Rank</th>
-							        <th>Name</th>
-							        <th>Score</th>
-									<th>Level</th>
-									<th>Class</th>
-							      </tr>
-							    </thead>
-							    <tbody>
-							      <tr ng-repeat="kid in topKids  track by $index">
-									<th>{{$index+1}}</th>
-							        <th>{{kid.name}}</th>
-							        <th>{{kid.total_score}}</th>
-											<th>{{kid.level}}</th>
-											<th>{{kid.class}}</th>
-							      </tr>
-							      
-							    </tbody>
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Rank</th>
+										<th>Name</th>
+										<th>Score</th>
+										<th>Level</th>
+										<th>Class</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="kid in topKids  track by $index">
+										<th>{{$index+1}}</th>
+										<th>{{kid.name}}</th>
+										<th>{{kid.total_score}}</th>
+										<th>{{kid.level}}</th>
+										<th>{{kid.class}}</th>
+									</tr>
+
+								</tbody>
 							</table>
 						</div>
 						<div class="col-md-6">
 							<h3>My Class Top 5</h3>
 							<table class="table">
-							    <thead>
-							      <tr>
-									<th>Rank</th>
-							        <th>Name</th>
-							        <th>Score</th>
-									<th>Level</th>
-							      </tr>
-							    </thead>
-							    <tbody>
-							      <tr ng-repeat="kid in topKidsInClass track by $index">
-									<th>{{$index+1}}</th>
-							        <th>{{kid.name}}</th>
-							        <th>{{kid.total_score}}</th>
-											<th>{{kid.level}}</th>
-							      </tr>
-							      
-							    </tbody>
+								<thead>
+									<tr>
+										<th>Rank</th>
+										<th>Name</th>
+										<th>Score</th>
+										<th>Level</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="kid in topKidsInClass track by $index">
+										<th>{{$index+1}}</th>
+										<th>{{kid.name}}</th>
+										<th>{{kid.total_score}}</th>
+										<th>{{kid.level}}</th>
+									</tr>
+
+								</tbody>
 							</table>
 						</div>
-					
-				</div> -->
 
-				<!-- bottom buttons -->
-				<center>
-				<div class="row text-center" style="padding-top:20px;display: -webkit-inline-box;">
-							<div class="text-center pd"  ng-if="user.admin != undefined && user.admin >=10">
-									<a ui-sref="adminStats" class="btn btn-primary btn-lg btn-white ">Admin Statistics</a>
+					</div>
+
+					<!-- bottom buttons -->
+					<center>
+						<div class="row text-center" style="padding-top:20px;display: -webkit-inline-box;">
+							<div class="text-center pd" ng-if="user.admin != undefined && user.admin >=10">
+								<a ui-sref="adminStats" class="btn btn-primary btn-lg btn-white ">Admin Statistics</a>
 							</div>
-							<div class="text-center pd"  ng-if="user.admin != undefined && user.admin >=10">
-									<a ui-sref="readingManager" class="btn btn-primary btn-lg btn-white ">Reading Manager</a>
+							<div class="text-center pd" ng-if="user.admin != undefined && user.admin >=10">
+								<a ui-sref="readingManager" class="btn btn-primary btn-lg btn-white ">Reading Manager</a>
 							</div>
-							<div class="text-center pd"  ng-if="user.admin != undefined && user.admin >=5" >
+							<div class="text-center pd" ng-if="user.admin != undefined && user.admin >=5">
 								<a ui-sref="view_kids" class="btn btn-primary btn-lg btn-white">My boys</a>
 							</div>
-							<div class="text-center pd"  ng-if="user.admin != undefined && user.admin >=5">
+							<div class="text-center pd" ng-if="user.admin != undefined && user.admin >=5">
 								<p>
 									<a ui-sref="add_kids" class="btn btn-primary btn-lg btn-white ">Add Kids</a>
 								</p>
 							</div>
-				</div>
-				<style>
-					.pd{
-						padding-left: 10px!important;
-					}
-				</style>
-			</center>
-				
-				<div class="row text-center" style="padding-top:20px">
-					<p>
-						<a ng-click="logout()" class="btn btn-primary btn-lg btn-white">Logout</a>
-					</p>
-				</div>
+						</div>
+						<style>
+							.pd {
+								padding-left: 10px!important;
+							}
+						</style>
+					</center>
+
+					<div class="row text-center" style="padding-top:20px">
+						<p>
+							<a ng-click="logout()" class="btn btn-primary btn-lg btn-white">Logout</a>
+						</p>
+					</div>
 
 
 			</div>

@@ -176,14 +176,14 @@ function AddPoints(user, points, callback) {//get user object and points to add 
 
 
 function CheckTrophies(user, type, callback) {//get user object and trophies type to check and return new user updated object,new trophy
-    User.findOne({ '_id': user._id }, function (err, user) {
+    User.findOne({ '_id': user._id }).populate("trophies.trophy").exec(function (err, user) {
         //get trophies of needed type 
         Trophy.find({ type: type }, (err, trophies) => {
             //excluding trophies that are already taken by user
             user_trophies = user.trophies;
             for (var i = 0; i < user_trophies.length; i++) {
                 for (var j = 0; j < trophies.length; j++) {
-                    if (trophies[j]._id.equals(user_trophies[i].trophy)) {
+                    if (trophies[j]._id.equals(user_trophies[i].trophy._id)) {
                         trophies.splice(j, 1);
                         break;
                     }
