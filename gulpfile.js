@@ -10,6 +10,33 @@ var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
 var print = require('gulp-print');
 
+gulp.task('delete', function(){
+  require('del')('rev-test/output/**/*');
+})
+
+gulp.task('default', ['delete'], function(){
+
+  gulp.src('rev-test/main.js')
+  .pipe(rev())
+  .pipe(gulp.dest('rev-test/output'))
+  .pipe(rev.manifest())
+  .pipe(gulp.dest('rev-test/output'))
+
+  var manifest = gulp.src('rev-test/output/rev-manifest.json');
+  gulp.src('rev-test/index.js')
+  .pipe(revReplace({manifest: manifest}))
+  //minify html files using htmlmin
+  // .pipe(htmlFilter)
+  // .pipe($.size({title: 'html (before)'}))
+  // .pipe($.htmlmin({collapseWhitespace: false, minifyCSS: true, removeComments: true}))
+  // .pipe($.size({title: 'html (after)'}))
+  // .pipe(htmlFilter.restore())
+  .pipe(rev())
+  .pipe(gulp.dest('rev-test/output'))
+  .pipe(print())
+
+});
+
 gulp.task('styles', function() {
   return gulp.src('app/styles/main.less')
     .pipe($.plumber())
@@ -18,15 +45,57 @@ gulp.task('styles', function() {
     .pipe(gulp.dest('.tmp/styles'));
 });
 
-gulp.task('html', ['styles'], function(){
-  var outputDir = 'dist';
-  var cssFilter = $.filter('**/*.css', {restore: true});
-  var htmlFilter = $.filter('**/*.html', {restore: true});
-  var indexFilter = $.filter(['**/*', '!**/index.html'], {restore: true});
-  var assets = $.useref.assets({searchPath: '{.tmp,app}'});  
+/*
+  html templates Must be rev'ed first (except index.html),
+  then javascript files (and css) get their links replaced FIRST then
+  get rev'ed,
+  then index.html links gets replaced.
 
-  gulp.src('app/**/*.html')
-  //filter to list of assets in html files (gulp-useref)
+  this order comes from the dependencies, html includes js and css,
+  and js files include html templates,
+
+  otherwise, a template might get updated, its hash will change, but
+  if the js file that includes it is not changed, it will have the
+  same hash (because hashing occurs before replacing the links in
+  file), so the browser will use the cached version of the js file
+  and ask for an old template, that does not exist on server
+
+  a package that does this:
+  https://www.npmjs.com/package/gulp-filerev-replace
+*/
+var outputDir = 'dist';
+
+gulp.task('html:templates', function(){
+  /*
+    rev all html files excpet for (index.html),
+    which are mainly angular html templates
+    then replace references in all html templates
+    (for templates that ng-include other templates)
+  */
+  var indexFilter = $.filter(['**/*', '!**/index*.html'], {restore: true});
+  return gulp.src('app/**/*.html')
+  .pipe(indexFilter)
+  .pipe(rev())
+  .pipe(gulp.dest(outputDir))
+  .pipe(revReplace())
+  .pipe(gulp.dest(outputDir))
+  .pipe(rev.manifest())
+  .pipe(gulp.dest(outputDir));
+});
+
+gulp.task('html:css-js', ['styles', 'html:templates'], function(){
+  /*
+    filter assets in 'index.html',
+    minify,
+    replace references in them with rev'ed ones,
+    THEN rev them (so their hashes change with changing references inside them)
+  */
+  var cssFilter = $.filter('**/*.css', {restore: true});
+  var jsFilter = $.filter('**/*.js', {restore: true});
+  var manifest = gulp.src(outputDir + '/rev-manifest.json');  
+  var assets = $.useref.assets({searchPath: '{.tmp,app}'});
+  return gulp.src('app/index*.html')
+  //filter assets (<link> and <script>) in 'index.html'
   .pipe(assets)
   //minify css files using csso
   .pipe(cssFilter)
@@ -34,27 +103,35 @@ gulp.task('html', ['styles'], function(){
   .pipe($.csso())
   .pipe($.size({title: 'css (after)'}))
   .pipe(cssFilter.restore())
-  //restore files that were filtered as assets by useref
-  .pipe(assets.restore())
-  //concat html <link> and <script> tags (in all piped files)
-  .pipe($.useref())
-  //minify html files using htmlmin
-  // .pipe(htmlFilter)
-  // .pipe($.size({title: 'html (before)'}))
-  // .pipe($.htmlmin({collapseWhitespace: false, minifyCSS: true, removeComments: true}))
-  // .pipe($.size({title: 'html (after)'}))
-  // .pipe(htmlFilter.restore())
-  //rename all using gulp-rev except for 'index.html'
-  //and write them to output dir
-  .pipe(indexFilter)
+  //minify js files
+  .pipe(jsFilter)
+  .pipe($.size({title: 'js (before)'}))
+  .pipe($.ngAnnotate())
+  .pipe($.uglify())
+  .pipe($.size({title: 'js (after)'}))
+  .pipe(jsFilter.restore())
+  //replace references (to angular html templates) with rev'ed ones  
+  .pipe(revReplace({manifest: manifest}))
+  //then rev them (so their hash includes the new references)
   .pipe(rev())
-  .pipe(indexFilter.restore())
   .pipe(gulp.dest(outputDir))
-  //replace all filename references with new ones (in all piped files)
-  //and write them to output dir
-  .pipe(revReplace())
+  .pipe(rev.manifest({merge: true}))
+  .pipe(gulp.dest(outputDir));
+});
+
+gulp.task('html', ['html:css-js'], function(){
+  /*
+  concat <link> and <script> tags in 'index.html',
+  replace references in it with rev'ed ones
+  */
+  var manifest = gulp.src(outputDir + '/rev-manifest.json');  
+  return gulp.src('app/index*.html')
+  //concat html <link> and <script> tags
+  .pipe($.useref())
+  //replace references with new ones
+  .pipe(revReplace({manifest: manifest}))
   .pipe(gulp.dest(outputDir))
-  // .pipe(print()) //for debugging, move below any .pipe to see output of this pipe
+  // .pipe(print()) //for debugging, move below any .pipe to see output of this pipe  
 });
 
 

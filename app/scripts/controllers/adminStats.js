@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('AdminStatsCtrl', function($scope, $location,$http,$window,) {
+  .controller('AdminStatsCtrl', function($scope, $location,$http,$window) {
   	
   	
       var user=JSON.parse($window.localStorage.getItem("user"));
@@ -30,6 +30,11 @@ angular.module('yapp')
 
       $http.get($window.localStorage.getItem("base_url")+"/get_levels").then(function(response){
         $scope.levels= response.data;
+        for(var i=0;i<$scope.levels.length;i++){
+          for(var j=i+1;j<$scope.levels.length;j++){
+            $scope.levels[i].users_count -= $scope.levels[j].users_count;
+          }
+        }
       });
 
       $http.get($window.localStorage.getItem("base_url")+"/get_reading_dates").then(function(response){

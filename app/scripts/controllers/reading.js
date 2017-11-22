@@ -15,6 +15,8 @@ angular.module('yapp')
    $scope.newTrophy= undefined;
    $scope.showLoader=true;
    $scope.celebrations=[];
+   $scope.selectedAnswer=[];
+
 
     $http.post($window.localStorage.getItem("base_url")+"/get_user",{"id":$scope.user._id}).then(function(response){
       console.log(response.data);
@@ -59,6 +61,11 @@ angular.module('yapp')
 
         
        };
+
+       for(var i=0;i< $scope.reading.questions.length;i++){
+        $scope.selectedAnswer.push(-1);
+       }
+
       // var audioElement = angular.element( document.querySelector( '#audio' ) );
       // audioElement.src = response.data.sound;
       // audioElement.play(); 
@@ -70,6 +77,11 @@ angular.module('yapp')
     };
 
     $scope.check_answer = function (input_answer, question_id, choice_id, question_index) {
+      console.log($scope.selectedAnswer);
+      if($scope.selectedAnswer[question_index] !=choice_id){
+          $scope.selectedAnswer[question_index] = choice_id;
+          return;
+      }
       //disabling answers
       for (var i = 0; i < $scope.reading.questions[question_index].choices.length; i++) {
         var right_element = $document[0].getElementById("atag_"+question_index + "_" + i);

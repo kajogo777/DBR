@@ -5,9 +5,32 @@ var morgan = require('morgan');
 var logger = morgan('combined');
 var fs = require('fs');
 var cors = require('cors');
+//app.use(gzippo.staticGzip("" + __dirname + "/dist"));
+var path = require('path');
+var serveStatic = require('serve-static');
+var indexHtml = 'index-2.html';
+var serve = serveStatic(path.resolve('dist'), {
+    index: indexHtml, //forces invalidation of cached 'index.html'
+    setHeaders: setCustomCacheControl,
+    // cacheControl: true, //default is true
+    // lastModified: true, //default is true
+    // etag: true, //default is true
+})
+function setCustomCacheControl(res, myPath, stat) {
+    if (path.parse(myPath).base == indexHtml) {
+        //browser must contact the server before
+        //serving a cached 'index.html'
+        res.setHeader('Cache-Control', 'public, no-cache');
+    } else {
+        //for all other files, cache for a long duration,
+        //and force cache invalidation using gulp-rev
+        var dur_in_ms = 2 * 24 * 60 * 60 * 1000; //2 days
+        res.setHeader('Cache-Control', 'public, max-age=' + dur_in_ms);
+    }
+}
+app.use(serve);
 var accessLogStream = fs.createWriteStream(__dirname + '/access.log', { flags: 'a' })
 app.use(morgan({ combinedstream: accessLogStream }));
-app.use(gzippo.staticGzip("" + __dirname + "/dist"));
 app.listen(process.env.PORT || 5000);
 app.use(cors());
 console.log("app started");
@@ -17,8 +40,6 @@ var DB_URI = "mongodb://admin:admin@ds147964.mlab.com:47964/dbr";
 var bodyParser = require('body-parser');
 // app.use(express.static('../public'))
 // var Router = express.Router();
-var path = require('path');
-app.use(require('serve-static')(path.resolve('public')));
 app.use(bodyParser.urlencoded({ extended: false })); //this line must be on top of app config
 app.use(bodyParser.json());
 
@@ -160,14 +181,23 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
         Trophy.find({ type: type }, (err, trophies) => {
             //excluding trophies that are already taken by user
             user_trophies = user.trophies;
-            for (i = 0; i < trophies.length; i++) {
-                for (j = 0; j < user_trophies.length; j++) {
-                    if (trophies[i]._id.equals(user_trophies[j].trophy)) {
-                        trophies.splice(i, 1);
+            for (var i = 0; i < user_trophies.length; i++) {
+                for (var j = 0; j < trophies.length; j++) {
+                    if (trophies[j]._id.equals(user_trophies[i].trophy)) {
+                        trophies.splice(j, 1);
                         break;
                     }
                 }
             }
+            // for (i = 0; i < trophies.length; i++) {
+            //     for (j = 0; j < user_trophies.length; j++) {
+            //         if (trophies[i]._id.equals(user_trophies[j].trophy)) {
+            //             trophies.splice(i, 1);
+            //             console.log("entered");
+            //             break;
+            //         }
+            //     }
+            // }
 
             earnedNewTrophy = false;
             if (type == "reading_days") {//check of trophies type reading bible for x days
@@ -268,7 +298,7 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
 
 app.get('/correct_row_readings', function (req, res) {
     User.find({ "admin": "0" }, function (err, users) {
-        var output="";
+        var output = "";
         for (var i = 0; i < users.length; i++) {
             var row_readings_counter = 0;
             console.log('users[i].reading_dates.length: ', users[i].reading_dates.length);
@@ -282,19 +312,19 @@ app.get('/correct_row_readings', function (req, res) {
                 for (var j = reading_dates.length - 1; j >= 1; j--) {
                     var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
-                    var diffDays = Math.floor(Math.abs((reading_dates[j].getTime() - reading_dates[j-1].getTime()) / (oneDay)));
+                    var diffDays = Math.floor(Math.abs((reading_dates[j].getTime() - reading_dates[j - 1].getTime()) / (oneDay)));
                     console.log('diffDays: ', diffDays);
                     if (diffDays > 1)
                         break;
                     else
-                    row_readings_counter++;
+                        row_readings_counter++;
                 }
                 console.log('row_readings_count: ', row_readings_counter);
             }
 
-            if(row_readings_counter !=users[i].row_readings_count){
-                 output+= users[i].username+" ID: "+users[i]._id+" was: "+users[i].row_readings_count+" now : "+row_readings_counter+ "<br>";
-                 User.updateOne({"_id":users[i]._id},{"row_readings_count":row_readings_counter},()=>{});
+            if (row_readings_counter != users[i].row_readings_count) {
+                output += users[i].username + " ID: " + users[i]._id + " was: " + users[i].row_readings_count + " now : " + row_readings_counter + "<br>";
+                User.updateOne({ "_id": users[i]._id }, { "row_readings_count": row_readings_counter }, () => { });
             }
         }
         res.send(output);
@@ -628,5 +658,5 @@ app.get('/get_levels', function (req, res) {
 })
 
 app.get('/get_reading_dates', function (req, res) {
-    User.find({"admin":0}).select("reading_dates").exec((err, reading_dates) => res.send(reading_dates));
+    User.find({ "admin": 0 }).select("reading_dates").exec((err, reading_dates) => res.send(reading_dates));
 })
