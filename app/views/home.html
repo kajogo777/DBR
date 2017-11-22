@@ -72,7 +72,8 @@
 
 						<style>
 							.progress-bar {
-								background-color: #1a8ebc!important;
+								/*background-color: #1a8ebc!important;*/
+								background-color: {{level_progressbar_colors[user.level%10]}}!important;
 								font-size: large;
 								padding-top: 13px;
 							}

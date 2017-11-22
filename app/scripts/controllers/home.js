@@ -12,6 +12,7 @@ angular.module('yapp')
     $scope.user=JSON.parse($window.localStorage.getItem("user"));
     $scope.next_level=undefined;
     $scope.$state = $state;
+    $scope.level_progressbar_colors=['#1a8ebc','#9c1abc','#f44336','#8bc34a','#ffc107','#00bcd4','#c700d4','#d47f00','#48d400','#aa00d4'];
     
         $scope.menuItems = [];
         angular.forEach($state.get(), function (item) {
