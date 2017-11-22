@@ -30,10 +30,11 @@ angular.module('yapp')
 
       $http.get($window.localStorage.getItem("base_url")+"/get_levels").then(function(response){
         $scope.levels= response.data;
-        for(var i=0;i<$scope.levels.length;i++){
-          for(var j=i+1;j<$scope.levels.length;j++){
-            $scope.levels[i].users_count -= $scope.levels[j].users_count;
-          }
+        for(var i=0;i<$scope.levels.length-1;i++){
+          $scope.levels[i].users_count -= $scope.levels[i+1].users_count;
+          // for(var j=i+1;j<$scope.levels.length;j++){
+          //   $scope.levels[i].users_count -= $scope.levels[j].users_count;
+          // }
         }
       });
 
