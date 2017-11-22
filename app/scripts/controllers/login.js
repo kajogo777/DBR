@@ -12,7 +12,9 @@ angular.module('yapp')
     //setting base address
     if($location.absUrl().includes("localhost")){
       $window.localStorage.setItem("base_url","http://localhost:5000");
-    }else{
+    }else if($location.absUrl().includes("dbrtest")){
+       $window.localStorage.setItem("base_url","https://dbrtest.herokuapp.com");
+   }else{
       $window.localStorage.setItem("base_url","https://dbr.herokuapp.com");
     }
     
