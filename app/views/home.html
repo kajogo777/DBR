@@ -56,7 +56,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-2 pull-left">
+					<div class="col-sm-2 pull-left">
 						<h1 style="text-align:center">
 							<small>Level</small>
 							<br> {{user.level}}
@@ -64,7 +64,7 @@
 						</h1>
 					</div>
 
-					<div class="col-md-8" ng-if="next_level!=undefined" style="max-width:80%;width:63%;display:inline-block;">
+					<div class="col-sm-8" ng-if="next_level!=undefined" style="max-width:80%;width:63%;display:inline-block;">
 						<div class="progress progress-striped active" style="height:50px;margin-top: 13%;">
 							<div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" aria-valuenow="{{user.score}}" aria-valuemin="0"
 							 aria-valuemax="{{next_level.needed_score}}" style="width: {{(user.level_score/next_level.needed_score)*100}}%">
@@ -88,7 +88,7 @@
 						</style>
 					</div>
 
-					<div class="col-md-2 pull-right">
+					<div class="col-sm-2 pull-right">
 						<h1 style="text-align:center">
 							<small>Level</small>
 							<br> {{user.level+1}}
