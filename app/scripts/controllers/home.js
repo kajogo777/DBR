@@ -35,19 +35,59 @@ angular.module('yapp')
             $scope.next_level=response.data;
           }
         });
-        $http.post($window.localStorage.getItem("base_url")+"/get_top_5").then(function(response){
+
+
+        $scope.classes= [];
+        $http.get($window.localStorage.getItem("base_url")+"/get_classes_and_scores").then(function(response){
           if(response.status==200){
-            $scope.topKids=response.data;
-            console.log($scope.topKids);
+            var users =response.data;
+
+            //getting total score and users counter
+            for(var i =0;i<users.length;i++){
+              if( !$scope.classes[users[i].class]){
+                $scope.classes[users[i].class]={total_score:0,users_count:0,average:0};
+              }
+                $scope.classes[users[i].class].total_score += users[i].total_score;
+                $scope.classes[users[i].class].users_count++;
+            }
+
+            //taking average
+            for(var i=0;i<users.length;i++){
+              $scope.classes[users[i].class].average= $scope.classes[users[i].class].total_score/$scope.classes[users[i].class].users_count;
+            }
+
+            //converting associative array to regular array
+            var tmp=[];
+            for(var c in $scope.classes){
+             tmp.push({class_name: c,average:$scope.classes[c].average});
+            }
+
+            $scope.classes=tmp;
+
+            //sort
+            $scope.classes.sort((a,b)=>{return b.average-a.average});
+            
+            console.log($scope.classes);
           }
         });
-        $http.post($window.localStorage.getItem("base_url")+"/get_top_5_in_class",{"class":$scope.user.class}
-          ).then(function(response){
-          if(response.status==200){
-            $scope.topKidsInClass=response.data;
-            console.log($scope.topKids);
-          }
-        });    
+
+
+        // $http.post($window.localStorage.getItem("base_url")+"/get_top_5").then(function(response){
+        //   if(response.status==200){
+        //     $scope.topKids=response.data;
+        //     console.log($scope.topKids);
+        //   }
+        // });
+        // $http.post($window.localStorage.getItem("base_url")+"/get_top_5_in_class",{"class":$scope.user.class}
+        //   ).then(function(response){
+        //   if(response.status==200){
+        //     $scope.topKidsInClass=response.data;
+        //     console.log($scope.topKids);
+        //   }
+        // });    
+
+
+       
 
         $scope.logout= function(){
           $window.localStorage.removeItem("user","");

@@ -33,7 +33,7 @@
 						color: #8a6d3b;
 					}
 				</style>
-				<div class="alert alert-warning" role="alert">
+				<!-- <div class="alert alert-warning" role="alert">
 					<div>
 						<p>
 							<strong>New Update!</strong>
@@ -53,7 +53,7 @@
 						</p>
 					</div>
 
-				</div>
+				</div> -->
 
 				<div class="row">
 					<div class="col-sm-2 pull-left">
@@ -145,7 +145,7 @@
 
 					<div class="container">
 						<div class="row"></div>
-						<div class="col-md-6">
+						<!-- <div class="col-md-6">
 							<h3>Family Top 5</h3>
 							<table class="table">
 								<thead>
@@ -190,7 +190,30 @@
 
 								</tbody>
 							</table>
-						</div>
+						</div> -->
+						<div class="col-md-3"></div>
+							<div class="col-md-6">
+								<h3>Top 5 Classes</h3>
+								{{classes["St. Paul"]}}
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Rank</th>
+											<th>Class</th>
+											<th>Average Score</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="class in classes track by $index" ng-if="$index<5 || user.admin==10">
+											<th>{{$index+1}}</th>
+											<th>{{class.class_name}}</th>
+											<th>{{class.average|number : 0}}</th>
+										</tr>
+	
+									</tbody>
+								</table>
+							</div>
+						
 
 					</div>
 

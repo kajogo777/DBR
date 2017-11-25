@@ -660,3 +660,8 @@ app.get('/get_levels', function (req, res) {
 app.get('/get_reading_dates', function (req, res) {
     User.find({ "admin": 0 }).select("reading_dates").exec((err, reading_dates) => res.send(reading_dates));
 })
+
+
+app.get('/get_classes_and_scores',function(req,res){
+    User.find({ "admin": 0 , "total_score": {$ne: 0}}).select("total_score class -_id").exec((err, users) => res.send(users));
+})
