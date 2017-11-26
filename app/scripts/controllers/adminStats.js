@@ -62,7 +62,28 @@ angular.module('yapp')
         console.log($scope.days);
       });
 
-
+      $scope.gifts=[];
+      $http.get($window.localStorage.getItem("base_url")+"/get_all_users_gifts").then(function(response){
+        console.log(response.data);
+        var users = response.data;
+        var gifts = [];
+        for(var i=0;i<users.length;i++){ 
+          if(!users[i].gift)
+            continue;
+            var gift_index= gifts.indexOf(users[i].gift._id);
+            if(gift_index<0){
+              gifts.push(users[i].gift._id);
+              $scope.gifts.push({
+                _id:users[i].gift._id,
+                title: users[i].gift.title,
+                users_counter: 1
+              });
+            }else{
+              $scope.gifts[gift_index].users_counter++;
+            }
+          
+        }
+      });
 
 
     });

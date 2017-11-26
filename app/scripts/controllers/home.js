@@ -65,7 +65,7 @@ angular.module('yapp')
             $scope.classes=tmp;
 
             //sort
-            $scope.classes.sort((a,b)=>{return b.average-a.average});
+            $scope.classes.sort(function(a,b){return b.average-a.average});
             
             console.log($scope.classes);
           }
