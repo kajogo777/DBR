@@ -85,7 +85,7 @@ app.post('/login', function (req, res) {
 });
 
 app.post('/get_user', function (req, res) {
-    User.findOne({ '_id': req.body.id }).populate("trophies.trophy").exec(function (err, user) {
+    User.findOne({ '_id': req.body.id }).populate("trophies.trophy").populate("gift").exec(function (err, user) {
         if (err) {
             return res.status(400);
         } else {
@@ -664,4 +664,16 @@ app.get('/get_reading_dates', function (req, res) {
 
 app.get('/get_classes_and_scores',function(req,res){
     User.find({ "admin": 0 , "total_score": {$ne: 0}}).select("total_score class -_id").exec((err, users) => res.send(users));
+})
+
+app.post('/select_gift',function(req,res){
+    User.updateOne({"_id":req.body.user_id},{"gift":req.body.gift_id}).exec(function(err){
+        if(err){
+            console.log(err);
+        }else{
+            User.findOne({"_id":req.body.user_id}).populate("trophies.trophy").populate("gift").exec(function(err,user){
+                res.send(user);
+            })
+        }
+    })
 })

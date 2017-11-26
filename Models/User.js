@@ -30,7 +30,8 @@ var Schema = mongoose.Schema({
       trophy:{ type : mongoose.Schema.Types.ObjectId, ref: 'trophy' },
       date:{type:Date}
       }
-    ]
+    ],
+    gift:{ type : mongoose.Schema.Types.ObjectId, ref: 'gift' }
 })
 
   var User = mongoose.model("user", Schema);

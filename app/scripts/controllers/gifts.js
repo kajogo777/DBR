@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('GiftsCtrl', function($scope, $location,$http,$window) {
+  .controller('GiftsCtrl', function($scope, $location,$http,$window,toastr) {
 
       $scope.gifts =[];
       $scope.levels=[];
@@ -24,5 +24,17 @@ angular.module('yapp')
           }
           
         });
+        $scope.currentlyProccessedGift="";
+        $scope.selectGift = function(giftID,giftTitle){
+          $scope.currentlyProccessedGift=giftID;
+          $http.post($window.localStorage.getItem("base_url")+"/select_gift",{user_id:$scope.user._id,gift_id:giftID}).then(function(response){
+            console.log(response.data);
+            $scope.user= response.data;
+            $window.localStorage.setItem("user",JSON.stringify(response.data));
+            $scope.currentlyProccessedGift="";
+            toastr.success(giftTitle+ " selected");
+            
+          });
+        }
     });
 
