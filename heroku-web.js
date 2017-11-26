@@ -677,3 +677,13 @@ app.post('/select_gift',function(req,res){
         }
     })
 })
+
+app.get('/get_all_users_gifts',function(req,res){
+    User.find().populate("gift").select("gift -_id").exec(function(err,users){
+        if(err){
+            console.log(err);
+        }else{
+            res.send(users);
+        }
+    })
+})
