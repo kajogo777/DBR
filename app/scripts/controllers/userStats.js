@@ -12,6 +12,7 @@ angular.module('yapp')
   	
   	
       var user=JSON.parse($window.localStorage.getItem("user"));
+      $scope.user_opening_browser = user;
       var id = $stateParams.id;
       
       $scope.calendarView = 'month';
