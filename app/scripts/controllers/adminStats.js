@@ -44,11 +44,15 @@ angular.module('yapp')
         for(var u=0;u<users.length;u++){
           var reading_date_of_user = users[u].reading_dates;
           for(var d=0;d<reading_date_of_user.length;d++){
-            var date = new Date(reading_date_of_user[d]);
-            date = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
-            var date_index= days_array.indexOf(date);
+            var tmp = new Date(reading_date_of_user[d]);
+            var date = new Date(tmp.toDateString());
+            // date.setDate(tmp.getDate());
+            // date.setMonth(tmp.getMonth());
+            // date.setFullYear(tmp.getFullYear());
+            
+            var date_index= days_array.indexOf(date.toDateString());
             if(date_index<0){
-              days_array.push(date);
+              days_array.push(date.toDateString());
               $scope.days.push({
                 date: date,
                 users_counter: 1
@@ -58,7 +62,8 @@ angular.module('yapp')
             }
           }
         }
-        $scope.days.sort(function(a,b) {return (a.date > b.date) ? 1 :0});
+        // $scope.days.sort(function(a,b) {return (new Date(a.date) > new Date(b.date)) ? 1 :0});
+        $scope.days.sort(function(a,b) {return new Date(a.date)- new Date(b.date)});
         console.log($scope.days);
       });
 
