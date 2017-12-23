@@ -1,48 +1,49 @@
 <!doctype html>
 <html class="no-js">
-  <head>
-    <meta charset="utf-8">
-    <title>Daily Bible Reading</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=1024">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	
-    <!-- build:css(.tmp) styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css" />
-    <link rel="stylesheet" href="../bower_components/angular-toastr/dist/angular-toastr.css" />
-    <link rel="stylesheet" href="../bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css" />
-    <link rel="stylesheet" href="../bower_components/v-accordion/dist/v-accordion.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-	
-    <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- reading manager Stylesheets -->
-    <link rel="stylesheet" href="readings/questionMcq/questionMcq.css">
-    <link rel="stylesheet" href="readings/questionEssay/questionEssay.css">
-    <link rel="stylesheet" href="readings/readingView/readingView.css">
-    <link rel="stylesheet" href="readings/readingEdit/readingEdit.css">
-    <!-- endbuild -->
-    <style>
-      .jumbotron {
-        overflow-x: auto;
-      }
-    </style>
-  </head>
-  <body ng-app="yapp">
-    <!--[if lt IE 7]>
+
+<head>
+  <meta charset="utf-8">
+  <title>Daily Bible Reading</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=1024">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <!-- build:css(.tmp) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css" />
+  <link rel="stylesheet" href="../bower_components/angular-toastr/dist/angular-toastr.css" />
+  <link rel="stylesheet" href="../bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css" />
+  <link rel="stylesheet" href="../bower_components/v-accordion/dist/v-accordion.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css({.tmp,app}) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- reading manager Stylesheets -->
+  <link rel="stylesheet" href="readings/questionMcq/questionMcq.css">
+  <link rel="stylesheet" href="readings/questionEssay/questionEssay.css">
+  <link rel="stylesheet" href="readings/readingView/readingView.css">
+  <link rel="stylesheet" href="readings/readingEdit/readingEdit.css">
+  <!-- endbuild -->
+  <style>
+    .jumbotron {
+      overflow-x: auto;
+    }
+  </style>
+</head>
+
+<body ng-app="yapp">
+  <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
-    <div class="">
+  <!-- Add your site or application content here -->
+  <div class="">
+    <div ui-view style="overflow-y: auto">Loading... Please wait</div>
+  </div>
 
-      <div ui-view style="overflow-y: auto" >Loading... Please wait</div>
-    </div>
-
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-     <script> /*
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+  <script> /*
        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -50,75 +51,77 @@
 
        ga('create', 'UA-XXXXX-X');
        ga('send', 'pageview'); */
-    </script>
+  </script>
 
-    <!-- build:js scripts/oldieshim.js -->
-    <!--[if lt IE 9]>
+  <!-- build:js scripts/oldieshim.js -->
+  <!--[if lt IE 9]>
     <script src="../bower_components/es5-shim/es5-shim.js"></script>
     <script src="../bower_components/json3/lib/json3.js"></script>
     <![endif]-->
-    <!-- endbuild -->
-    
-    <script
-    src="https://code.jquery.com/jquery-3.2.1.min.js"
-    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  <!-- endbuild -->
+
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
 
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="../bower_components/angular/angular.js"></script>
-    <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
-    <script src="../bower_components/angular-animate/angular-animate.js"></script>
-    <script src="../bower_components/angular-aria/angular-aria.js"></script>
-    <script src="../bower_components/angular-messages/angular-messages.js"></script>
-    <script src="../bower_components/angular-material/angular-material.js"></script>
-    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="../bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
-    <script src="../bower_components/moment/moment.js"></script>
-    <script src="../bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js"></script>
-    <script src="../bower_components/v-accordion/dist/v-accordion.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
-    
+  <!-- build:js scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
+  <script src="../bower_components/angular-animate/angular-animate.js"></script>
+  <script src="../bower_components/angular-aria/angular-aria.js"></script>
+  <script src="../bower_components/angular-messages/angular-messages.js"></script>
+  <script src="../bower_components/angular-material/angular-material.js"></script>
+  <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="../bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+  <script src="../bower_components/moment/moment.js"></script>
+  <script src="../bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js"></script>
+  <script src="../bower_components/v-accordion/dist/v-accordion.js"></script>
+  
+  <script src="scripts/jquery.snow.min.1.0.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
 
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/login.js"></script>
-    <script src="scripts/controllers/dashboard.js"></script>
-    <script src="scripts/controllers/home.js"></script>
-    <script src="scripts/controllers/reading.js"></script>
-    <script src="scripts/controllers/add_reading.js"></script>
-    <script src="scripts/controllers/add_kids.js"></script>
-    <script src="scripts/controllers/view_kids.js"></script>
-    <script src="scripts/controllers/history.js"></script>
-    <script src="scripts/controllers/trophies.js"></script>
-    <script src="scripts/controllers/gifts.js"></script>
-    <script src="scripts/controllers/userStats.js"></script>
-    <script src="scripts/controllers/adminStats.js"></script>
 
-    <!-- Reading Manager related files -->
-		<!-- Modules -->
-		<script src="readings/readings.module.js"></script>
-		<!-- Components -->
-		<script src="readings/readingManager/readingManager.component.js"></script>
-		<script src="readings/readingManager/readingsList/readingsList.component.js"></script>
-		<script src="readings/readingEdit/readingEdit.component.js"></script>
-		<script src="readings/readingView/readingView.component.js"></script>
-		<script src="readings/questionMcq/questionMcq.component.js"></script>
-		<script src="readings/questionEssay/questionEssay.component.js"></script>
-		<!-- Component-Controllers -->
-		<script src="readings/readingManager/readingManager.controller.js"></script>
-		<script src="readings/readingManager/readingsList/readingsList.controller.js"></script>
-		<script src="readings/readingEdit/readingEdit.controller.js"></script>
-		<script src="readings/questionMcq/questionMcq.controller.js"></script>
-		<script src="readings/questionEssay/questionEssay.controller.js"></script>
-		<!-- Services -->
-		<script src="readings/dataService.service.js"></script>
-		<!-- routes and states -->
-		<script src="readings/routes.js"></script>
-	  <!-- end of Reading Manager related files -->
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers/login.js"></script>
+  <script src="scripts/controllers/dashboard.js"></script>
+  <script src="scripts/controllers/home.js"></script>
+  <script src="scripts/controllers/reading.js"></script>
+  <script src="scripts/controllers/add_reading.js"></script>
+  <script src="scripts/controllers/add_kids.js"></script>
+  <script src="scripts/controllers/view_kids.js"></script>
+  <script src="scripts/controllers/history.js"></script>
+  <script src="scripts/controllers/trophies.js"></script>
+  <script src="scripts/controllers/gifts.js"></script>
+  <script src="scripts/controllers/userStats.js"></script>
+  <script src="scripts/controllers/adminStats.js"></script>
 
-    <!-- endbuild -->
-	
-  </body>
+
+  <!-- Reading Manager related files -->
+  <!-- Modules -->
+  <script src="readings/readings.module.js"></script>
+  <!-- Components -->
+  <script src="readings/readingManager/readingManager.component.js"></script>
+  <script src="readings/readingManager/readingsList/readingsList.component.js"></script>
+  <script src="readings/readingEdit/readingEdit.component.js"></script>
+  <script src="readings/readingView/readingView.component.js"></script>
+  <script src="readings/questionMcq/questionMcq.component.js"></script>
+  <script src="readings/questionEssay/questionEssay.component.js"></script>
+  <!-- Component-Controllers -->
+  <script src="readings/readingManager/readingManager.controller.js"></script>
+  <script src="readings/readingManager/readingsList/readingsList.controller.js"></script>
+  <script src="readings/readingEdit/readingEdit.controller.js"></script>
+  <script src="readings/questionMcq/questionMcq.controller.js"></script>
+  <script src="readings/questionEssay/questionEssay.controller.js"></script>
+  <!-- Services -->
+  <script src="readings/dataService.service.js"></script>
+  <!-- routes and states -->
+  <script src="readings/routes.js"></script>
+  <!-- end of Reading Manager related files -->
+
+  <!-- endbuild -->
+
+</body>
+
 </html>
