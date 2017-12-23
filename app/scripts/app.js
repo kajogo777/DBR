@@ -36,7 +36,8 @@ var app = angular.module('yapp', [
     'toastr',
     'readings', //the Reading Manager module
     'mwl.calendar',
-    'vAccordion'
+    'vAccordion',
+    'angularChart'
 ]);
 
 app.config(function ($stateProvider, $urlRouterProvider) {

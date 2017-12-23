@@ -67,6 +67,11 @@
 				
 
 				<h2 class="text-center" style=" text-transform: uppercase;">Days Statistics</h2>
+
+					<div ng-if="chart_options!= undefined">
+						<angular-chart options="chart_options"></angular-chart>
+					  </div>
+
 				<div>
 						<div ng-repeat="day in days">
 							♦ {{day.date | date: 'EEE,d MMM '}} : {{day.users_counter}} users
