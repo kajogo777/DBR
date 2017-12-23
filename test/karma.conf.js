@@ -26,6 +26,9 @@ module.exports = function(config) {
       '../bower_components/moment/moment.js',
       '../bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js',
       '../bower_components/v-accordion/dist/v-accordion.js',
+      '../bower_components/d3/d3.js',
+      '../bower_components/c3/c3.js',
+      '../bower_components/angular-chart/angular-chart.js',
       // endbower
       '../app/scripts/**/*.js',
       //'../test/mock/**/*.js',
