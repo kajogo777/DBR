@@ -16,6 +16,7 @@ angular.module('yapp')
       $scope.trophies=[];
       $scope.weeks=[];
       $scope.days=[];
+      $scope.chart_options=undefined;
 
       $http.get($window.localStorage.getItem("base_url")+"/get_readings").then(function(response){
         for(var i=0;i<Math.ceil(response.data.length/7);i++){
@@ -65,6 +66,32 @@ angular.module('yapp')
         // $scope.days.sort(function(a,b) {return (new Date(a.date) > new Date(b.date)) ? 1 :0});
         $scope.days.sort(function(a,b) {return new Date(a.date)- new Date(b.date)});
         console.log($scope.days);
+
+        $scope.chart_options = {
+          data: [],
+          dimensions: {
+            users: {
+              type: 'line',
+              axis: 'y1',
+              dataType:'numeric',
+              color: 'orange',
+              label: true
+            },
+            dates:{
+              axis: 'x',
+              dataType:'datetime',
+              displayFormat:function (x) {var month=x.getMonth()+1; return x.getDate()+"/"+month;}
+            }
+          }
+        };
+
+        for(var i=0;i<$scope.days.length-1;i++){
+          $scope.chart_options.data.push({
+            users: $scope.days[i].users_counter,
+             dates: $scope.days[i].date
+          })
+        }
+
       });
 
       $scope.gifts=[];
