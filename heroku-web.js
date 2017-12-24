@@ -687,3 +687,13 @@ app.get('/get_all_users_gifts',function(req,res){
         }
     })
 })
+
+app.get('/get_all_scores',function(req,res){
+    User.find({'admin':0, "total_score": {$ne: 0}}).select("total_score -_id").exec(function(err,users){
+        if(err){
+            console.log(err);
+        }else{
+            res.send(users);
+        }
+    })
+})

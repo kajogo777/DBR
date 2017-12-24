@@ -17,6 +17,25 @@ angular.module('yapp')
       $scope.weeks=[];
       $scope.days=[];
       $scope.chart_options=undefined;
+      var scores_interval=50;
+      $scope.scores_chart_options = {
+        data: [],
+        dimensions: {
+          users: {
+            type: 'line',
+            axis: 'y1',
+            dataType:'numeric',
+            color: 'orange',
+            label: true,
+            name: 'total scores'
+          },
+          scores:{
+            axis: 'x',
+            dataType:'numeric',
+            displayFormat:function (x) {var lower_bound=x-scores_interval; return lower_bound+"-"+x;}
+          }
+        }
+      };
 
       $http.get($window.localStorage.getItem("base_url")+"/get_readings").then(function(response){
         for(var i=0;i<Math.ceil(response.data.length/7);i++){
@@ -94,6 +113,38 @@ angular.module('yapp')
 
       });
 
+      $http.get($window.localStorage.getItem("base_url")+"/get_all_scores").then(function(response){
+        console.log(response.data);
+        var input_scores = response.data;
+        var scores = [];
+        
+        
+        //counting users per each score
+        for(var i=0;i<input_scores.length;i++){
+          console.log("hi: "+ typeof input_scores[i].total_score)
+          if(!scores[input_scores[i].total_score])
+            scores[input_scores[i].total_score]=1;
+          else
+            scores[input_scores[i].total_score]++;
+        }
+
+        var current_interval_counter=0;
+        for(var i=0;i<scores.length;i++){
+          if(scores[i])
+             current_interval_counter+= scores[i];
+          if(i%scores_interval==0 && i!=0){
+            $scope.scores_chart_options.data.push({
+              users: current_interval_counter,
+               scores: i
+            })
+            var lower_bound=i-scores_interval;
+            current_interval_counter=0;
+          }
+        }
+
+        
+      });
+
       $scope.gifts=[];
       $http.get($window.localStorage.getItem("base_url")+"/get_all_users_gifts").then(function(response){
         console.log(response.data);
@@ -116,6 +167,8 @@ angular.module('yapp')
           
         }
       });
+
+
 
 
     });

@@ -88,6 +88,9 @@
 				</div>
 
 				<h2 class="text-center" style=" text-transform: uppercase;">Levels Statistics</h2>
+				<div ng-if="scores_chart_options!= undefined">
+					<angular-chart options="scores_chart_options"></angular-chart>
+				  </div>
 				<div>	
 						♦ Level 1 : all users
 						<br>	
