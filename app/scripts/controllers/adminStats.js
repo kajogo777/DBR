@@ -32,8 +32,18 @@ angular.module('yapp')
           scores:{
             axis: 'x',
             dataType:'numeric',
-            displayFormat:function (x) {var lower_bound=x-scores_interval; return lower_bound+"-"+x;}
-          }
+            displayFormat:function (x) {
+              var lower_bound=x-scores_interval;
+                if(x%scores_interval!=0){
+                  for(var i=x;i>=0;i--)
+                    if(i%50==0){
+                      lower_bound=i
+                      break;
+                    }
+                } 
+              return lower_bound+"-"+x;
+            }
+          },
         }
       };
 
@@ -118,10 +128,8 @@ angular.module('yapp')
         var input_scores = response.data;
         var scores = [];
         
-        
         //counting users per each score
         for(var i=0;i<input_scores.length;i++){
-          console.log("hi: "+ typeof input_scores[i].total_score)
           if(!scores[input_scores[i].total_score])
             scores[input_scores[i].total_score]=1;
           else
@@ -132,12 +140,11 @@ angular.module('yapp')
         for(var i=0;i<scores.length;i++){
           if(scores[i])
              current_interval_counter+= scores[i];
-          if(i%scores_interval==0 && i!=0){
+          if(i%scores_interval==0 && i!=0 || i==scores.length-1){
             $scope.scores_chart_options.data.push({
               users: current_interval_counter,
-               scores: i
+              scores: i
             })
-            var lower_bound=i-scores_interval;
             current_interval_counter=0;
           }
         }
