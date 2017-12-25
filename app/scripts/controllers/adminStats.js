@@ -23,7 +23,7 @@ angular.module('yapp')
         dimensions: {
           users: {
             type: 'line',
-            axis: 'y1',
+            axis: 'y',
             dataType:'numeric',
             color: 'orange',
             label: true,
@@ -44,6 +44,19 @@ angular.module('yapp')
               return lower_bound+"-"+x;
             }
           },
+          // users_levels:
+          // {
+          //   type: 'bar',
+          //   axis: 'y2',
+          //   dataType:'numeric',
+          //   color: 'yellow',
+          //   label: true,
+          //   name: 'levels'
+          // },
+          // levels:{
+          //   axis: 'x2',
+          //   dataType:'numeric',
+          // }
         }
       };
 
@@ -65,6 +78,9 @@ angular.module('yapp')
           // for(var j=i+1;j<$scope.levels.length;j++){
           //   $scope.levels[i].users_count -= $scope.levels[j].users_count;
           // }
+          // $scope.scores_chart_options.data.push({
+          //   users_levels:  $scope.levels[i].users_count
+          // })
         }
       });
 
