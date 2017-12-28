@@ -375,20 +375,18 @@
 
         /** Routing related **/
 
-        service.goToReadingEdit = function(index){
+        service.goToReadingEdit = function(_id){
             //go to editing view of reading
             //that has the passed array index
 
-            var reading_id = service.readings[index]._id;
-            $state.go('readingEdit', {id: reading_id});
+            $state.go('readingEdit', {id: _id});
         };
 
-        service.goToReadingView = function(index){
+        service.goToReadingView = function(_id){
             //go to viewing the reading that
             //has the passed array index
 
-            var reading_id = service.readings[index]._id;
-            $state.go('readingView', {id: reading_id});
+            $state.go('readingView', {id: _id});
         };
     }
 })();
