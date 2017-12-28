@@ -20,7 +20,7 @@
         //etc...
         var hasReadings = false;
         
-        service.getReadings = function(){  //todo implement
+        service.getReadings = function(){
             //return a promise for the state router,
             //which is different from the promise
             //returned by the $http service, so the
@@ -123,7 +123,6 @@
         }
 
         var getBaseUrl = function(){
-            //return 'http://dbr.herokuapp.com';
             return $window.localStorage.getItem('base_url');
         }
 

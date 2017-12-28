@@ -1,13 +1,33 @@
-<div class="container">
+<div class="container reading-manager">
     <div class="row">
         <h2 class="col-xs-12">Reading Manager</h2>
     </div>
-    <div class="row">
-        <h4 class="col-xs-12">Readings:</h4>
-    </div>
+    <hr>
     <div class="row">
         <div class="col-xs-12">
-            <readings-list readings="$ctrl.readings"></readings-list>
+            <div class="page-numbers">
+                <span class="page-number"
+                    ng-class="{clickable: $ctrl.filterCurrentPage!=0}"
+                    ng-click="$ctrl.filterGoToPage(0)"
+                >First</span>
+                <span ng-repeat="pageNum in $ctrl.filterGetPagesList()"
+                    class="page-number" ng-click="$ctrl.filterGoToPage(pageNum)"
+                    ng-class="{current: pageNum==$ctrl.filterCurrentPage, clickable: pageNum!=$ctrl.filterCurrentPage}"
+                >{{pageNum+1}}</span>
+                <span class="page-number"
+                    ng-class="{clickable: $ctrl.filterCurrentPage!=$ctrl.filterNumPages-1}"
+                    ng-click="$ctrl.filterGoToPage($ctrl.filterNumPages-1)"
+                 >Last</span>
+                 <p>Showing readings {{$ctrl.filterCurrentPage*$ctrl.filterReadingsPerPage+1}} - 
+                     {{$ctrl.filterCurrentPage*$ctrl.filterReadingsPerPage+$ctrl.filterGetNumReadings()}}
+                     out of {{$ctrl.filterNumReadings}} total</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12">
+            <readings-list readings="$ctrl.filteredReadings"></readings-list>
         </div>
     </div>
     <br>

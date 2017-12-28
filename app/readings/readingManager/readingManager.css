@@ -1,0 +1,16 @@
+.reading-manager .page-numbers .page-number{
+    padding-right: 16px;
+    outline: none;
+    font-size: 1.3em;
+}
+
+.reading-manager .page-numbers .current{
+    font-weight: bold;
+    font-size: 1.35em;
+}
+
+.reading-manager .page-numbers .clickable{
+    color: black;
+    cursor: pointer;
+    color: blue;
+}

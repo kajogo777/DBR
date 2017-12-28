@@ -33,18 +33,29 @@ var accessLogStream = fs.createWriteStream(__dirname + '/access.log', { flags: '
 app.use(morgan({ combinedstream: accessLogStream }));
 app.listen(process.env.PORT || 5000);
 app.use(cors());
-console.log("app started");
+console.log(">> app started");
 
 var mongoose = require('mongoose');
 var DB_URI = "mongodb://admin:admin@ds147964.mlab.com:47964/dbr";
+//handle command line arguments
+if(process.argv.length > 2){
+    console.log('>> Received command line arguments:');
+    console.log(process.argv.slice(2));
+    if(process.argv[2] == '--dev'){
+        console.log('\n>> WARNING: Server running in Dev mode\n');
+        DB_URI = "mongodb://localhost/dbr";
+    }
+}
 var bodyParser = require('body-parser');
 // app.use(express.static('../public'))
 // var Router = express.Router();
 app.use(bodyParser.urlencoded({ extended: false })); //this line must be on top of app config
 app.use(bodyParser.json());
 
-mongoose.connect(DB_URI);
-console.log("connecting to global db..");
+console.log(">> connecting to db..");
+mongoose.connect(DB_URI, {}, function(){
+    console.log('>> connected successfully to db');
+})
 
 
 app.options('/*', function (req, res) {
