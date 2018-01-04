@@ -1,0 +1,290 @@
+<div>
+	<div ng-include="'menu.html'"></div>
+	<!-- <snap-dragger></snap-dragger> -->
+	<snap-content snap-opt-tap-to-close="false">
+
+		<!-- <a href="" snap-toggle="left" ng-click="menuOpen = !menuOpen">
+			<span class="menutoggle">
+				<i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+				<i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+			</span>
+		</a> -->
+
+		<div class="fr">
+			<h2>D.B.R
+				<small> Daily Bible Reading</small>
+			</h2>
+		</div>
+		<div class="jumbotron">
+			<div class="row text-center" style="padding-top:20px">
+
+			</div>
+			<div class="container">
+<style>
+	table td { font-size: 0px; }
+	.remWhiteSpaces{
+		display:block;
+		cursor: default;
+	}
+</style>
+<h2 style="float:left;">Time Left: {{time}} seconds</h2>
+<h2 style="float:right;">Coins left: {{coinsLeft}}</h2>
+				<!-- Save for Web Slices (background.jpg) -->
+<table id="Table_01"  width="1200" height="700" style="background-image:url('images/santa_background.jpg');border-collapse:collapse;background-size: 100% 100%;" border="0" cellpadding="0" cellspacing="0" >
+	<tr>
+		<td colspan="26">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_01.jpg" width="1280" height="4" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="4" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="23" rowspan="2">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_02.jpg" width="1142" height="22" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_03.jpg" width="28" height="18" alt="" ng-if="coinShow[12]" ng-click="coinFound(12)"></td>
+		<td colspan="2" rowspan="18">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_04.jpg" width="110" height="693" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="18" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="18">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_05.jpg" width="28" height="698" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="4" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="9" rowspan="4">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_06.jpg" width="554" height="89" alt=""></td>
+		<td rowspan="2">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_07.jpg" width="24" height="21" alt="" ng-if="coinShow[4]" ng-click="coinFound(4)"></td>
+		<td colspan="13">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_08.jpg" width="564" height="12" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="12" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="4" rowspan="4">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_09.jpg" width="186" height="102" alt=""></td>
+		<td colspan="2" rowspan="2">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_10.jpg" width="28" height="18" alt="" ng-if="coinShow[7]" ng-click="coinFound(7)"></td>
+		<td colspan="7" rowspan="6">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_11.jpg" width="350" height="204" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="9" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="15">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_12.jpg" width="24" height="673" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="9" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="10">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_13.jpg" width="28" height="422" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="59" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="5" rowspan="5">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_14.jpg" width="210" height="243" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_15.jpg" width="24" height="25" alt="" ng-if="coinShow[2]" ng-click="coinFound(2)"></td>
+		<td colspan="3" rowspan="10">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_16.jpg" width="320" height="373" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="25" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="12">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_17.jpg" width="24" height="580" alt=""></td>
+		<td rowspan="12">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_18.jpg" width="89" height="580" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_19.jpg" width="15" height="18" alt="" ng-if="coinShow[5]" ng-click="coinFound(5)"></td>
+		<td colspan="2" rowspan="8">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_20.jpg" width="82" height="338" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="18" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="11">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_21.jpg" width="15" height="562" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="84" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="6">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_22.jpg" width="78" height="236" alt=""></td>
+		<td colspan="2">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_23.jpg" width="18" height="18" alt="" ng-if="coinShow[8]" ng-click="coinFound(8)"></td>
+		<td colspan="3" rowspan="3">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_24.jpg" width="254" height="136" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="18" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="5">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_25.jpg" width="18" height="218" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="98" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="3" rowspan="7">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_26.jpg" width="137" height="339" alt=""></td>
+		<td rowspan="2">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_27.jpg" width="26" height="30" alt="" ng-if="coinShow[1]" ng-click="coinFound(1)"></td>
+		<td rowspan="8">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_28.jpg" width="47" height="362" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="20" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="7">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_29.jpg" width="140" height="342" alt=""></td>
+		<td rowspan="2">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_30.jpg" width="23" height="20" alt="" ng-if="coinShow[10]" ng-click="coinFound(10)"></td>
+		<td rowspan="7">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_31.jpg" width="91" height="342" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="10" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="6">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_32.jpg" width="26" height="332" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="10" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="5">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_33.jpg" width="23" height="322" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="80" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="4">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_34.jpg" width="71" height="242" alt=""></td>
+		<td colspan="2" rowspan="2">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_35.jpg" width="25" height="30" alt="" ng-if="coinShow[6]" ng-click="coinFound(6)"></td>
+		<td colspan="2" rowspan="4">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_36.jpg" width="90" height="242" alt=""></td>
+		<td colspan="2" rowspan="2">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_37.jpg" width="17" height="30" alt="" ng-if="coinShow[9]" ng-click="coinFound(9)"></td>
+		<td rowspan="4">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_38.jpg" width="3" height="242" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="10" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="3">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_39.jpg" width="196" height="232" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_40.jpg" width="20" height="20" alt="" ng-if="coinShow[3]" ng-click="coinFound(3)"></td>
+		<td rowspan="3">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_41.jpg" width="104" height="232" alt="" ></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="20" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="2">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_42.jpg" width="20" height="212" alt=""></td>
+		<td colspan="2" rowspan="2">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_43.jpg" width="25" height="212" alt=""></td>
+		<td colspan="2" rowspan="2">
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_44.jpg" width="17" height="212" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="189" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_45.jpg" width="96" height="23" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_46.jpg" width="40" height="23" alt=""   ng-if="coinShow[0]" ng-click="coinFound(0)"></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_47.jpg" width="1" height="23" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_48.jpg" width="81" height="23" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/background_49.jpg" width="29" height="23" alt="" ng-if="coinShow[11]" ng-click="coinFound(11)"></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="23" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="96" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="40" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="1" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="26" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="47" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="24" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="196" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="20" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="104" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="24" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="89" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="15" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="71" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="11" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="14" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="14" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="76" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="2" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="15" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="3" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="140" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="23" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="91" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="28" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="81" height="1" alt=""></td>
+		<td>
+			<img  border="0"  class="remWhiteSpaces" src="images/santa/spacer.gif" width="29" height="1" alt=""></td>
+		<td></td>
+	</tr>
+</table>
+
+				<h2>
+					<a ui-sref="home" style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Home
+						<span class="glyphicon glyphicon-home"></span>
+					</a>
+				</h2>
+
+			</div>
+
+		</div>
+
+	</snap-content>
+</div>
+
+<style>
+	.submit-btn {
+		font-size: 54px;
+		margin-left: auto;
+		margin-right: auto;
+		display: -webkit-box;
+		margin-top: 20px;
+	}
+</style>
