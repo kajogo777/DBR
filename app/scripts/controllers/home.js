@@ -89,8 +89,11 @@ angular.module('yapp')
   
         }
 
-        
-
+        $scope.showEvent=false;
+        $http.post($window.localStorage.getItem("base_url")+"/check_if_user_has_event",{"user_id":$scope.user._id,"type":"Christmas2018"}).then(function(response){
+          console.log(response.data);
+          $scope.showEvent= !response.data;
+        });
        
 
         $scope.logout= function(){

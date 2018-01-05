@@ -708,3 +708,40 @@ app.get('/get_all_scores',function(req,res){
         }
     })
 })
+
+
+var Event = require("./Models/Event");
+
+app.post('/add_event_for_user', function (req, res) {
+
+    AddPoints(req.body.user, req.body.points, function (err, user, LevelChanged) {
+        var event = new Event();
+        event.user= user._id;
+        event.type= req.body.type;
+        event.date= new Date();
+        event.points= req.body.points;
+        event.save(function (err, event) {
+        if (err)
+            res.send(err);
+        else {
+            res.send("done");
+        }
+    })
+    })
+
+});
+
+app.post('/check_if_user_has_event', function (req, res) {
+
+    Event.findOne({"type":req.body.type,"user":req.body.user_id},function(err,event){
+        if(err)
+            console.log(err);
+        else
+            if(event)
+                res.send(true);
+            else
+                res.send(false);    
+
+    })
+
+});
