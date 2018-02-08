@@ -24,7 +24,8 @@ var states = [
     { name: 'trophies', cache: false, state: { url: '/trophies', templateUrl: 'views/trophies.html', controller: 'TrophiesCtrl', parent: 'dashboard' } },
     { name: 'gifts', cache: false, state: { url: '/gifts', templateUrl: 'views/gifts.html', controller: 'GiftsCtrl', parent: 'dashboard' } },
     { name: 'userStats', cache: false, state: { url: '/userStats/:id', templateUrl: 'views/userStats.html', controller: 'UserStatsCtrl', parent: 'dashboard' } },
-    { name: 'adminStats', cache: false, state: { url: '/adminStats', templateUrl: 'views/adminStats.html', controller: 'AdminStatsCtrl', parent: 'dashboard' } }
+    { name: 'adminStats', cache: false, state: { url: '/adminStats', templateUrl: 'views/adminStats.html', controller: 'AdminStatsCtrl', parent: 'dashboard' } },
+    { name: 'santa', cache: false, state: { url: '/santa', templateUrl: 'views/santa.html', controller: 'SantaCtrl', parent: 'dashboard' } }
 ];
 
 var app = angular.module('yapp', [
