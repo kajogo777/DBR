@@ -307,6 +307,7 @@ function CheckTrophies(user, type, callback) {//get user object and trophies typ
     });
 };
 
+//not used
 app.get('/correct_row_readings', function (req, res) {
     User.find({ "admin": "0" }, function (err, users) {
         var output = "";
