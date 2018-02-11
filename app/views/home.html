@@ -18,8 +18,14 @@
 		<div class="jumbotron">
 			<div class="container">
 				<h1>Welcome {{user.name}}!</h1>
-				
-				<div ng-if="showEvent" style="
+
+				<center>
+						<script src="//www.powr.io/powr.js?external-type=html"></script> 
+						<div class="powr-countdown-timer" id="06899377_1518350926"></div>
+				</center>
+
+
+				<!-- <div ng-if="showEvent" style="
 				background-image: url(https://s-media-cache-ak0.pinimg.com/originals/92/bb/be/92bbbe4980aadc45b3f0a0d83dc95047.gif);
 				background-size:100% 110%;
 				padding-top: 46px;
@@ -39,7 +45,7 @@
 								</h2>
 							<div class="clear"></div>
 					</div>
-				</div>
+				</div> -->
 				<!-- <div style="
 				background-image: url(https://s-media-cache-ak0.pinimg.com/originals/92/bb/be/92bbbe4980aadc45b3f0a0d83dc95047.gif);
 				background-size:100% 110%;
@@ -72,7 +78,7 @@
 						color: #8a6d3b;
 					}
 				</style>
-				
+
 				<!-- <div class="alert alert-warning" role="alert">
 					
 					<div>
@@ -118,7 +124,12 @@
 						<style>
 							.progress-bar {
 								/*background-color: #1a8ebc!important;*/
-								background-color: {{level_progressbar_colors[user.level%10]}}!important;
+								background-color: {
+										{
+										level_progressbar_colors[user.level%10]
+									}
+								}
+								!important;
 								font-size: large;
 								padding-top: 13px;
 							}
@@ -146,7 +157,7 @@
 						</a>
 					</h2>
 				</div>
-			<!--	<div class="row text-center" style="padding-top:20px">
+				<!--	<div class="row text-center" style="padding-top:20px">
 					<h2>
 						<a style="font-size: -webkit-xxx-large;font-weight: 600;" class="btn btn-primary btn-lg btn-white">Website under maintainance <br>please come back Today at 6:00 PM <span class="glyphicon glyphicon-book"></span></a>
 					</h2>
@@ -206,8 +217,10 @@
 										<th>{{kid.total_score}}</th>
 										<th>{{kid.level}}</th>
 										<th>{{kid.class}}</th>
-										<th><button ui-sref="userStats({id:kid._id})" class="btn btn-xs btn-warning">
-											<i class="glyphicon glyphicon-stats"></i</button></th>
+										<th>
+											<button ui-sref="userStats({id:kid._id})" class="btn btn-xs btn-warning">
+												<i class="glyphicon glyphicon-stats"></i</button>
+										</th>
 									</tr>
 
 								</tbody>
@@ -231,36 +244,38 @@
 										<th>{{kid.name}}</th>
 										<th>{{kid.total_score}}</th>
 										<th>{{kid.level}}</th>
-										<th><button ui-sref="userStats({id:kid._id})" class="btn btn-xs btn-warning">
-											<i class="glyphicon glyphicon-stats"></i</button></th>
+										<th>
+											<button ui-sref="userStats({id:kid._id})" class="btn btn-xs btn-warning">
+												<i class="glyphicon glyphicon-stats"></i</button>
+										</th>
 									</tr>
 
 								</tbody>
 							</table>
 						</div>
 						<div class="col-md-3"></div>
-							<div class="col-md-6">
-								<h3>Top 5 Classes</h3>
-								{{classes["St. Paul"]}}
-								<table class="table">
-									<thead>
-										<tr>
-											<th>Rank</th>
-											<th>Class</th>
-											<th>Average Score</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="class in classes track by $index" ng-if="$index<5 || user.admin==10">
-											<th>{{$index+1}}</th>
-											<th>{{class.class_name}}</th>
-											<th>{{class.average|number : 0}}</th>
-										</tr>
-	
-									</tbody>
-								</table>
-							</div>
-						
+						<div class="col-md-6">
+							<h3>Top 5 Classes</h3>
+							{{classes["St. Paul"]}}
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Rank</th>
+										<th>Class</th>
+										<th>Average Score</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="class in classes track by $index" ng-if="$index<5 || user.admin==10">
+										<th>{{$index+1}}</th>
+										<th>{{class.class_name}}</th>
+										<th>{{class.average|number : 0}}</th>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+
 
 					</div>
 
