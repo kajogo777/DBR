@@ -286,7 +286,7 @@ gulp.task('docs', [], function() {
     .pipe(gulp.dest('./docs'));
 });
 
-gulp.task('heroku:', ['build'], function(){
+gulp.task('heroku:production', ['build'], function(){
   console.log('herokuduction');
 });
 
