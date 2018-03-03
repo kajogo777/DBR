@@ -10,7 +10,7 @@ function bibleController(req, res) {
         /bible?book=genesis&chapter=1
         /bible?book=genesis&chapter=1&diacritics=0
     */
-    let book_name_en = req.query.book.toLowerCase();
+    let book_name_en = req.query.book;
     let chapter = req.query.chapter;
     let diacritics = req.query.diacritics;
     //check for missing query params
@@ -22,6 +22,7 @@ function bibleController(req, res) {
         res.status(400).send('missing chapter number');
         return;
     }
+    book_name_en = book_name_en.toLowerCase();
     //try to retrieve from db
     Chapter.findOne({book_name_en: book_name_en, chapter: chapter}, {_id: 0}, 
         function(err, doc) {
