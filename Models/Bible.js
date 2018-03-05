@@ -34,4 +34,10 @@ chapterSchema.methods.removeDiacritics = function(removeAll = false) {
     return this;
 }
 
+chapterSchema.methods.numberVerses = function() {
+    for (let i=0; i<this.verses.length; ++i) {
+        this.verses[i] = (i+1) + ' ' + this.verses[i];
+    }
+}
+
 module.exports = mongoose.model('Chapter', chapterSchema);

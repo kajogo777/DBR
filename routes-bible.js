@@ -14,6 +14,7 @@ function bibleController(req, res) {
     let book_name_en = req.query.book;
     let chapter = req.query.chapter;
     let diacritics = req.query.diacritics;
+    let number_verses = req.query.number_verses;
     //check for missing query params
     if(book_name_en === undefined) {
         let error = {error: 'request missing book name'};
@@ -39,14 +40,18 @@ function bibleController(req, res) {
             let error = {error: 'Chapter (' + chapter + ') in book (' + book_name_en + ') was not found.'};
             res.status(404).send(error);
         } else {
-            //found successfully
+            //doc found successfully
             if (diacritics == '0') {
-                res.status(200).send(doc.removeDiacritics(true));
+                //remove all diacritics
+                doc.removeDiacritics(true);
             } else if(diacritics == '1') {
-                res.status(200).send(doc.removeDiacritics(false));
-            } else {
-                res.status(200).send(doc);
+                //remove most diacritics
+                doc.removeDiacritics(false);
             }
+            if (number_verses !== undefined) {
+                doc.numberVerses();
+            }
+            res.status(200).send(doc);
         }
     })
 }
