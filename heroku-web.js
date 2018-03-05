@@ -644,7 +644,16 @@ app.post('/update_user', function (req, res) {
 })
 
 app.post('/get_class_users', function (req, res) {
-    User.find({ "class": req.body.class, "admin": { $lt: "5" } }).sort({ "name": 1 }).exec(function (err, users) {
+    /*
+    examples:
+        /get_class_users                    -> get all properties
+        /get_class_users?username&password  -> get only 'username' and 'password' properties
+    */
+    let selection = Object.keys(req.query).join(' ');
+    User.find({ "class": req.body.class, "admin": { $lt: "5" } })
+        .sort({ "name": 1 })
+        .select(selection)
+        .exec(function (err, users) {
         if (err) {
             res.send(err);
         } else {

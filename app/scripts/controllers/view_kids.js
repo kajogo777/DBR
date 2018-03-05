@@ -18,8 +18,8 @@ angular.module('yapp')
         return moment(lastSeen).fromNow();
         moment().diff( moment(lastSeen), 'days');
       }
-      	
-        $http.post($window.localStorage.getItem("base_url")+"/get_class_users",{"class":user.class }).then(function(response){
+
+        $http.post($window.localStorage.getItem("base_url")+"/get_class_users?name&username&password&total_score&level&reading_dates",{"class":user.class }).then(function(response){
 					console.log(response.data);
           $scope.myKids = response.data;
         }); 
