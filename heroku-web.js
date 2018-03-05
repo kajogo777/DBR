@@ -746,3 +746,6 @@ app.post('/check_if_user_has_event', function (req, res) {
     })
 
 });
+
+var bible_routes = require('./routes-bible');
+app.use(bible_routes);
