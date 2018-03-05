@@ -435,20 +435,6 @@ app.post('/get_today_reading', function (req, res) {
 });
 
 
-app.get('/get_reading/:id', function (req, res) {
-    Reading.findOne({ '_id': req.params.id }, (err, reading) => { return res.send(reading) })
-})
-
-app.get('/get_readings', function (req, res) {
-    Reading.find({}, (err, readings) => { return res.send(readings) })
-})
-
-app.post('/update_reading', function (req, res) {
-    var reading = new Reading(req.body.reading);
-    Reading.update({ _id: req.body.reading._id }, reading, (err, done) => { return res.send(done) })
-})
-
-
 app.post('/check_answer', function (req, res) {
     console.log(req.body);
     User.findOne({ "_id": req.body.user_id }, function (err, user) {
@@ -557,6 +543,7 @@ app.post('/check_answer', function (req, res) {
     })
 });
 
+//todo: not used function
 function get_user_date(id) {
     User.findOne({ 'id': id }, function (err, user) {
         if (err)
@@ -566,18 +553,6 @@ function get_user_date(id) {
     })
 }
 
-
-app.post('/add_reading', function (req, res) {
-    console.log(req.body);
-    var reading = new Reading(req.body.reading);
-    reading.save(function (err, reading) {
-        if (err)
-            res.send(err);
-        else {
-            res.send("reading added successfully");
-        }
-    })
-});
 
 app.post('/get_top_5_in_class', function (req, res) {
     User.find({ "class": req.body.class, $or: [{ "admin": { $lt: "5" } }, { 'admin': 6 }] }).sort({ "total_score": -1 }).limit(5).select('name _id level total_score').exec(function (err, users) {
@@ -756,5 +731,8 @@ app.post('/check_if_user_has_event', function (req, res) {
 
 });
 
-var bible_routes = require('./routes-bible');
-app.use(bible_routes);
+var routes_bible = require('./routes-bible');
+app.use(routes_bible);
+
+var routes_readings = require('./routes-readings');
+app.use(routes_readings);
