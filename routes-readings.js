@@ -60,7 +60,12 @@ router.get('/get_readings_plans', function(req, res) {
             console.log(err);
             res.sendStatus(500);
         } else {
-            res.status(200).send(docs[0].plans);
+            //check if there are any plans in collection
+            if (docs.length != 0) {
+                res.status(200).send(docs[0].plans);
+            } else {
+                res.status(200).send([]);
+            }
         }
     })
 })
