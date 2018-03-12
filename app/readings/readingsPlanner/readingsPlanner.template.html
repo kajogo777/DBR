@@ -1,0 +1,166 @@
+<div class="container">
+    <div class="row">
+        <navigation-bar class="col-xs-12"></navigation-bar>            
+    </div>
+    <div class="row">
+        <h2 class="col-xs-12">Readings Planner</h2>
+    </div>
+    <div class="row settings form-inline">
+        <div class="col-xs-12">
+            <h4>Settings:</h4>
+            <label for="reading_number">Start from reading number:</label>
+            <input type="number" class="form-control" min="1"
+                ng-model="$ctrl.start_reading_number" id="reading_number">
+            <br>
+            <input type="checkbox" ng-model="$ctrl.insert_position_inc" id="auto_inc">
+            <label for="auto_inc">Auto increment insert position after adding</label>
+        </div>
+        <div class="col-xs-12 controls">
+            <div class="row">
+                <div class="col-xs-4">
+                    <label for="plan">Plan: </label>
+                    <select ng-model="$ctrl.selected_plan" class="form-control"
+                        id="plan" ng-change="$ctrl.changePlan($ctrl.selected_plan)">
+                        <option value="" disabled>-- Select Plan --</option>
+                        <option ng-repeat="plan in $ctrl.plans">{{plan}}</option>
+                    </select>
+                    <input type="button" class="btn btn-danger form-control"
+                        value="Delete plan" ng-click="$ctrl.deletePlan()"
+                        ng-disabled="$ctrl.selected_plan==''">
+                </div>
+                <form class="col-xs-5 col-xs-offset-3 text-right"
+                    ng-submit="$ctrl.createPlan()">
+                    <input type="text" class="form-control" ng-model="$ctrl.new_plan"
+                        placeholder="Plan name">
+                    <input type="submit" class="btn btn-success form-control" 
+                    value="Create plan" ng-disabled="$ctrl.new_plan.trim().length==0">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 save-warning">
+            <strong ng-if="$ctrl.enableSave">
+                Pending changes, press "Save changes" to keep them
+            </strong>
+        </div>
+    </div>
+    <div class="row text-center" ng-if="$ctrl.isPlanEmpty()">
+        <div class="col-xs-12">
+            <br>
+            <p>Plan is empty</p>
+        </div>
+    </div>
+    <div class="row text-center" ng-if="$ctrl.selected_plan == ''">
+        <div class="col-xs-12">
+            <br>
+            <p>Select a plan.</p>
+        </div>
+    </div>
+    <div class="row reading" ng-repeat="reading in $ctrl.readings">
+        <div class="col-xs-1">
+            #{{$ctrl.calculateReadingNumber($index)}}
+        </div>
+        <div class="col-xs-1">
+            {{reading.book}}
+        </div>
+        <div class="col-xs-2">
+            {{reading.chapter}}: {{reading.verse_start}}-{{reading.verse_end}}
+        </div>
+        <div class="col-xs-2 col-xs-push-6 text-right">
+            <!-- <input type="button" class="btn btn-info"
+                ng-click="$ctrl.readingView($index)" value="View"> -->
+            <input type="button" class="btn btn-danger"
+                ng-click="$ctrl.readingDelete($index)" value="Delete">
+        </div>
+    </div>
+    <form class="row add-reading" ng-submit="$ctrl.readingAdd()">
+        <div class="col-xs-3">
+            <span>Insert position: </span>
+            <input type="number" ng-model="$ctrl.insert_position" min="0"
+                class="ins-pos" tabindex="-1">
+        </div>
+        <div class="col-xs-3">
+            <span>Book:</span>
+            <select ng-model="$ctrl.new_reading.book">
+                <option value="" disabled>-- Select book --</option>
+                <option ng-repeat="book in $ctrl.books">{{book}}</option>
+            </select>
+        </div>
+        <div class="col-xs-4">
+            <input type="number" min="1" max="99" ng-model="$ctrl.new_reading.chapter"
+                id="input-chapter">
+            <span> : </span>
+            <input type="number" min="1" max="99" ng-model="$ctrl.new_reading.verse_start">
+            <span>-</span>
+            <input type="number" min="1" max="99" ng-model="$ctrl.new_reading.verse_end">
+        </div>
+        <div class="col-xs-1 col-xs-push-1">
+            <input type="submit" class="btn btn-success form-control" value="Add"
+                ng-disabled="$ctrl.current_plan===''">
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-xs-2">
+            <input type="button" value="Save changes" ng-click="$ctrl.savePlan()"
+                class="btn btn-primary btn-lg form-control input-lg"
+                ng-disabled="!$ctrl.enableSave">
+        </div>
+        <div class="col-xs-2">
+            <input type="button" value="Generate Readings" ng-click="$ctrl.generateReadings()"
+                ng-disabled="$ctrl.readings.length == 0 || $ctrl.enableGenerate == false"
+                class="btn btn-warning form-control input-lg">
+        </div>
+        <div class="col-xs-2 col-xs-offset-6 text-right">
+            <input type="button" value="Delete All" ng-click="$ctrl.deleteReadings()"
+                class="btn btn-danger">
+        </div>
+    </div>
+    <br>
+    <br>
+</div>
+
+<style>
+    readings-planner .settings{
+        background-color: lightgray;
+        border-radius: 10px;
+        padding: 20px 10px;
+    }
+    readings-planner .settings input[type="number"]{
+        width: 5em;
+    }
+    readings-planner .controls {
+        border-top: 1px solid gray;
+        padding-top: 15px;
+    }
+    readings-planner .save-warning{
+        font-size: 1.2em;
+        color: red;
+        text-align: center;
+    }
+    readings-planner .reading{
+        background-color: rgb(247, 231, 92);
+        border-radius: 5px;
+        padding: 10px;
+        border: 1px solid black;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 1.4em;
+    }
+    readings-planner .add-reading{
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-size: 1.4em;
+    }
+    readings-planner .add-reading input[type="number"]{
+        text-align: center;
+    }
+    readings-planner .add-reading .ins-pos{
+        width: 3em;
+        text-align: center;
+    }
+</style>

@@ -17,11 +17,19 @@
         var orderByCustomComp = function(v1, v2){
             //Custom Comparator
             var n1 = parseInt(v1.value, 10);
-            if(isNaN(n1)){
-                return 1;
-            }
             var n2 = parseInt(v2.value, 10);
-            if(isNaN(n2)){
+            //if both are strings, compare as strings
+            //note: this won't work with values starting
+            //with a valid number, even if there is text
+            //after it.
+            //if only one is string, make sure it goes
+            //to the bottom, i.e. its larger than any
+            //number
+            if(isNaN(n1) && isNaN(n2)){
+                return (v1.value < v2.value) ? -1 : 1;
+            }else if(isNaN(n1)){
+                return 1;
+            }else if(isNaN(n2)){
                 return -1;
             }
             return (n1 < n2) ? -1 : 1;

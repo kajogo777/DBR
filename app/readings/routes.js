@@ -17,6 +17,10 @@
                             }]
                 }
             })
+            .state('readingsPlanner', {
+                url: '/readingsPlanner',
+                component: 'readingsPlanner'
+            })
             .state('readingAdd', {
                 url: '/reading/add',
                 component: 'readingEdit',

@@ -19,6 +19,14 @@
         //updating an existing reading on the server,
         //etc...
         var hasReadings = false;
+
+        service.invalidateReadings = function() {
+            //to be used by other components,
+            //example: Readings Planner should invalidate
+            //any possibly retrieved readings after generating
+            //new readings
+            hasReadings = false;
+        }
         
         service.getReadings = function(){
             //return a promise for the state router,
@@ -36,7 +44,7 @@
             if(hasReadings){
                deferred.resolve(service.readings);
             }else{
-                var promise = $http.get(getBaseUrl()+'/get_readings');
+                var promise = $http.get(getBaseUrl()+'/get_readings?_id&number&shahed');
                 promise.then(function(response){
                     //handle $http response success
                     service.readings = response.data;
@@ -50,7 +58,7 @@
             return deferred.promise;
         };
 
-        service.getReading = function(reading_id){ //todo implement
+        service.getReading = function(reading_id){
             //get the reading from the database,
             //and parse it to a Reading() object,
             //returns a promise (not $http's promise)
@@ -125,6 +133,7 @@
         var getBaseUrl = function(){
             return $window.localStorage.getItem('base_url');
         }
+        service.getBaseUrl = getBaseUrl; //make it public
 
         service.canEditReading = function(reading_number){
             //check if editing a reading is allowed

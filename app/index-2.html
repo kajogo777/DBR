@@ -21,11 +21,11 @@
   <!-- build:css({.tmp,app}) styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
   <!-- reading manager Stylesheets -->
+  <link rel="stylesheet" href="readings/readingManager/readingManager.css">
+  <link rel="stylesheet" href="readings/readingEdit/readingEdit.css">
+  <link rel="stylesheet" href="readings/readingView/readingView.css">
   <link rel="stylesheet" href="readings/questionMcq/questionMcq.css">
   <link rel="stylesheet" href="readings/questionEssay/questionEssay.css">
-  <link rel="stylesheet" href="readings/readingView/readingView.css">
-  <link rel="stylesheet" href="readings/readingEdit/readingEdit.css">
-  <link rel="stylesheet" href="readings/readingManager/readingManager.css">
   <!-- endbuild -->
   <style>
     .jumbotron {
@@ -106,19 +106,22 @@
   <script src="readings/readings.module.js"></script>
   <!-- Components -->
   <script src="readings/readingManager/readingManager.component.js"></script>
-  <script src="readings/readingManager/readingsList/readingsList.component.js"></script>
+  <script src="readings/navigationBar/navigationBar.component.js"></script>
+  <script src="readings/readingsList/readingsList.component.js"></script>
+  <script src="readings/readingsPlanner/readingsPlanner.component.js"></script>
   <script src="readings/readingEdit/readingEdit.component.js"></script>
   <script src="readings/readingView/readingView.component.js"></script>
   <script src="readings/questionMcq/questionMcq.component.js"></script>
   <script src="readings/questionEssay/questionEssay.component.js"></script>
   <!-- Component-Controllers -->
   <script src="readings/readingManager/readingManager.controller.js"></script>
-  <script src="readings/readingManager/readingsList/readingsList.controller.js"></script>
+  <script src="readings/readingsList/readingsList.controller.js"></script>
   <script src="readings/readingEdit/readingEdit.controller.js"></script>
   <script src="readings/questionMcq/questionMcq.controller.js"></script>
   <script src="readings/questionEssay/questionEssay.controller.js"></script>
   <!-- Services -->
   <script src="readings/dataService.service.js"></script>
+  <script src="readings/bibleService.service.js"></script>
   <!-- routes and states -->
   <script src="readings/routes.js"></script>
   <!-- end of Reading Manager related files -->
