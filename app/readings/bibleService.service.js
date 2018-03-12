@@ -19,7 +19,7 @@
 
         //todo: make this function a server request only,
         //put all functionality on server
-        /*
+        
         this.getChapter = function(book, chapter, verse_start, verse_end, diacritics, number_verses) {
             var deferred = $q.defer();
             var url = dataService.getBaseUrl();
@@ -59,6 +59,6 @@
             })
             return deferred.promise;
         }
-        */
+        
     }
 })();
