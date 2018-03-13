@@ -1,7 +1,7 @@
 (function(){
     'use strict';
     
-    angular.module('readings', ['ui.router']);
+    angular.module('readings', ['ui.router', 'toastr']);
     
 
 })();

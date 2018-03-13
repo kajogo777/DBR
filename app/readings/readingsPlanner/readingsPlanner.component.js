@@ -256,11 +256,13 @@
 
         $ctrl.deleteReadings = function() {
             //todo: change to modal dialog
-            var result = confirm('Are you sure?');
-            if (result) {
-                $ctrl.readings.splice(0, $ctrl.readings.length);
-                $ctrl.insert_position = 0;
-                $ctrl.enableSave = true;
+            if ($ctrl.readings.length != 0) {
+                var result = confirm('Are you sure?');
+                if (result) {
+                    $ctrl.readings.splice(0, $ctrl.readings.length);
+                    $ctrl.insert_position = 0;
+                    $ctrl.enableSave = true;
+                }
             }
         }
         

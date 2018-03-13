@@ -113,7 +113,7 @@
         </div>
         <div class="col-xs-2 col-xs-offset-6 text-right">
             <input type="button" value="Delete All" ng-click="$ctrl.deleteReadings()"
-                class="btn btn-danger">
+                ng-disabled="$ctrl.readings.length==0" class="btn btn-danger">
         </div>
     </div>
     <br>
