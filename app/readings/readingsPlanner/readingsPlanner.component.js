@@ -21,6 +21,9 @@
         $ctrl.selected_plan = '';   //only as a binding to the select box
         $ctrl.current_plan = '';    //the actual plan that is loaded
         $ctrl.readings = [];        //gets the value of plan.readings
+        //todo: enable changing diacritics and number verses options        
+        $ctrl.options_diacritics = 1;
+        $ctrl.options_number_verses = true;
         var ReadingsPlan = function(name) {
             this.name = name;
             this.readings = [];     //array of Reading
@@ -237,11 +240,18 @@
 
         $ctrl.readingView = function(index) {
             var r = $ctrl.readings[index];
-            bibleService.getChapter(r.book, r.chapter, r.verse_start, r.verse_end, 1, true)
+            bibleService.getBibleChapter({
+                book: r.book,
+                chapter: r.chapter,
+                verse_start: r.verse_start,
+                verse_end: r.verse_end,
+                diacritics: $ctrl.options_diacritics,
+                number_verses: $ctrl.options_number_verses
+            })
             .then(function(chapter){
                 //todo: view verses in a modal dialog
-            }, function(res) {
-                //failed to get chapter, display error
+            }, function(err) {
+                //todo: failed to get chapter, display error
             })
         }
 
@@ -277,8 +287,8 @@
                 {
                     readings: $ctrl.readings,
                     start_reading_number: $ctrl.start_reading_number,
-                    diacritics: 1,
-                    number_verses: true
+                    diacritics: $ctrl.options_diacritics,
+                    number_verses: $ctrl.options_number_verses
                 })
                 .then(function(res) {
                     //generation success
