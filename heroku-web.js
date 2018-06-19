@@ -8,9 +8,9 @@ var cors = require('cors');
 //app.use(gzippo.staticGzip("" + __dirname + "/dist"));
 var path = require('path');
 var serveStatic = require('serve-static');
-var indexHtml = 'index-2.html';
+var indexHtml = 'index.html';
 var serve = serveStatic(path.resolve('dist'), {
-    index: indexHtml, //forces invalidation of cached 'index.html'
+    index: indexHtml,
     setHeaders: setCustomCacheControl,
     // cacheControl: true, //default is true
     // lastModified: true, //default is true
@@ -22,8 +22,9 @@ function setCustomCacheControl(res, myPath, stat) {
         //serving a cached 'index.html'
         res.setHeader('Cache-Control', 'public, no-cache');
     } else {
-        //for all other files, cache for a long duration,
-        //and force cache invalidation using gulp-rev
+        //for all other files, cache for a long duration
+        //(to force cache invalidation of these files,
+        //you can use gulp-rev for example)
         var dur_in_ms = 2 * 24 * 60 * 60 * 1000; //2 days
         res.setHeader('Cache-Control', 'public, max-age=' + dur_in_ms);
     }

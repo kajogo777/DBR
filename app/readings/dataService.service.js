@@ -138,6 +138,13 @@
         service.canEditReading = function(reading_number){
             //check if editing a reading is allowed
 
+            //todo: re-write this function
+            if (parseInt(reading_number) > 77) {
+                return true;
+            } else {
+                return false;
+            }
+
             //for now, editing is disabled for readings that
             //went live,
             //and enabled for editings that don't have

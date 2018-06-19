@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const Reading = require('./Models/Reading');
 const ReadingsPlan = require('./Models/ReadingsPlan');
 const Chapter = require('./Models/Bible');
-require('./functions-bible')();
+const {getBibleChapter} = require('./functions-bible');
 
 router.post('/add_reading', function (req, res) {
     // console.log(req.body);

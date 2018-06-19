@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Chapter = require('./Models/Bible');
-require('./functions-bible')();
+const {getBibleChapter} = require('./functions-bible');
 
 router.get('/bible', getBibleChapterRequest);
 router.get('/bible/get_books_names', getBooksNamesRequest);

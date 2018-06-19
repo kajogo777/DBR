@@ -1,14 +1,18 @@
 <div class="btn-group">
     <input type="button" class="btn btn-default"
-        value="Home" ui-sref="home"></input>
+        value="Home" ui-sref="home" ui-sref-active="active"></input>
     <input type="button" class="btn btn-default"
-        value="Readings Manager" ui-sref="readingManager">
+        value="Readings Manager" ui-sref="readingManager" ui-sref-active="active">
     <input type="button" class="btn btn-default"
-        value="Readings Planner" ui-sref="readingsPlanner">
+        value="Readings Planner" ui-sref="readingsPlanner" ui-sref-active="active">
 </div>
 
 <style>
     navigation-bar {
         margin-top: 20px;
+    }
+    .active {
+        background-color: lightgray;
+        font-weight: bold;
     }
 </style>

@@ -61,6 +61,6 @@ function getBibleChapter(options, callback) {
     }
 }
 
-module.exports = function() {
-    this.getBibleChapter = getBibleChapter;
+module.exports = {
+    getBibleChapter: getBibleChapter
 }
