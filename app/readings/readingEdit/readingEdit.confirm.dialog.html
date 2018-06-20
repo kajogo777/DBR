@@ -1,0 +1,24 @@
+<md-dialog class="dialog-confirm">
+    <md-dialog-content>
+        {{message_text}}
+    </md-dialog-content>
+    <md-dialog-actions>
+        <input type="button" class="btn btn-danger btn-lg"
+            value="{{confirm_text}}" ng-click="confirm()">
+        <input type="button" class="btn btn-primary btn-lg"
+            value="{{cancel_text}}" ng-click="cancel()">
+    </md-dialog-actions>
+</md-dialog>
+
+<style>
+    .dialog-confirm{
+        padding: 20px;
+    }
+    .dialog-confirm md-dialog-content{
+        font-size: 1.3em;
+        margin-bottom: 20px;
+    }
+    .dialog-confirm input{
+        margin-left: 20px;
+    }
+</style>

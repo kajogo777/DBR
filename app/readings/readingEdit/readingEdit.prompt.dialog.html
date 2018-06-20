@@ -1,0 +1,29 @@
+<md-dialog class="dialog-prompt">
+    <md-dialog-content>
+        <h3 ng-if="title_text">{{title_text}}</h3>
+        {{message_text}}
+        <form ng-submit="confirm()">
+            <input type="text" class="form-control" ng-model="result">
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <input type="button" class="btn btn-primary btn-lg"
+            value="{{confirm_text}}" ng-click="confirm()">
+        <input type="button" class="btn btn-primary btn-lg"
+            value="{{cancel_text}}" ng-click="cancel()">
+    </md-dialog-actions>
+</md-dialog>
+
+<style>
+    .dialog-prompt{
+        padding: 20px;
+    }
+    .dialog-prompt md-dialog-content{
+        padding: 10px;
+        font-size: 1.3em;
+        margin-bottom: 20px;
+    }
+    .dialog-prompt input[type="button"]{
+        margin-left: 20px;
+    }
+</style>

@@ -37,3 +37,7 @@ reading-edit .btn-blue:hover{
     background-color: #286090;
     border-color: #204d74;
 }
+
+reading-edit .audio-player {
+    margin-bottom: 10px;
+}

@@ -21,10 +21,35 @@
         <div class="form-group">
             <textarea ng-model="$ctrl.reading.content" class="form-control" rows="12"></textarea>
         </div>
-        <div class="form-group" dir="ltr">
+        <div class="row form-group" dir="ltr">
+            <div class="col-xs-12">
                 <label>Sound Link</label>
-                <textarea placeholder="link" ng-model="$ctrl.reading.sound"
-                    class="form-control" rows="2"></textarea>
+                <div class="row">
+                    <div class="col-md-8">
+                        <pre>{{$ctrl.reading.sound || 'No link'}}</pre>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <audio src="{{$ctrl.reading.sound}}" preload="metadata"
+                            class="audio-player" controls>
+                            Audio element not supported in your browser
+                        </audio>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3 col-md-2">
+                        <input type="button" value="Direct Link"
+                            ng-click="$ctrl.soundDirectLink($event)" class="btn btn-primary form-control">
+                    </div>
+                    <div class="col-sm-3 col-md-2">
+                        <input type="button" value="Google Drive Link"
+                            ng-click="$ctrl.soundGoogleDriveLink($event)" class="btn btn-primary form-control">
+                    </div>
+                    <div class="col-sm-3 col-md-2">
+                        <input type="button" value="Remove Link" ng-disabled="!$ctrl.reading.sound"
+                            ng-click="$ctrl.soundRemoveLink($event)" class="btn btn-danger form-control">
+                    </div>
+                </div>
+            </div>
         </div>
         
         <br>
@@ -67,7 +92,7 @@
         <div class="col-xs-12 text-center">
             <input type="button" value="Save" ng-click="$ctrl.save()"
                 ng-disabled="!$ctrl.can_save" class="btn btn-primary btn-lg">
-            <input type="button" value="Discard" ng-click="$ctrl.discard()"
+            <input type="button" value="Discard" ng-click="$ctrl.discard($event)"
                 class="btn btn-primary btn-lg">
             <p ng-if="$ctrl.show_save_msg">{{$ctrl.save_msg}}</p>
         </div>
