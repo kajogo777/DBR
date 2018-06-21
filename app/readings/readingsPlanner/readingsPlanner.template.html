@@ -77,8 +77,9 @@
     <form class="row add-reading" ng-submit="$ctrl.readingAdd()">
         <div class="col-xs-3">
             <span>Insert position: </span>
-            <input type="number" ng-model="$ctrl.insert_position" min="0"
-                class="ins-pos" tabindex="-1">
+            <input type="number" ng-model="$ctrl.insert_position_wrapper"
+                ng-blur="$ctrl.clampInsertPosition()" tabindex="-1"
+                ng-class="{'input-invalid': !$ctrl.insertPositionIsValid()}" class="ins-pos">
         </div>
         <div class="col-xs-3">
             <span>Book:</span>
@@ -162,5 +163,8 @@
     readings-planner .add-reading .ins-pos{
         width: 3em;
         text-align: center;
+    }
+    readings-planner .input-invalid {
+        border: 1px solid rgb(224, 48, 48);
     }
 </style>

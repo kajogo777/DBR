@@ -15,8 +15,6 @@
         //todo: get the max reading number or the first available reading number
         //from db
         $ctrl.start_reading_number = 78;
-        $ctrl.insert_position = 0;
-        $ctrl.insert_position_inc = true;
         $ctrl.plans = [];
         $ctrl.selected_plan = '';   //only as a binding to the select box
         $ctrl.current_plan = '';    //the actual plan that is loaded
@@ -24,6 +22,42 @@
         //todo: enable changing diacritics and number verses options        
         $ctrl.options_diacritics = 1;
         $ctrl.options_number_verses = true;
+        
+        $ctrl.insert_position = 0;          //position to insert new reading (zero-based index)
+        $ctrl.insert_position_inc = true;   //option to increment insert position after adding a reading
+        //insert_position_wrapper: a "visual wrapper" around insert_position
+        //so that it appears to the user as a reading number instead of
+        //a zero-based index
+        Object.defineProperty($ctrl, 'insert_position_wrapper', {
+            get: function() {
+                return this.insert_position + this.start_reading_number;
+            },
+            set: function(pos) {
+                this.insert_position = pos - this.start_reading_number;
+            },
+            enumerable: true
+        })
+        $ctrl.clampInsertPosition = function() {
+            /*
+                clamps insert_position to valid bounds (which
+                automatically clamps insert_position_wrapper too)
+                this function is executed on ngBlur to allow the
+                user to finish typing the value they want, before
+                clamping an unfinished value, which would
+                effectively disable the input box
+            */
+            if ($ctrl.insert_position < 0) {
+                $ctrl.insert_position = 0;
+            }
+            if ($ctrl.insert_position > $ctrl.readings.length) {
+                $ctrl.insert_position = $ctrl.readings.length;
+            }
+        }
+        $ctrl.insertPositionIsValid = function() {
+            //this function is used for visual purposes only
+            return $ctrl.insert_position >= 0 && $ctrl.insert_position <= $ctrl.readings.length;
+        }
+
         var ReadingsPlan = function(name) {
             this.name = name;
             this.readings = [];     //array of Reading
@@ -235,6 +269,7 @@
 
         $ctrl.readingDelete = function(index) {
             $ctrl.readings.splice(index, 1);
+            $ctrl.clampInsertPosition();
             $ctrl.enableSave = true;
         }
 
