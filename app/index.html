@@ -41,7 +41,11 @@
 
   <!-- Add your site or application content here -->
   <div class="">
-    <div ui-view style="overflow-y: auto">Loading... Please wait</div>
+    <div ui-view style="overflow-y: auto">
+      <div style="display: block; width: 100vw; text-align: center; margin-top: 30vh;">
+        <h3>Loading... Please wait</h3>
+      </div>
+    </div>
   </div>
 
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -62,11 +66,12 @@
     <![endif]-->
   <!-- endbuild -->
 
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script> -->
 
   <!-- build:js scripts/vendor.js -->
   <!-- bower:js -->
+  <script src="../bower_components/jquery/dist/jquery.js"></script>
   <script src="../bower_components/angular/angular.js"></script>
   <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
   <script src="../bower_components/angular-animate/angular-animate.js"></script>

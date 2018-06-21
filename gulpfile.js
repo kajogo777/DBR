@@ -235,7 +235,7 @@ gulp.task('wiredep', function() {
 	//see link (about grunt but it works):
 	//https://github.com/stephenplusplus/grunt-wiredep/issues/72
     '/bootstrap',
-    'jquery',
+    // 'jquery',
     'es5-shim',
     'json3',
     'angular-scenario'
