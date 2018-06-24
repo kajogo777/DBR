@@ -7,8 +7,9 @@
         <!-- note: rtl only affects ordering of elements INSIDE a "col-xs"
         not col-xs themselves, to re-order col-xs use col-xs-push and col-xs-pull -->
         <div class="col-xs-12 col-sm-3 col-sm-push-9">
-            <select ng-model="$ctrl.insert_book" class="form-control">
-                <option value="" hidden>-- Select Book --</option>
+            <select ng-model="$ctrl.insert_book" class="form-control"
+                ng-change="$ctrl.getBookNameShort()">
+                <option value="" hidden>-- اختر السفر --</option>
                 <option value="" disabled>-- العهد القديم --</option>
                 <option ng-repeat="book in $ctrl.insert_books"
                     ng-if="book.is_old_testament"
@@ -24,11 +25,13 @@
             </select>
         </div>
         <div class="col-xs-12 col-sm-6 text-center">
+            <label>({{$ctrl.insert_book_name_short}}</label>
             <input type="number" ng-model="$ctrl.insert_chapter" min="1">
             <label>:</label>
             <input type="number" ng-model="$ctrl.insert_verse_start" min="1">
             <label>-</label>
             <input type="number" ng-model="$ctrl.insert_verse_end" min="1">
+            <label>)</label>
         </div>
         <div class="col-xs-12 col-sm-2 col-sm-pull-8">
             <input type="submit" value="Insert"

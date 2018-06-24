@@ -158,7 +158,6 @@
                     Promise.resolve(chapter)
                     Promise.reject(err)
             */
-            //todo: needs testing
             return $q(function(resolve, reject) {
                 $http({
                     method: 'GET',

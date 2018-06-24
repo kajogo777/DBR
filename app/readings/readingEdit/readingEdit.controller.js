@@ -29,13 +29,14 @@
 
 
         /* Insert Content and Shahed */
+        $ctrl.insert_books;         //array of books, as returned by getBooksNames()
         $ctrl.$onInit = function() {
             bibleService.getBooksNames(function(err, books) {
                 if (err) return;
                 $ctrl.insert_books = books;
             });
         }
-        $ctrl.insert_book = "";
+        $ctrl.insert_book = "";     //string - book_name_en of selected book
         $ctrl.insert_chapter;
         $ctrl.insert_verse_start;
         $ctrl.insert_verse_end;
@@ -90,6 +91,18 @@
                 if (err) {
                     toastr.error(err);
                 }
+            })
+        }
+        $ctrl.insert_book_name_short = '';
+        $ctrl.getBookNameShort = function() {
+            //get book_name_short of the currently selected book,
+            //to update $ctrl.insert_book_name_short
+            bibleService.getBookMetadata($ctrl.insert_book)
+            .then(function(book_metadata) {
+                $ctrl.insert_book_name_short = book_metadata.book_name_short;
+            })
+            .catch(function(err) {
+                $ctrl.insert_book_name_short = '';
             })
         }
 
