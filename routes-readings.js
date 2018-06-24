@@ -8,7 +8,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Reading = require('./Models/Reading');
 const ReadingsPlan = require('./Models/ReadingsPlan');
-const Chapter = require('./Models/Bible');
+// const Chapter = require('./Models/Bible');
 const {getBibleChapter} = require('./functions-bible');
 
 router.post('/add_reading', function (req, res) {

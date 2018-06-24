@@ -236,22 +236,9 @@
             if ($ctrl.current_plan !== '' && 
             $ctrl.new_reading.book && $ctrl.new_reading.chapter &&
             $ctrl.new_reading.verse_start && $ctrl.new_reading.verse_end) {
-                bibleService.getVersesNumber($ctrl.new_reading.book, $ctrl.new_reading.chapter)
-                .then(function(num_verses) {
-                    if($ctrl.new_reading.verse_start > $ctrl.new_reading.verse_end) {
-                        toastr.error('Start is greater than end')
-                        return;
-                    }
-                    if($ctrl.new_reading.verse_start > num_verses) {
-                        toastr.error('Invalid start, chapter ' +
-                            $ctrl.new_reading.chapter + ' has ' + num_verses + ' verses only');
-                        return;
-                    }
-                    if($ctrl.new_reading.verse_end > num_verses) {
-                        toastr.error('Invalid end, chapter ' +
-                            $ctrl.new_reading.chapter + ' has ' + num_verses + ' verses only');
-                        return;
-                    }
+                bibleService.validateShahed($ctrl.new_reading.book, $ctrl.new_reading.chapter,
+                    $ctrl.new_reading.verse_start, $ctrl.new_reading.verse_end)
+                .then(function() {
                     $ctrl.readings.splice($ctrl.insert_position, 0, $ctrl.new_reading);
                     var book = $ctrl.new_reading.book;
                     $ctrl.new_reading = new ReadingsPlan();
@@ -261,7 +248,8 @@
                     }
                     angular.element('#input-chapter').focus();
                     $ctrl.enableSave = true;
-                }, function(err) {
+                })
+                .catch(function(err) {
                     toastr.error(err);
                 })
             }

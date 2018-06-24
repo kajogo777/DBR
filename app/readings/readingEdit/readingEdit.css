@@ -38,6 +38,15 @@ reading-edit .btn-blue:hover{
     border-color: #204d74;
 }
 
-reading-edit .audio-player {
+reading-edit .audio-player{
     margin-bottom: 10px;
+}
+
+reading-edit .insert-content-container input[type="number"]{
+    min-width: 50px;
+    max-width: 150px;
+    width: 30%;
+    border-radius: 5px;
+    padding: 2px 10px;
+    border: 1px solid lightgray;
 }

@@ -2,22 +2,50 @@
     <div class="row">
         <h3 class="col-xs-12">{{$ctrl.title}}</h3>
     </div>
+    <form class="row form-group insert-content-container"
+        ng-submit="$ctrl.insertContent($event)" dir="rtl">
+        <!-- note: rtl only affects ordering of elements INSIDE a "col-xs"
+        not col-xs themselves, to re-order col-xs use col-xs-push and col-xs-pull -->
+        <div class="col-xs-12 col-sm-3 col-sm-push-9">
+            <select ng-model="$ctrl.insert_book" class="form-control">
+                <option value="" hidden>-- Select Book --</option>
+                <option ng-repeat="book in $ctrl.insert_book_names"
+                    value="{{book}}">
+                    {{book}}
+                </option>
+            </select>
+        </div>
+        <div class="col-xs-12 col-sm-6 text-center">
+            <input type="number" ng-model="$ctrl.insert_chapter" min="1">
+            <label>:</label>
+            <input type="number" ng-model="$ctrl.insert_verse_start" min="1">
+            <label>-</label>
+            <input type="number" ng-model="$ctrl.insert_verse_end" min="1">
+        </div>
+        <div class="col-xs-12 col-sm-2 col-sm-pull-8">
+            <input type="submit" value="Insert"
+                class="btn btn-primary form-control">
+        </div>
+    </form>
     <div dir="rtl">
-        <div class="col-xs-12">
-            <div class="from-horizontal">
-                <div class="row form-group">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row form-horizontal form-group">
                     <label class="col-xs-12 col-sm-2 col-sm-push-10 col-md-2 col-md-push-10">رقم القراءة</label>
+                    <!-- todo: fix - bad layout on xs view -->
                     <input class="col-xs-12 col-sm-2 col-sm-push-6 col-md-1 col-md-push-7"
                         type="text" ng-model="$ctrl.reading.number">
-                </div>
-                <div class="row form-group">
-                    <label class="col-xs-12 col-sm-2 col-sm-push-10 col-md-2 col-md-push-10">الشاهد</label>
-                    <input class="col-xs-12 col-sm-3 col-sm-push-5 col-md-3 col-md-push-5"
-                        type="text" ng-model="$ctrl.reading.shahed">
                 </div>
             </div>
         </div>
         
+        
+
+        <div class="row form-group">
+            <label class="col-xs-12 col-sm-2 col-sm-push-10 col-md-2 col-md-push-10">الشاهد</label>
+            <input class="col-xs-12 col-sm-3 col-sm-push-5 col-md-3 col-md-push-5"
+                type="text" ng-model="$ctrl.reading.shahed">
+        </div>
         <div class="form-group">
             <textarea ng-model="$ctrl.reading.content" class="form-control" rows="12"></textarea>
         </div>

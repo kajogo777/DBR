@@ -4,8 +4,9 @@
     angular.module('readings')
     .controller('readingEditController', ReadingEditController);
 
-    ReadingEditController.$inject = ['dataService', '$state', '$mdDialog', 'toastr'];
-    function ReadingEditController(dataService, $state, $mdDialog, toastr){
+    ReadingEditController.$inject = ['dataService', '$state', 
+        '$mdDialog', 'toastr', 'bibleService'];
+    function ReadingEditController(dataService, $state, $mdDialog, toastr, bibleService){
         var $ctrl = this;
 
         //Note (FOR questions components):
@@ -25,6 +26,72 @@
         //feature: confirm before deleting a question
         //feature: fix page scroll on question re-order, OR:
         //feature: add better question re-ordering functionality
+
+
+        /* Insert Content and Shahed */
+        $ctrl.$onInit = function() {
+            bibleService.getBooksNames(function(err, names) {
+                if (err) return;
+                $ctrl.insert_book_names = names;
+            });
+        }
+        $ctrl.insert_book = "";
+        $ctrl.insert_chapter;
+        $ctrl.insert_verse_start;
+        $ctrl.insert_verse_end;
+        //todo: add inputs to enable user to change these options
+        //todo: add option to change verses join method (newline vs single paragraph)
+        //todo: use book metadata to clamp the maximum value of verse_start and verse_end
+        //      so the user can just enter a very large value in verse_end to get last verse
+        //      automatically
+        $ctrl.insert_diacritices = 1;
+        $ctrl.insert_number_verses = true;
+        $ctrl.insertContent = function($event) {
+            var book = $ctrl.insert_book;
+            var chapter = $ctrl.insert_chapter;
+            var verse_start = $ctrl.insert_verse_start;
+            var verse_end = $ctrl.insert_verse_end;
+            if (! (book && chapter && verse_start) ) {  //verse_end is optional
+                return;
+            }
+            bibleService.validateShahed(book, chapter, verse_start, verse_end)
+            .then(function() {
+                //if reading's content and shahed are empty, don't
+                //ask user for confirmation
+                if (!$ctrl.reading.content && !$ctrl.reading.shahed) {
+                    return;
+                }
+                return showDialogConfirm($event, {
+                    message_text: 'This will overwrite the current ' + 
+                        '"Content" and "Shahed", are you sure?'
+                })
+            })
+            .then(function() {
+                //get the verses,
+                //if the user omitted the verse_end, assume
+                //it's the same as verse_start, i.e. get one verse
+                verse_end = verse_end ? verse_end : verse_start;
+                return bibleService.getBibleChapter({
+                    book: book,
+                    chapter: chapter,
+                    verse_start: verse_start,
+                    verse_end: verse_end,
+                    diacritics: $ctrl.insert_diacritices,
+                    number_verses: $ctrl.insert_number_verses
+                })
+            })
+            .then(function(chapter) {
+                //update reading's content and shahed with new ones
+                $ctrl.reading.shahed = bibleService.getShahedString(chapter.book_name_short,
+                    chapter.chapter, verse_start, verse_end);
+                $ctrl.reading.content = chapter.verses.join('\n');
+            })
+            .catch(function(err) {
+                if (err) {
+                    toastr.error(err);
+                }
+            })
+        }
 
 
         /* Sound Link */
@@ -66,7 +133,8 @@
                     $ctrl.reading.sound = 'https://drive.google.com/uc?export=download&id=' +
                                             results[1];
                 } else {
-                    //tell the user they entered invalid link
+                    //tell the user they entered invalid link,
+                    //don't change the current link
                     toastr.error('Invalid Google drive link');
                 }
             })
@@ -90,8 +158,10 @@
                 if ($ctrl.reading.sound == '') {
                     return;
                 }
-                toastr.error('Invalid sound link, sound link was removed');
-                $ctrl.reading.sound = '';
+                //error can arise even if URL is valid, when internet
+                //connection is lost for example, so don't remove the
+                //link, just warn the user
+                toastr.error("Error playing sound file, sound link may be invalid");
             })
         }
 
@@ -169,8 +239,10 @@
         function showDialogConfirm($event, options) {
             /*
                 shows a modal dialog with a message and two buttons for confirmation
-                returns: a promise that resolves if user confirmed, and rejects if
+                
+                Returns: a promise that resolves if user confirmed, and rejects if
                 user canceled
+
                 options = {
                     message_text,       //the message
                     confirm_text,       //confirm button

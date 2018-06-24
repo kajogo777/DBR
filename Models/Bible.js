@@ -7,6 +7,8 @@
 const mongoose = require('mongoose');
 
 let chapterSchema = mongoose.Schema({
+    book_order: Number,                             //order of book in the Bible
+    is_old_testament: Boolean,
     book_name: String,                              //arabic name
     book_name_en: { type: String, lowercase: true}, //english name for API urls
     book_name_short: String,                        //abbreviated arabic name

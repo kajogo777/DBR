@@ -5,6 +5,7 @@ const {getBibleChapter} = require('./functions-bible');
 
 router.get('/bible', getBibleChapterRequest);
 router.get('/bible/get_books_names', getBooksNamesRequest);
+router.get('/bible/get_book_metadata', getBookMetadataRequest);
 
 function getBibleChapterRequest(req, res) {
     /*
@@ -35,14 +36,14 @@ function getBibleChapterRequest(req, res) {
     let diacritics = req.query.diacritics;
     let number_verses = req.query.number_verses;
     //check for missing or invalid query params
-    if(book_name_en === undefined) {
+    if (book_name_en === undefined || book_name_en.trim() == '') {
         res.status(400).send('Request missing book name');
         return;
     } else {
         book_name_en = book_name_en.toLowerCase();
     }
     //if chapter is given in query, try to parse it to a number
-    if (chapter === undefined) {
+    if (chapter === undefined || chapter.trim() == '') {
         res.status(400).send('Request missing chapter number');
         return;
     } else {
@@ -110,6 +111,79 @@ function getBooksNamesRequest(req, res) {
         } else {
             res.status(200).send(docs[0].books);
         }
+    })
+}
+
+function getBookMetadataRequest(req, res) {
+    /*
+        Get "metadata" for a given book,
+        
+        metadata is the details of the book (such as name,
+        short name, etc...) and the number of chapters in
+        the book as the length of an array, whose values
+        are the number of verses of that chapter
+        
+        NOTE: chapter 1 is index 0 in the array
+
+        query parameters:
+            book: string    (name of the book, should be the same as 
+                            the book_name_en returned by getBooksNamesRequest)
+
+        Returns: {
+            book_name_en: string,
+            book_name: string,
+            book_name_short: string,
+            book_order: number,
+            is_old_testament: boolean,
+            num_verses_of_chapter: [number]
+        }
+    */
+    //check for missing or invalid query params
+    var book_name_en = req.query.book;
+    if (book_name_en === undefined || book_name_en.trim() == '') {
+        res.status(400).send('Request missing book name');
+        return;
+    } else {
+        book_name_en = book_name_en.toLowerCase();
+    }
+    Chapter.aggregate([
+        {
+            $match: {
+                book_name_en: book_name_en
+            }
+        },
+        {
+            /* this is important to ensure that chapters
+            are $pushed into array in order (in $group
+            stage) */
+            $sort: {
+                chapter: 1
+            }
+        },
+        {
+            $group: {
+                _id: "$book_name_en",
+                book_name_en:       { $first: "$book_name_en" },    // $first because they
+                                                                    //are all the same
+                book_name:          { $first: "$book_name" },
+                book_name_short:    { $first: "$book_name_short" },
+                is_old_testament:   { $first: "$is_old_testament" },
+                book_order:         { $first: "$book_order" },
+                num_verses_of_chapter: { $push: { $size: "$verses" } }
+            }
+        },
+        {
+            $project: {
+                _id: 0
+            }
+        }
+    ])
+    .then(function(docs) {
+        res.status(200).send(docs[0]);
+    })
+    .catch(function(err) {
+        console.log(err);
+        res.sendStatus(500);
     })
 }
 
