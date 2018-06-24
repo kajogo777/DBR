@@ -85,7 +85,7 @@
             <span>Book:</span>
             <select ng-model="$ctrl.new_reading.book">
                 <option value="" disabled>-- Select book --</option>
-                <option ng-repeat="book in $ctrl.books">{{book}}</option>
+                <option ng-repeat="book in $ctrl.books">{{book.book_name_en}}</option>
             </select>
         </div>
         <div class="col-xs-4">

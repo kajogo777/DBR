@@ -83,7 +83,8 @@
                 if (!err) {
                     //capitalize book names
                     for(var i=0; i<books.length; ++i) {
-                        books[i] = books[i][0].toUpperCase() + books[i].slice(1);
+                        var name = books[i].book_name_en;
+                        name = name[0].toUpperCase() + name.slice(1);
                     }
                     $ctrl.books = books;
                 }

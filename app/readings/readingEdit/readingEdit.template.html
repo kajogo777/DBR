@@ -9,9 +9,17 @@
         <div class="col-xs-12 col-sm-3 col-sm-push-9">
             <select ng-model="$ctrl.insert_book" class="form-control">
                 <option value="" hidden>-- Select Book --</option>
-                <option ng-repeat="book in $ctrl.insert_book_names"
-                    value="{{book}}">
-                    {{book}}
+                <option value="" disabled>-- العهد القديم --</option>
+                <option ng-repeat="book in $ctrl.insert_books"
+                    ng-if="book.is_old_testament"
+                    value="{{book.book_name_en}}">
+                    {{book.book_name}}
+                </option>
+                <option value="" disabled>-- العهد الجديد --</option>
+                <option ng-repeat="book in $ctrl.insert_books"
+                    ng-if="!book.is_old_testament"
+                    value="{{book.book_name_en}}">
+                    {{book.book_name}}
                 </option>
             </select>
         </div>

@@ -21,7 +21,7 @@
 
         service.getBooksNames = function(callback) {
             /*
-                callback(err, readings)
+                callback(err, books)
             */
             $http.get( dataService.getBaseUrl() + '/bible/get_books_names' )
             .then(resolve, reject)

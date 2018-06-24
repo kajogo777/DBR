@@ -30,9 +30,9 @@
 
         /* Insert Content and Shahed */
         $ctrl.$onInit = function() {
-            bibleService.getBooksNames(function(err, names) {
+            bibleService.getBooksNames(function(err, books) {
                 if (err) return;
-                $ctrl.insert_book_names = names;
+                $ctrl.insert_books = books;
             });
         }
         $ctrl.insert_book = "";

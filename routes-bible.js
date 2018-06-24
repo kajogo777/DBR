@@ -98,18 +98,36 @@ function getBibleChapterRequest(req, res) {
 function getBooksNamesRequest(req, res) {
     Chapter.aggregate([
         {
-            $group:
-            {
-                _id: null,
-                books: { $addToSet: '$book_name_en' }
+            // make sure the final list of  books is
+            // sorted by the book order in the Bible
+            $sort: {
+                book_order: 1
             }
+        },
+        {
+            // get distinct book names
+            $group: {
+                _id: "$book_name_en",
+                book_name: { $first: "$book_name" },
+                is_old_testament: { $first: "$is_old_testament" }
+            }
+        },
+        {
+            // rename "_id" field
+            $project: {
+                _id: 0, 
+                book_name_en: "$_id",
+                book_name: 1,
+                is_old_testament: 1
+            }
+
         }
     ], function(err, docs) {
         if (err) {
             console.log(err);
             res.sendStatus(500);
         } else {
-            res.status(200).send(docs[0].books);
+            res.status(200).send(docs);
         }
     })
 }
