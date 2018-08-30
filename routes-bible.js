@@ -98,6 +98,15 @@ function getBibleChapterRequest(req, res) {
 function getBooksNamesRequest(req, res) {
     Chapter.aggregate([
         {
+            // get distinct book names
+            $group: {
+                _id: "$book_name_en",
+                book_name: { $first: "$book_name" },
+                is_old_testament: { $first: "$is_old_testament" },
+                book_order: { $first: "$book_order" }
+            }
+        },
+        {
             // make sure the final list of  books is
             // sorted by the book order in the Bible
             $sort: {
@@ -105,17 +114,10 @@ function getBooksNamesRequest(req, res) {
             }
         },
         {
-            // get distinct book names
-            $group: {
-                _id: "$book_name_en",
-                book_name: { $first: "$book_name" },
-                is_old_testament: { $first: "$is_old_testament" }
-            }
-        },
-        {
-            // rename "_id" field
+            // rename "_id" field and don't include
+            // book_order
             $project: {
-                _id: 0, 
+                _id: 0,
                 book_name_en: "$_id",
                 book_name: 1,
                 is_old_testament: 1
