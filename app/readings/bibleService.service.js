@@ -179,7 +179,7 @@
             })
         }
 
-        service.getShahedString = function(book_abbr, chapter, verse_start, verse_end, add_parentheses = false) {
+        service.getShahedString = function(book_abbr, chapter, verse_start, verse_end, add_parentheses) {
             var shahed = book_abbr + ' ' + chapter + ': ' + verse_start + '-' + verse_end;
             return add_parentheses ? '(' + shahed + ')' : shahed;
         }
