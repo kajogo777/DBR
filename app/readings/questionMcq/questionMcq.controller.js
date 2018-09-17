@@ -9,7 +9,6 @@
         var $ctrl = this;
 
         //todo: auto resize text areas to fit contents
-        //todo: use input type="number" in score and reading number
         //todo: check ng-options instead of ng-repeat in (correct answer)
         //  https://www.undefinednull.com/2014/08/11/a-brief-walk-through-of-the-ng-options-in-angularjs/
 
