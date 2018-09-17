@@ -160,18 +160,18 @@
 						</div>
 					</div>
 					<!-- if not answered before -->
-					<div ng-if="!answered_questions_ids.includes(question.id)" class="row" ng-repeat="choice in question.choices track by $index"
+					<div ng-if="!answered_questions_ids.includes(question._id)" class="row" ng-repeat="choice in question.choices track by $index"
 					 style="margin-right: 0px;margin-left: 0px; direction:rtl">
 						<p class="pull-right" style="width: 100%;" id="{{$questionIndex}}_{{$index}}">
-							<a id="atag_{{$questionIndex}}_{{$index}}" ng-click="check_answer(choice,question.id,$index,$questionIndex)" style="font-size:31px;width: 100%; {{selectedAnswer[$questionIndex]==$index?'background-color: #ab9708':''}}"
+							<a id="atag_{{$questionIndex}}_{{$index}}" ng-click="check_answer(choice,question._id,$index,$questionIndex)" style="font-size:31px;width: 100%; {{selectedAnswer[$questionIndex]==$index?'background-color: #ab9708':''}}"
 							 class="btn btn-lg btn-white">{{choice}}</a>
 						</p>
 					</div>
 
 					<!-- if answered before -->
-					<div ng-if="answered_questions_ids.includes(question.id)" class="row" ng-repeat="choice in question.choices track by $index"
+					<div ng-if="answered_questions_ids.includes(question._id)" class="row" ng-repeat="choice in question.choices track by $index"
 					 style="margin-right: 0px;margin-left: 0px; direction:rtl">
-						<p class="pull-right" style="width: 100%;" id="{{$questionIndex}}_{{$index}}" ng-init="answered_question = get_answered_question(question.id)">
+						<p class="pull-right" style="width: 100%;" id="{{$questionIndex}}_{{$index}}" ng-init="answered_question = get_answered_question(question._id)">
 							<a ng-if="answered_question.user_answer==choice &&  answered_question.is_right_answer == true" style="font-size:31px;width: 100%;background-color:green"
 							 class="btn btn-lg btn-white disabled">{{choice}}</a>
 							<a ng-if="answered_question.user_answer==choice &&  answered_question.is_right_answer == false" style="font-size:31px;width: 100%;background-color:red"
