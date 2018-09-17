@@ -214,9 +214,12 @@
                 promise.then(function(){
                     //reading update success
                     $state.go('readingManager');
-                }, function(){
+                }, function(err){
                     //reading update fail
                     $ctrl.save_msg = 'Failed to update reading, please try again';
+                    if (err) {
+                        $ctrl.save_msg += ' (' + err + ')';
+                    }
                     $ctrl.can_save = true;
                 })
             }else{
@@ -225,9 +228,12 @@
                 promise.then(function(){
                     //reading add success
                     $state.go('readingManager');
-                }, function(){
+                }, function(err){
                     //reading add fail
                     $ctrl.save_msg = 'Failed to add reading, please try again';
+                    if (err) {
+                        $ctrl.save_msg += ' (' + err + ')';
+                    }
                     $ctrl.can_save = true;
                 })
             }

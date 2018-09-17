@@ -16,9 +16,17 @@ router.post('/add_reading', function (req, res) {
     var reading = new Reading(req.body.reading);
     reading.save(function (err, reading) {
         if (err)
-            res.send(err);
+        if (err.code == 11000) {
+            return res.status(400).send('Error: Reading number already exists');
+            //another possible HTTP code to indicate error: 422 Unprocessable Entity.
+            //note that any value outside the range 200-299 will be interpreted as
+            //error status by Angularjs $http
+            //see: https://docs.angularjs.org/api/ng/service/$http#$http-returns
+        } else {
+            return res.sendStatus(500);
+        }
         else {
-            res.send("reading added successfully");
+            return res.sendStatus(200);
         }
     })
 });
@@ -39,7 +47,17 @@ router.get('/get_readings', function (req, res) {
 
 router.post('/update_reading', function (req, res) {
     var reading = new Reading(req.body.reading);
-    Reading.update({ _id: req.body.reading._id }, reading, (err, done) => { return res.send(done) })
+    Reading.update({ _id: req.body.reading._id }, reading, (err, rawResponse) => {
+        if (err) {
+            if (err.code == 11000) {
+                return res.status(400).send('Error: Reading number already exists');
+            } else {
+                return res.sendStatus(500);
+            }
+        } else {
+            return res.sendStatus(200);
+        }
+    })
 });
 
 

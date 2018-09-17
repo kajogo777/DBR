@@ -104,7 +104,7 @@
                 hasReadings = false;
             }, function(res){
                 //http fail
-                deferred.reject();
+                deferred.reject(res.data);
             })
             return deferred.promise;
         }
@@ -125,7 +125,7 @@
                 hasReadings = false;
             }, function(res){
                 //http fail
-                deferred.reject();
+                deferred.reject(res.data);
             })
             return deferred.promise;
         }
