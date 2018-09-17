@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema({
-    number:       {type: String},
+    number:       {type: Number},
     data:         {type: Date},    //todo: remove this unused field?
     shahed:       {type: String},
     content:      {type: String},
@@ -12,9 +12,9 @@ var Schema = mongoose.Schema({
         //_id:                  will be auto-generated
         question:               {type: String},
         answer:                 {type: String},
-        choices:                [],
+        choices:                [{type: String}],
         type:                   {type: String},
-        score:                  {type: String},
+        score:                  {type: Number},
         answers_count:          {type: Number, default: 0},
         correct_answers_count:  {type: Number, default: 0}
       }
