@@ -13,27 +13,27 @@ var Schema = mongoose.Schema({
     reading_dates:[],
     row_readings_count:{type:Number, default: 0},
     row_correct_answer_count:{type:Number, default: 0},
-    answered_questions:[
-      {
-        question_id:{type:String},
-        reading_id:{type:String},
-        is_right_answer: {type:Boolean},
-        user_answer:{type:String},
-        right_answer:{type:String},
-        question:{type:String},
-        choices:[{type:String}],
-        score:{type:String},
-        date:{type:Date}
-      }
-    ],
+    answered_questions:[{
+        _id: false,       //disable auto-generated _id field
+        reading_id:       {type: mongoose.Schema.Types.ObjectId, ref: 'reading'},
+        question_id:      {type: mongoose.Schema.Types.ObjectId},
+                          //note: cannot reference a "subdocument" in another model
+                          //see this for info: https://github.com/Automattic/mongoose/issues/2772
+        user_answer:      {type:String},
+        is_right_answer:  {type:Boolean},
+        date:             {type:Date}
+        // right_answer:     {type:String},
+        // question:         {type:String},
+        // choices:          [{type:String}],
+        // score:            {type:String}
+    }],
     trophies:[{
       trophy:{ type : mongoose.Schema.Types.ObjectId, ref: 'trophy' },
       date:{type:Date}
-      }
-    ],
+    }],
     gift:{ type : mongoose.Schema.Types.ObjectId, ref: 'gift' }
 })
 
-  var User = mongoose.model("user", Schema);
+var User = mongoose.model("user", Schema);
 
-  module.exports = User;
+module.exports = User;
