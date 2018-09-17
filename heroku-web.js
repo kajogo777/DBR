@@ -537,6 +537,55 @@ app.post('/check_answer', function (req, res) {
     })
 });
 
+app.post('/get_user_history', function(req, res) {
+    var user;
+    User.findById(req.body._id, {
+        reading_dates: 1,
+        answered_questions: 1
+    })
+    .then(function(user_doc) {
+        user = user_doc;
+        //get all the readings that the user has finished using readings_dates
+        return Reading.find({number: {$lte: user.reading_dates.length}}, {
+            questions: 1
+        })
+    })
+    .then(function(readings) {
+        var answered_questions = [];    //that will be returned to user
+        //for each answered question:
+        for (var i=0; i<user.answered_questions.length; ++i) {
+            var question = user.answered_questions[i];
+            //find the reading that contains this question
+            for (var j=0; j<readings.length; ++j) {
+                var reading = readings[j];
+                if (question.reading_id.equals(reading._id)) {  //can't compare ObjectID using ==
+                    //find the question inside this reading
+                    for (var k=0; k<reading.questions.length; ++k) {
+                        if (question.question_id.equals(reading.questions[k]._id)) {
+                            answered_questions.push({
+                                question:               reading.questions[k].question,
+                                choices:                reading.questions[k].choices,
+                                score:                  reading.questions[k].score,
+                                right_answer:           reading.questions[k].answer,
+                                user_answer:            question.user_answer,
+                                is_right_answer:        question.is_right_answer,
+                                date:                   question.date
+                            });
+                            break;  //we have found the question
+                        }
+                    }
+                    break;  //we have found the reading
+                }
+            }
+        }
+        return res.send(answered_questions);
+    })
+    .catch(function(err) {
+        console.log(err);
+        return res.sendStatus(500);
+    })
+})
+
 //todo: not used function
 function get_user_date(id) {
     User.findOne({ 'id': id }, function (err, user) {
