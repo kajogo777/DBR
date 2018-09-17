@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema({
-    number:       {type: String},
+    number:       {type: Number},
     data:         {type: Date},    //todo: remove this unused field?
     shahed:       {type: String},
     content:      {type: String},
