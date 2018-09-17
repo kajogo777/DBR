@@ -262,8 +262,7 @@
             this.question = '',
             this.answer = '',
             this.score = '',
-            this.choices = [],
-            this.id = questionGenereateId();
+            this.choices = []
         }
         QuestionMcq.prototype.choiceAdd = function(choice_text){
             //add new choice to the array of choices,
@@ -330,8 +329,7 @@
             this.type = 'essay',
             this.question = '',
             this.answer = '',
-            this.score = '',
-            this.id = questionGenereateId();
+            this.score = ''
         }
         QuestionEssay.prototype.checkAnswer = function(){
             if(this.answer === 'correct'){
@@ -367,17 +365,7 @@
             return reading;
         }
 
-        function questionGenereateId(){
-            //generates an id
-            //used for each question, instead of Mongo's _id
-            var text = "";
-            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-          
-            for (var i = 0; i < 40; i++)
-              text += possible.charAt(Math.floor(Math.random() * possible.length));
-          
-            return text;
-        }
+
 
 
 

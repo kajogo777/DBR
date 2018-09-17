@@ -440,109 +440,151 @@ app.post('/check_answer', function (req, res) {
     console.log(req.body);
     User.findOne({ "_id": req.body.user_id }, function (err, user) {
         if (err) {
+            console.log(err);
             return res.send(err);
-            return;
-        } else
-            if (user) {
-                //checking if question is answered before
-                for (var i = 0; i < user.answered_questions.length; i++) {
-                    if (user.answered_questions[i].question_id == req.body.question_id) {
-                        console.log("Already answered this question before !");
-                        return res.status(201).send("Already answered this question before !");
-
-                    }
+        } else {
+            //checking if question is answered before
+            for (var i = 0; i < user.answered_questions.length; i++) {
+                if (user.answered_questions[i].question_id == req.body.question_id) {
+                    console.log("Already answered this question before !");
+                    return res.status(201).send("Already answered this question before !");
                 }
-                //if not answered before.. check for answer and add it in the answered quesions
-                Reading.findOne({ "_id": req.body.reading_id }, function (err, reading) {
-                    console.log('reading: ', reading);
-                    if (err) {
-                        console.log("error");
-                    } else {
-                        for (var j = 0; j < reading.questions.length; j++) {
-                            // console.log(req.body.question_id);
-                            // console.log(reading.questions[j].score);
-                            if (req.body.question_id == reading.questions[j].id) {
-                                //if correct answer
-                                if (reading.questions[j].answer == req.body.choice) {
-
-                                    //update question counters in reading model (inc answers counter and correct answer counter)
-                                    Reading.updateOne({ 'questions.id': req.body.question_id }, {
-                                        '$inc': {
-                                            'questions.$.answers_count': '1',
-                                            'questions.$.correct_answers_count': '1'
-                                        }
-                                    }, () => { });
-
-                                    var question = {
-                                        question_id: req.body.question_id,
-                                        reading_id: req.body.reading_id,
-                                        is_right_answer: true,
-                                        user_answer: req.body.choice,
-                                        right_answer: reading.questions[j].answer,
-                                        question: reading.questions[j].question,
-                                        choices: reading.questions[j].choices,
-                                        score: reading.questions[j].score,
-                                        date: Date.now()
+            }
+            //if not answered before.. check for answer and add it in the answered quesions
+            Reading.findOne({ "_id": req.body.reading_id }, function (err, reading) {
+                console.log('reading: ', reading);
+                if (err) {
+                    console.log("error");
+                    return res.send(err);
+                } else {
+                    for (var j = 0; j < reading.questions.length; j++) {
+                        // console.log(req.body.question_id);
+                        // console.log(reading.questions[j].score);
+                        if (req.body.question_id == reading.questions[j].id) {
+                            //if correct answer
+                            if (reading.questions[j].answer == req.body.choice) {
+                                //update question counters in reading model (inc answers counter and correct answer counter)
+                                Reading.updateOne({ 'questions._id': req.body.question_id }, {
+                                    '$inc': {
+                                        'questions.$.answers_count': '1',
+                                        'questions.$.correct_answers_count': '1'
                                     }
-                                    var question_score = reading.questions[j].score;
+                                }, () => { });
 
-                                    //adding points
-                                    AddPoints(user, question_score, function (err, user, LevelChanged1) {
-                                        User.updateOne({ "_id": req.body.user_id }, {
-                                            row_correct_answer_count: user.row_correct_answer_count + 1,
-                                            $push: { "answered_questions": question }
-                                        }, function (err, user_updated) {
-                                            CheckTrophies(user, "correct_answers_row", function (err, user, newTrophy, LevelChanged2) {
-                                                if (newTrophy != null && (LevelChanged1 || LevelChanged2)) {
-                                                    return res.status(207).send({ question_score: question_score, newTrophy, LevelChanged: true })
-                                                }
-                                                if (LevelChanged1 || LevelChanged2) {
-                                                    return res.status(204).send({ question_score: question_score, LevelChanged: true });
-                                                } if (newTrophy != null) {
-                                                    return res.status(207).send({ question_score: question_score, newTrophy })
-                                                } else {
-                                                    return res.status(202).send({ question_score: question_score });
-                                                }
-                                            })
-                                        })
-                                    });
-
-                                } else {// if wrong answer
-                                    //update question counter in reading model (inc answers counter)
-                                    Reading.updateOne({ 'questions.id': req.body.question_id }, {
-                                        '$inc': {
-                                            'questions.$.answers_count': '1'
-                                        }
-                                    }, () => { });
-
-                                    //pushing that the answer was wrong
-                                    var question = {
-                                        question_id: req.body.question_id,
-                                        reading_id: req.body.reading_id,
-                                        is_right_answer: false,
-                                        user_answer: req.body.choice,
-                                        right_answer: reading.questions[j].answer,
-                                        question: reading.questions[j].question,
-                                        choices: reading.questions[j].choices,
-                                        score: reading.questions[j].score,
-                                        date: Date.now()
-                                    }
-                                    User.updateOne({ "_id": req.body.user_id }, {
-                                        row_correct_answer_count: 0,
-                                        $push: { "answered_questions": question }
-                                    }, function (err) {
-                                        return res.status(203).send("Wrong Answer");
-
-                                    })
+                                var question = {
+                                    question_id: req.body.question_id,
+                                    reading_id: req.body.reading_id,
+                                    user_answer: req.body.choice,
+                                    is_right_answer: true,
+                                    date: Date.now()
                                 }
-                                break;
+                                var question_score = reading.questions[j].score;
+
+                                //adding points
+                                AddPoints(user, question_score, function (err, user, LevelChanged1) {
+                                    User.updateOne({ "_id": req.body.user_id }, {
+                                        row_correct_answer_count: user.row_correct_answer_count + 1,
+                                        $push: { "answered_questions": question }
+                                    }, function (err, user_updated) {
+                                        CheckTrophies(user, "correct_answers_row", function (err, user, newTrophy, LevelChanged2) {
+                                            if (newTrophy != null && (LevelChanged1 || LevelChanged2)) {
+                                                return res.status(207).send({ question_score: question_score, newTrophy, LevelChanged: true })
+                                            }
+                                            if (LevelChanged1 || LevelChanged2) {
+                                                return res.status(204).send({ question_score: question_score, LevelChanged: true });
+                                            } if (newTrophy != null) {
+                                                return res.status(207).send({ question_score: question_score, newTrophy })
+                                            } else {
+                                                return res.status(202).send({ question_score: question_score });
+                                            }
+                                        })
+                                    })
+                                });
+
+                            } else {// if wrong answer
+                                //update question counter in reading model (inc answers counter)
+                                Reading.updateOne({ 'questions._id': req.body.question_id }, {
+                                    '$inc': {
+                                        'questions.$.answers_count': '1'
+                                    }
+                                }, () => { });
+
+                                //pushing that the answer was wrong
+                                var question = {
+                                    question_id: req.body.question_id,
+                                    reading_id: req.body.reading_id,
+                                    user_answer: req.body.choice,
+                                    is_right_answer: false,
+                                    date: Date.now()
+                                    // right_answer: reading.questions[j].answer,
+                                    // question: reading.questions[j].question,
+                                    // choices: reading.questions[j].choices,
+                                    // score: reading.questions[j].score,
+                                }
+                                User.updateOne({ "_id": req.body.user_id }, {
+                                    row_correct_answer_count: 0,
+                                    $push: { "answered_questions": question }
+                                }, function (err) {
+                                    return res.status(203).send("Wrong Answer");
+                                })
                             }
+                            break;
                         }
                     }
-                })
-            }
+                }
+            })
+        }
     })
 });
+
+app.post('/get_user_history', function(req, res) {
+    var user;
+    User.findById(req.body._id, {
+        reading_dates: 1,
+        answered_questions: 1
+    })
+    .then(function(user_doc) {
+        user = user_doc;
+        //get all the readings that the user has finished using readings_dates
+        return Reading.find({number: {$lte: user.reading_dates.length}}, {
+            questions: 1
+        })
+    })
+    .then(function(readings) {
+        var answered_questions = [];    //that will be returned to user
+        //for each answered question:
+        for (var i=0; i<user.answered_questions.length; ++i) {
+            var question = user.answered_questions[i];
+            //find the reading that contains this question
+            for (var j=0; j<readings.length; ++j) {
+                var reading = readings[j];
+                if (question.reading_id.equals(reading._id)) {  //can't compare ObjectID using ==
+                    //find the question inside this reading
+                    for (var k=0; k<reading.questions.length; ++k) {
+                        if (question.question_id.equals(reading.questions[k]._id)) {
+                            answered_questions.push({
+                                question:               reading.questions[k].question,
+                                choices:                reading.questions[k].choices,
+                                score:                  reading.questions[k].score,
+                                right_answer:           reading.questions[k].answer,
+                                user_answer:            question.user_answer,
+                                is_right_answer:        question.is_right_answer,
+                                date:                   question.date
+                            });
+                            break;  //we have found the question
+                        }
+                    }
+                    break;  //we have found the reading
+                }
+            }
+        }
+        return res.send(answered_questions);
+    })
+    .catch(function(err) {
+        console.log(err);
+        return res.sendStatus(500);
+    })
+})
 
 //todo: not used function
 function get_user_date(id) {
