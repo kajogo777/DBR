@@ -12,7 +12,7 @@ var Schema = mongoose.Schema({
         //_id:                  will be auto-generated
         question:               {type: String},
         answer:                 {type: String},
-        choices:                [],
+        choices:                [{type: String}],
         type:                   {type: String},
         score:                  {type: Number},
         answers_count:          {type: Number, default: 0},
